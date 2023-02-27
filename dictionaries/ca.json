@@ -1,0 +1,24 @@
+{
+  "server-component": {
+    "welcome": "Benvinguts!"
+  },
+  "counter": {
+    "increment": "Incrementa",
+    "decrement": "Decrementa"
+  },
+  "nav-bar": {
+    "about": "Sobre",
+    "home": "Casa",
+    "blog": "Blog"
+  },
+  "locale-switcher": {
+    "catalan": "Català",
+    "english": "Inglès"
+  },
+  "home": {
+    "title": "La Comunitat JavaScript de Girona",
+    "subtitle": "GironaJS és una comunitat JavaScript de parla catalana nascuda a Girona. Si parles català i estàs interessat en JavaScript uneix-te a la nostre comunitat. Per unir-te entra en el discord i presentat!",
+    "members": "Membres",
+    "sponsors": "Patrocinadors"
+  }
+}
