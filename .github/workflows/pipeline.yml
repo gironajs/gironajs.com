@@ -35,7 +35,9 @@ jobs:
             ${{ runner.os }}-
       - name: Install dependencies
         run: yarn
-      - name: Check eslint
+      - name: Generate build
+        run: yarn build
+      - name: Check linting
         run: yarn lint
       - name: Check TypeScript
         run: yarn typescript:check
