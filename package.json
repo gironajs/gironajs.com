@@ -3,7 +3,10 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint --max-warnings 0",
+    "typescript:check": "tsc --noEmit",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "0.2.32",
@@ -20,13 +23,20 @@
     "@types/node": "^18.11.5",
     "@types/react": "^18.0.23",
     "@types/react-dom": "^18.0.7",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "autoprefixer": "^10.4.13",
     "eslint": "^8.35.0",
     "eslint-config-next": "^13.2.3",
-    "autoprefixer": "^10.4.13",
+    "fox-awesome-cli": "^1.2.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^13.1.2",
     "postcss": "^8.4.21",
     "prettier": "2.7.1",
     "sass": "^1.55.0",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.8.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,scss,json,md}": "prettier --write"
   }
 }
