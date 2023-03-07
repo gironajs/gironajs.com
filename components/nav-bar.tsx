@@ -42,7 +42,7 @@ export function NavBar({ items }: MainNavProps) {
         </nav>
       ) : null}
 
-      <LocaleSwitcher/>
+      <LocaleSwitcher />
 
       <button
         className="flex items-center space-x-2 md:hidden"

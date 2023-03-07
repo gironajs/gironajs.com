@@ -8,7 +8,7 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     appDir: true,
-    enableUndici: true
+    enableUndici: true,
   },
   images: {
     remotePatterns: [
@@ -20,6 +20,6 @@ const nextConfig = {
       },
     ],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
