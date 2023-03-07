@@ -6,6 +6,8 @@
     "start": "next start",
     "lint": "next lint --max-warnings 0",
     "typescript:check": "tsc --noEmit",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier --check .",
     "prepare": "husky install"
   },
   "dependencies": {
