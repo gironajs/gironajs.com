@@ -5,7 +5,6 @@ gironajs.com open source application built using Next.js 13 and TailwindCSS.
 > **Warning**
 > This app is a work in progress.
 
-
 ## Running Locally
 
 1. Install dependencies using yarn:

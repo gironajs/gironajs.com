@@ -1,10 +1,10 @@
-import { SiteConfig } from "@/types"
+import { SiteConfig } from '@/types';
 
 export const siteConfig: SiteConfig = {
-  name: "GironaJS",
+  name: 'GironaJS',
   links: {
-    twitter: "",
-    discord: "https://discord.gg/eBkQTD2Pax",
-    github: "https://github.com/gironajs",
+    twitter: '',
+    discord: 'https://discord.gg/eBkQTD2Pax',
+    github: 'https://github.com/gironajs',
   },
-}
+};
