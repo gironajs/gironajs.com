@@ -1,0 +1,47 @@
+.locale-switcher {
+  .locale-switcher-anchor {
+    img {
+      transition: transform ease-in-out 0.2s;
+      transition-delay: 0.2s;
+    }
+
+    &:hover img,
+    &.opened img {
+      transform: scale(0);
+      transition-delay: 0s;
+    }
+
+    .locale-switcher-anchor-arrow {
+      transform: scale(0);
+      transition: transform ease-in-out 0.2s, color ease-in-out 0.2s,
+        background-color ease-in-out 0.2s;
+      transition-delay: 0s;
+      text-align: center;
+      background-color: white;
+      color: black;
+    }
+
+    &:hover .locale-switcher-anchor-arrow,
+    &.opened .locale-switcher-anchor-arrow {
+      transform: scale(1);
+      transition-delay: 0.2s;
+    }
+
+    &.opened .locale-switcher-anchor-arrow {
+      background-color: rgb(239, 68, 68);
+      transition-delay: 0s;
+      color: white;
+    }
+  }
+
+  ul {
+    opacity: 0;
+    transition: opacity ease-in-out 0.2s;
+    pointer-events: none;
+
+    &.opened {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}

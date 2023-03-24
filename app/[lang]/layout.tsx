@@ -40,11 +40,12 @@ export default async function Root({
     <html lang={params.lang}>
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <title>Girona JS</title>
       </head>
 
       <body>
         <div className="flex min-h-screen flex-col">
-          <header className="sticky top-0 z-40 bg-slate-50 border-b border-b-slate-200">
+          <header className="invisible h-0 sticky top-0 z-40 bg-slate-50 border-b border-b-slate-200">
             <div className="container flex h-16 items-center justify-between py-4">
               <NavBar items={navItems} />
             </div>
