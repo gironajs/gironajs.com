@@ -4,6 +4,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import clsx from 'clsx';
 
 import './locale-switcher.scss';
 
@@ -34,9 +35,10 @@ const LocaleSwitcher = ({ locale }: Props) => {
     <div className="locale-switcher absolute right-0 top-0 z-20">
       <div className="flex gap-4 flex flex-col items-end p-4">
         <div
-          className={`locale-switcher-anchor relative cursor-pointer rounded-full border border-neutral-800 overflow-hidden transition-transform hover:scale-110 ${
-            isOpen ? 'opened' : ''
-          }`}
+          className={clsx(
+            'locale-switcher-anchor relative cursor-pointer rounded-full border border-neutral-800 overflow-hidden transition-transform hover:scale-110',
+            isOpen && 'opened'
+          )}
           onClick={() => setIsOpen((o) => !o)}
           style={{ width: 24, height: 24 }}
         >
@@ -55,9 +57,10 @@ const LocaleSwitcher = ({ locale }: Props) => {
       </div>
 
       <ul
-        className={`mt-[-8px] pr-4 flex gap-1 flex-col items-end ${
-          isOpen ? 'opened' : ''
-        }`}
+        className={clsx(
+          'mt-[-8px] pr-4 flex gap-1 flex-col items-end',
+          isOpen && 'opened'
+        )}
       >
         {i18n.locales.map((locale) => {
           return (
