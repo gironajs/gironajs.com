@@ -26,7 +26,10 @@ const Intro = ({ dictionary }: Props) => {
             dangerouslySetInnerHTML={{ __html: dictionary.home.subtitle }}
           />
           <div className="max-w-md mx-auto sm:flex sm:justify-center">
-            <div className="shadow border border-red-500 rounded-md">
+            <div
+              id="discord-button"
+              className="shadow border border-red-500 rounded-md"
+            >
               <a
                 href={siteConfig.links.discord}
                 className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-red-500 border border-transparent leading-6 rounded-md hover:bg-red-400 focus:outline-none focus:shadow-outline-indigo transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10"
