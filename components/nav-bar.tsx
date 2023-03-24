@@ -7,7 +7,6 @@ import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { MobileNav } from './mobile-nav';
 import { NavItem } from '@/types';
-import LocaleSwitcher from './locale-switcher';
 
 interface MainNavProps {
   items: NavItem[];
@@ -41,8 +40,6 @@ export function NavBar({ items }: MainNavProps) {
           ))}
         </nav>
       ) : null}
-
-      <LocaleSwitcher />
 
       <button
         className="flex items-center space-x-2 md:hidden"
