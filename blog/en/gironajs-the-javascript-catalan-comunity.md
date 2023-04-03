@@ -1,0 +1,40 @@
+---
+title: GironaJS La comunitat catalana de JavaScript
+description: Presentació del projecte GironaJS, la primera comunitat catalana de JavaScript
+image: /assets/blog/gironajs-la-comunitat-catalana-de-javascript/cover-image.jpg
+published: true
+publishedDate: 2023-04-04
+author: llorenspujol
+seo:
+  metatitle: >
+    GironaJS La comunitat catalana de JavaScript
+  metadescription: >
+    Presentació del projecte GironaJS, la primera comunitat catalana de JavaScript
+  image: >
+    /assets/blog/gironajs-la-comunitat-catalana-de-javascript/cover-image.jpg
+---
+
+<div class="gjs-aspect-ratio-786-500" style="outline: 1px solid #d9d9d9; border-radius: 4px;">
+    <img src="/assets/blog/gironajs-la-comunitat-catalana-de-javascript/cover-image.jpg" alt="Presentació del projecte GironaJS, la primera comunitat catalana de JavaScript" style="max-width: 100%; margin: auto;"/>
+</div>
+
+GironaJS és una comunitat de desenvolupadors de JavaScript de parla catalana que té com a objectiu compartir coneixement i experiències, així com crear un espai de trobada i networking entre desenvolupadors. Tot això a través de xerrades mensuals, blogs en català i un canal de Discord dedicat. La comunitat de GironaJS busca ser el principal portal de JavaScript en català de tota Catalunya.
+
+<div style="padding: 24px 0 10px 0; margin: 32px 0 14px 0; display: flex; justify-content: center;">
+  <span style="width: 3px; height: 3px; background-color: rgba(0, 0, 0, 0.87); margin-right: 20px; border-radius: 50%;"></span>
+    <span style="width: 3px; height: 3px; background-color: rgba(0, 0, 0, 0.87); margin-right: 20px; border-radius: 50%;"></span>
+      <span style="width: 3px; height: 3px; background-color: rgba(0, 0, 0, 0.87); border-radius: 50%;"></span>
+</div>
+
+## Què fem?
+
+## Objectius principals
+
+## La comunitat
+
+## Roadmap
+
+- Fer creixer la comunitat JavaScript de parla catalana.
+- Potenciar el contingut en català de tot l'ecosistema JavaScript.
+- Millorar la web de GironaJS, la qual tothom pot participar ja que és [open-source](https://github.com/gironajs/gironajs.com)
+- Començar a fer xerrades sobre l'ecosistema JavaScript a Girona.

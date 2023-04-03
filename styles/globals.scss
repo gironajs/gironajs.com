@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .gjs-text-hover-link {
+    @apply transition-all underline decoration-transparent hover:text-red-500 hover:decoration-current;
+  }
+}
+
+.gjs-aspect-ratio-786-500 {
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 63%;
+  height: 0;
+  position: relative;
+
+  img {
+    margin: 0 !important;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.gjs-gradient-background {
+  filter: blur(118px);
+  background: linear-gradient(
+    106.89deg,
+    rgba(192, 132, 252, 0.11) 15.73%,
+    rgb(199 233 14 / 41%) 15.74%,
+    rgb(249 162 121 / 26%) 56.49%,
+    rgb(229 70 70 / 40%) 115.91%
+  );
+}
+
+.gjs-blog-container {
+  box-sizing: content-box;
+  width: calc(100% - 24px);
+  // box-sizing: border-box;
+  padding-right: 12px;
+  padding-left: 12px;
+  margin-right: auto;
+  margin-left: auto;
+
+  @media (min-width: 576px) {
+    max-width: 576px;
+  }
+  @media (min-width: 786px) {
+    // max-width: 720px;
+    max-width: 786px;
+  }
+}

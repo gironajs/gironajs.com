@@ -14,11 +14,17 @@
     "@formatjs/intl-localematcher": "0.2.32",
     "clsx": "^1.2.1",
     "negotiator": "0.6.3",
-    "next": "13.2.1",
+    "next": "^13.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "server-only": "0.0.1",
-    "tailwind-merge": "^1.10.0"
+    "tailwind-merge": "^1.10.0",
+    "gray-matter": "~4.0.2",
+    "rehype-autolink-headings": "^6.1.1",
+    "rehype-slug": "^5.1.0",
+    "rehype-stringify": "^9.0.3",
+    "remark": "~14.0.2",
+    "remark-rehype": "^10.1.0"
   },
   "devDependencies": {
     "@types/negotiator": "0.6.1",
@@ -28,7 +34,7 @@
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.35.0",
-    "eslint-config-next": "13.2.1",
+    "eslint-config-next": "^13.2.4",
     "fox-awesome-cli": "^1.2.0",
     "husky": "^7.0.0",
     "lint-staged": "^13.1.2",

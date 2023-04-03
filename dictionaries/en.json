@@ -20,5 +20,8 @@
     "subtitle": "GironaJS is a Catalan-speaking JavaScript community born in Girona. <br/>If you speak Catalan and are interested in JavaScript, join our community. To join enter the discord and present yourself!",
     "members": "Members",
     "sponsors": "Sponsors"
+  },
+  "blog": {
+    "sharePost": "Did you like the post? Please share it"
   }
 }

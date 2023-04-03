@@ -20,5 +20,8 @@
     "subtitle": "GironaJS és una comunitat JavaScript de parla catalana nascuda a Girona. <br/>Si parles català i estàs interessat en JavaScript uneix-te a la nostra comunitat. <br/>Entra ja al discord i presenta't!",
     "members": "Membres",
     "sponsors": "Patrocinadors"
+  },
+  "blog": {
+    "sharePost": "T'ha agradat el post? Si us plau, comparteix-lo"
   }
 }
