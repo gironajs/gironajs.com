@@ -4,9 +4,15 @@ import { members } from '@/config/members';
 import { LangDictionary } from '@/get-dictionary';
 import { formatDatePretty } from '@/lib/date';
 import { BlogPostItem } from '@/types/blog';
+import { MDXRemote } from 'next-mdx-remote';
 import Image from 'next/image';
 import SocialShareButtons from '../social-share-buttons/social-share-buttons';
+import * as mdxComponents from '@/components/mdx';
+import { CH } from '@code-hike/mdx/components';
+
 import './blog.scss'; // TODO: This styles will be global even only imported here. We should
+
+const components = { ...mdxComponents, CH };
 
 type Props = {
   blogPostItem: BlogPostItem;
@@ -61,10 +67,9 @@ export function Blog({ blogPostItem, dictionary }: Props) {
           title={blogPostItem.data.title}
         ></SocialShareButtons>
       </div>
-      <div
-        className="gjs-blog-content"
-        dangerouslySetInnerHTML={{ __html: blogPostItem.content }}
-      />
+      <div className="gjs-blog-content">
+        <MDXRemote {...blogPostItem.content} components={components} />
+      </div>
 
       <hr></hr>
       <div className="flex items-center justify-between my-4">

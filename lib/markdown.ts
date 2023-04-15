@@ -1,15 +1,18 @@
-import { remark } from 'remark';
+import { remarkCodeHike } from '@code-hike/mdx';
 import rehypeSlug from 'rehype-slug';
-import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
+import { serialize } from 'next-mdx-remote/serialize';
+import theme from 'shiki/themes/dracula.json';
 
 export default async function markdownToHtml(markdown: string) {
-  const result = await remark()
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeSlug)
-    // .use(rehypeAutolinkHeadings)
-    .use(rehypeStringify, { allowDangerousHtml: true })
-    .process(markdown);
+  const result = await serialize(markdown, {
+    parseFrontmatter: false,
+    mdxOptions: {
+      remarkPlugins: [[remarkCodeHike, { autoImport: false, theme }]],
+      useDynamicImport: true,
+      rehypePlugins: [rehypeSlug, rehypeStringify],
+    },
+  });
 
-  return result.toString();
+  return result;
 }
