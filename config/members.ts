@@ -16,4 +16,10 @@ export const members: Dictionary<Member> = {
     twitter: 'https://twitter.com/llorenspujol',
     github: 'https://github.com/llorenspujol',
   },
+  eudago: {
+    username: 'eudago',
+    name: 'Eudald Dachs',
+    img: '/assets/images/members/eudago.jpg',
+    github: 'https://github.com/eudago',
+  },
 };

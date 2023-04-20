@@ -19,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const postFilePath = path.join(
     getBlogPath(params.lang),
-    `${params?.slug}.md`
+    `${params?.slug}.mdx`
   );
   const source = fs.readFileSync(postFilePath);
 
@@ -30,7 +30,7 @@ export async function generateMetadata({
   const blogPostItem: BlogPostItem = {
     content: contentHtml,
     data: data as BlogPostItemData,
-    filePath: `${params?.slug}.md`,
+    filePath: `${params?.slug}.mdx`,
     urlPath: `/blog/${params?.slug}`,
   };
 
@@ -65,7 +65,10 @@ export default async function Page({
 }: {
   params: { slug: string; lang: Locale };
 }) {
-  const postFilePath = path.join(getBlogPath(params.lang), `${params.slug}.md`);
+  const postFilePath = path.join(
+    getBlogPath(params.lang),
+    `${params.slug}.mdx`
+  );
   const source = fs.readFileSync(postFilePath);
 
   const { content, data } = matter(source);
@@ -75,7 +78,7 @@ export default async function Page({
   const blogPostItem: BlogPostItem = {
     content: contentHtml,
     data: data as BlogPostItemData,
-    filePath: `${params.slug}.md`,
+    filePath: `${params.slug}.mdx`,
     urlPath: `${params.lang}/blog/${params.slug}`,
   };
 
