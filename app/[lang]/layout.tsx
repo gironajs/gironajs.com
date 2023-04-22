@@ -2,7 +2,8 @@ import { Header } from '@/components/header';
 import { JetBrains_Mono } from 'next/font/google';
 
 import { i18n, Locale } from '../../i18n-config';
-import '../../styles/globals.scss';
+import '@/styles/globals.scss';
+import '@/styles/prism-themes/prism-material-oceanic.css';
 
 const jetbrainsFont = JetBrains_Mono({
   subsets: ['latin'],

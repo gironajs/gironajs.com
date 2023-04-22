@@ -11,11 +11,11 @@ export default function SocialShareButtons({
   url: string;
   title: string;
 }) {
-  const facebookUrl = 'https://facebook.com/sharer/sharer.php?u=' + url;
+  const facebookUrl = `https://facebook.com/sharer/sharer.php?u=${url}`;
   const twitterUrl = `https://twitter.com/intent/tweet/?text=${title}&url=${url}`;
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
   const redditUrl = `https://reddit.com/submit/?url=${url}&resubmit=true&title=${title}`;
-  const whatsappUrl = `whatsapp://send?text=${title}${url}`;
+  const whatsappUrl = `whatsapp://send?text=${title} ${url}`;
 
   return (
     <div className="social-share-buttons">

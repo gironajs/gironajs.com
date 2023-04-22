@@ -5,13 +5,10 @@ import { BlogPostItem } from '@/types/blog';
 import { MDXRemote } from 'next-mdx-remote';
 import SocialShareButtons from '../social-share-buttons/social-share-buttons';
 import * as mdxComponents from '@/components/mdx';
-import { CH } from '@code-hike/mdx/components';
 
 import { Hero } from './sections/hero';
 
 import './blog.scss'; // TODO: This styles will be global even only imported here. We should
-
-const components = { ...mdxComponents, CH };
 
 type Props = {
   blogPostItem: BlogPostItem;
@@ -27,7 +24,7 @@ export function Blog({ blogPostItem, dictionary }: Props) {
       <Hero {...blogPostItem.data} />
       <div className="gjs-blog-container pt-4 relative">
         <div className="gjs-blog-content">
-          <MDXRemote {...blogPostItem.content} components={components} />
+          <MDXRemote {...blogPostItem.content} components={mdxComponents} />
         </div>
 
         <hr></hr>
