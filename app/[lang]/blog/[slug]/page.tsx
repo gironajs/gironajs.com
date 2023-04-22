@@ -10,7 +10,6 @@ import { removeFilePathExtension } from '@/lib/utils';
 import { Blog } from '@/components/blog/blog';
 import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
-import ArrowRightIcon from '@/components/icons/arrow-right';
 
 export async function generateMetadata({
   params,
@@ -86,18 +85,7 @@ export default async function Page({
 
   return (
     <div className="relative">
-      <div className="gjs-blog-container pt-4 relative">
-        <Blog blogPostItem={blogPostItem} dictionary={dictionary}></Blog>
-        <div className="flex items-center py-4">
-          <ArrowRightIcon transform="rotate(180)"></ArrowRightIcon>
-          <a
-            href={`/${params.lang}/blog`}
-            className="gjs-text-hover-link text-xl"
-          >
-            Blog
-          </a>
-        </div>
-      </div>
+      <Blog blogPostItem={blogPostItem} dictionary={dictionary}></Blog>
     </div>
   );
 }

@@ -9,7 +9,11 @@ module.exports = {
         '2xl': '1440px',
       },
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        jetbrains: ['var(--font-jetbrains-mono)'],
+      },
+    },
   },
   plugins: [],
 };

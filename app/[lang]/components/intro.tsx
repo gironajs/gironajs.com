@@ -50,7 +50,7 @@ const Intro = ({ dictionary }: Props) => {
           </div>
         </div>
       </div>
-      <div className="absolute w-full h-full top-0 z-0">
+      <div className="absolute w-full h-full top-0 z-0 bg-slate-100">
         {Array.from(Array(6).keys()).map((i) => (
           <div key={i} className="cube" />
         ))}
