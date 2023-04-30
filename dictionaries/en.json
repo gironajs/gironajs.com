@@ -18,7 +18,11 @@
   "home": {
     "title": "The JavaScript Community of Girona",
     "subtitle": "GironaJS is a Catalan-speaking JavaScript community born in Girona. <br/>If you speak Catalan and are interested in JavaScript, join our community. To join enter the discord and present yourself!",
-    "members": "Members",
-    "sponsors": "Sponsors"
+    "sponsors": "Sponsors",
+    "members": {
+      "title_1": "Welcome the",
+      "title_2": "community",
+      "subtitle": "Meet the talented people in Girona. We are more than you think!"
+    }
   }
 }
