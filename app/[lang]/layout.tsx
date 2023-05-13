@@ -1,8 +1,8 @@
 import { NavBar } from '@/components/nav-bar';
-import { getDictionary, LangDictionary } from '../../get-dictionary';
-import { i18n, Locale } from '../../i18n-config';
+import { getDictionary, LangDictionary } from '@/get-dictionary';
+import { i18n, Locale } from '@/i18n-config';
 import '../../styles/globals.scss';
-import { NavItem } from '../../types';
+import { NavItem } from '@/types';
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
@@ -22,6 +22,11 @@ const getNavItems = (dictionary: LangDictionary['nav-bar']): NavItem[] => [
     title: dictionary.about ?? 'About',
     href: '/about',
     disabled: true,
+  },
+  {
+    title: dictionary.map ?? 'Map',
+    href: '/map',
+    disabled: false,
   },
 ];
 
