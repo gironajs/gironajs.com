@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import ArrowRightIcon from '@/components/icons/arrow-right';
-import { members } from '@/config/members';
+import { membersDictionary } from '@/config/member';
 import { formatDatePretty } from '@/lib/date';
 import { BlogPostItemData } from '@/types/blog';
 
@@ -10,7 +10,7 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
   const { title, author: username, publishedDate, description, image } = props;
 
   // TODO: We may want to resolve the author on a server component to not ship all the list of members to the client.
-  const author = members[username];
+  const author = membersDictionary[username];
 
   return (
     <>
@@ -37,7 +37,7 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
             <Image
               className="w-[48px] h-[48px] rounded-full"
               alt="twitter-profile"
-              src={author.img}
+              src={`https://github.com/${author.github}.png`}
               width={48}
               height={48}
             />
@@ -51,8 +51,8 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
           className="rounded-lg shadow-lg"
           alt="post-image"
           src={image}
-          width={600}
-          height={300}
+          width={786}
+          height={500}
         />
       </div>
     </>
