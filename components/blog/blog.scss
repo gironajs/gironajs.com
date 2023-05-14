@@ -1,5 +1,6 @@
 .gjs-blog-content {
-  a:not(.tag) {
+  a {
+    color: red;
     text-decoration: none;
 
     &:hover {
@@ -34,6 +35,12 @@
     margin-top: 64px;
   }
 
+  h4 {
+    font-size: 24px;
+    line-height: 24px;
+    margin-top: 32px;
+  }
+
   p,
   ul {
     margin-top: 16px;
@@ -43,6 +50,26 @@
 
   p {
     margin-bottom: 12px;
+  }
+
+  blockquote {
+    box-sizing: border-box;
+    position: relative;
+    max-width: 85%;
+    margin: 20px 0 24px 5%;
+    padding: 18px 30px;
+    border-left: 4px solid theme('colors.red.500');
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+    background-color: theme('colors.slate.100');
+
+    blockquote {
+      background-color: theme('colors.slate.100');
+    }
+
+    p {
+      margin: 8px 0;
+    }
   }
 
   @media all and (max-width: 785px) {

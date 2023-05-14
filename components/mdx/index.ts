@@ -1,3 +1,3 @@
 import Counter from './counter';
-
-export { Counter };
+import { Separator } from './separator';
+export { Counter, Separator };

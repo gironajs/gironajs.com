@@ -51,8 +51,8 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
           className="rounded-lg shadow-lg"
           alt="post-image"
           src={image}
-          width={600}
-          height={300}
+          width={786}
+          height={500}
         />
       </div>
     </>
