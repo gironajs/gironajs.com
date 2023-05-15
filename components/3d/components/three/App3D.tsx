@@ -29,7 +29,12 @@ export default function App3D({ isDebug = true, dictionary }: Props) {
 
       <Canvas flat shadows>
         <Suspense
-          fallback={<LoadingScreen onUnmountCb={onLoadingScreenCompleted} />}
+          fallback={
+            <LoadingScreen
+              onUnmountCb={onLoadingScreenCompleted}
+              dictionary={dictionary}
+            />
+          }
         >
           {isDebug && <Perf position="top-left" />}
           <Experience />

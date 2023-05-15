@@ -1,12 +1,14 @@
 import { Html, useProgress } from '@react-three/drei';
 import { useEffect, useState } from 'react';
 import ProgressBar from '@ramonak/react-progress-bar';
+import { LangDictionary } from '@/get-dictionary';
 
 type Props = {
   onUnmountCb: () => void;
+  dictionary: LangDictionary['map'];
 };
 
-export default function LoadingScreen({ onUnmountCb }: Props) {
+export default function LoadingScreen({ onUnmountCb, dictionary }: Props) {
   //Wrapper hook of THREE.DefaultLoadingManager progress status
   const progress = useProgress((state) => state.progress);
 
@@ -31,10 +33,11 @@ export default function LoadingScreen({ onUnmountCb }: Props) {
 
   return (
     <Html center className="map__loading">
-      <h1 className="map__loading__title">
-        <span>GironaJS</span> La Comunitat JavaScript de Girona
-      </h1>
-      <h2 className="map__loading__subtitle">- Mapa 3D de la ciutat -</h2>
+      <h1
+        className="map__loading__title"
+        dangerouslySetInnerHTML={{ __html: dictionary.loading_title_html }}
+      ></h1>
+      <h2 className="map__loading__subtitle">{dictionary.loading_subtitle}</h2>
       <div className="map__loading__spinner">
         <div></div>
         <div></div>

@@ -24,6 +24,8 @@
   },
   "map": {
     "title": "GironaJS - 3D City Map",
+    "loading_title_html": "<span>GironaJS</span> The JavaScript Community of Girona",
+    "loading_subtitle": "- 3D City Map -",
     "cta_googlemaps": "Google Maps",
     "cta_website": "Website",
     "cta_wikipedia": "Wikipedia",
