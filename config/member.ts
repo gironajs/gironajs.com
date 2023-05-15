@@ -7,6 +7,14 @@ export type Member = {
   company?: string;
 };
 
-const members: Member[] = [];
+const members: Member[] = [
+  {
+    name: 'Sergio Gómez',
+    github: 'sergiogc9',
+    role: 'Senior Software Engineer',
+    company: 'Typeform',
+    linkedin: 'sergiogc9',
+  },
+];
 
 export { members };
