@@ -27,14 +27,14 @@ export default function Navbar({ dictionary }: Props) {
   }, []);
 
   return (
-    <div className="navbar">
+    <div className="map__navbar">
       {places.map((place, i) => {
         return (
           <div
             key={i}
             className={
-              'navbar__icon' +
-              (place.id == currentPlace.id ? ' navbar__icon--active' : '')
+              'map__navbar__icon' +
+              (place.id == currentPlace.id ? ' map__navbar__icon--active' : '')
             }
             onClick={() => setCurrentPlace(place)}
           >

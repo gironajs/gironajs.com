@@ -34,17 +34,17 @@ export default function LoadingScreen() {
   }, [progress, realProgress]);
 
   return (
-    <Html center className="loading">
-      <h1 className="loading__title">
+    <Html center className="map__loading">
+      <h1 className="map__loading__title">
         <span>GironaJS</span> La Comunitat JavaScript de Girona
       </h1>
-      <h2 className="loading__subtitle">- Mapa 3D de la ciutat -</h2>
-      <div className="loading__spinner">
+      <h2 className="map__loading__subtitle">- Mapa 3D de la ciutat -</h2>
+      <div className="map__loading__spinner">
         <div></div>
         <div></div>
       </div>
       <ProgressBar
-        className="loading__bar"
+        className="map__loading__bar"
         completed={Math.round(realProgress)}
         bgColor="#757575"
         height="30px"

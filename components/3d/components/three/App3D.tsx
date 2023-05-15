@@ -24,7 +24,7 @@ export default function App3D({ isDebug = true, dictionary }: Props) {
   });
 
   return (
-    <div className="root">
+    <div className="map">
       <Leva hidden={!isDebug} />
 
       <Canvas flat shadows>

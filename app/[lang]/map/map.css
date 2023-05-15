@@ -1,4 +1,4 @@
-.root {
+.map {
   position: fixed;
   top: 0;
   left: 0;
@@ -16,11 +16,11 @@ p {
   margin: 0;
 }
 
-.ui * {
+.map__ui * {
   pointer-events: all;
 }
 
-.ui__title {
+.map__ui__title {
   margin-bottom: auto;
   line-height: 2rem;
   font-weight: 300;
@@ -35,7 +35,7 @@ p {
   box-shadow: rgb(0 0 0 / 24%) 0 1px 4px 2px;
 }
 
-.ui__content {
+.map__ui__content {
   position: fixed;
   top: 0;
   left: 0;
@@ -51,7 +51,7 @@ p {
   z-index: 1000;
 }
 
-.navbar {
+.map__navbar {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -67,7 +67,7 @@ p {
   background: black;
 }
 
-.navbar__icon {
+.map__navbar__icon {
   font-size: 10px;
   height: 100%;
 
@@ -80,26 +80,26 @@ p {
   align-items: center;
 }
 
-.navbar__icon:hover {
+.map__navbar__icon:hover {
   cursor: pointer;
   background: rgb(38, 38, 38);
 }
 
-.navbar__icon:focus,
-.navbar__icon:active {
+.map__navbar__icon:focus,
+.map__navbar__icon:active {
   cursor: pointer;
   background: rgb(56, 56, 56);
 }
 
-.navbar__icon--active {
+.map__navbar__icon--active {
   color: rgb(239, 68, 68);
 }
 
-.navbar__icon > span {
+.map__navbar__icon > span {
   font-size: 20px;
 }
 
-.card {
+.map__card {
   display: flex;
   flex-direction: column;
 
@@ -115,12 +115,12 @@ p {
   position: relative;
 }
 
-.card.card--fullscreen {
+.map__card.map__card--fullscreen {
   max-height: 90%;
   transition: max-height 0.5s linear 0s;
 }
 
-.card__close {
+.map__card__close {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -133,29 +133,29 @@ p {
   align-content: center;
 }
 
-.card__close:hover {
+.map__card__close:hover {
   cursor: pointer;
   background: #dedede;
 }
 
-.card__close:active .card__close:focus {
+.map__card__close:active .map__card__close:focus {
   cursor: pointer;
   background: #cbcbcb;
 }
 
-.card__scrollwrapper {
+.map__card__scrollwrapper {
   overflow-y: scroll;
   padding: 0 16px;
 }
 
-.card__title.card__title--scrolled {
+.map__card__title.map__card__title--scrolled {
   font-size: 16px;
   border-bottom: 1px solid #d4d4d4;
   padding-bottom: 8px;
   margin: 0;
 }
 
-.card__notch {
+.map__card__notch {
   position: relative;
   width: 40px;
   height: 5px;
@@ -170,11 +170,11 @@ p {
   touch-action: none; /* this allow the event onpointermove to work in mobile */
 }
 
-.card__notch:hover {
+.map__card__notch:hover {
   cursor: grab;
 }
 
-.card__notch__wrapper {
+.map__card__notch__wrapper {
   position: absolute;
 
   width: 120px;
@@ -182,7 +182,7 @@ p {
   left: -40px;
 }
 
-.card__title {
+.map__card__title {
   font-size: 24px;
   font-weight: 700;
 
@@ -191,25 +191,25 @@ p {
   margin: 0 0 4px 0;
 }
 
-.card__subtitle {
+.map__card__subtitle {
   font-size: 12px;
 
   margin: 0 0 12px;
 }
 
-.card__separator {
+.map__card__separator {
   margin: 8px 0;
   border: 1px solid lightgrey;
 }
 
-.card__actions {
+.map__card__actions {
   display: flex;
   flex-direction: row;
   flex: 1 1 0;
   gap: 8px;
 }
 
-.card__actions__button {
+.map__card__actions__button {
   background: #dadada;
   width: 100%;
 
@@ -227,15 +227,15 @@ p {
   text-decoration: none;
 }
 
-.card__actions__button:hover {
+.map__card__actions__button:hover {
   background: #ececec;
 }
 
-.card__actions__button > span {
+.map__card__actions__button > span {
   font-size: 20px;
 }
 
-.card__images {
+.map__card__images {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -243,7 +243,7 @@ p {
   gap: 8px;
 }
 
-.card__images > img {
+.map__card__images > img {
   border-radius: 8px;
   flex: 1;
   flex-basis: 0;
@@ -252,12 +252,12 @@ p {
   object-fit: cover;
 }
 
-.card > hr {
+.map__card > hr {
   width: 100%;
   border-top: 1px solid #bbb;
 }
 
-.card__description {
+.map__card__description {
   margin-top: 8px;
   font-size: 15px;
   background: white;
@@ -266,12 +266,12 @@ p {
   margin-bottom: 12px;
 }
 
-.card__description > p {
+.map__card__description > p {
   display: inline-block;
   margin-bottom: 15px;
 }
 
-.map-pin {
+.map__pin {
   /* Set the marker size here */
   width: 2rem;
   height: 2rem;
@@ -291,23 +291,23 @@ p {
   justify-content: center;
 }
 
-.map-pin:hover {
+.map__pin:hover {
   cursor: pointer;
   background: rgba(49, 49, 49, 0.8);
 }
 
-.map-pin:focus .map-pin:active {
+.map__pin:focus .map__pin:active {
   cursor: pointer;
   background: rgba(72, 72, 72, 0.8);
   border: 1px solid #494949;
 }
 
-.map-pin > svg {
+.map__pin > svg {
   color: white;
   transform: rotate(-45deg);
 }
 
-.loading {
+.map__loading {
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -322,7 +322,7 @@ p {
   color: rgb(17 24 39/1);
 }
 
-.loading__title {
+.map__loading__title {
   letter-spacing: -0.025em;
   line-height: 2.5rem;
   font-weight: 800;
@@ -332,11 +332,11 @@ p {
   text-align: center;
 }
 
-.loading__title > span {
+.map__loading__title > span {
   color: rgb(239 68 68/1);
 }
 
-.loading__subtitle {
+.map__loading__subtitle {
   color: rgb(239 68 68/1);
 
   text-align: center;
@@ -344,7 +344,7 @@ p {
   margin-right: 8px;
 }
 
-.loading__spinner {
+.map__loading__spinner {
   display: inline-block;
   position: relative;
   width: 40px;
@@ -352,19 +352,19 @@ p {
   margin-bottom: 24px;
 }
 
-.loading__spinner div {
+.map__loading__spinner div {
   position: absolute;
   border: 4px solid rgb(239 68 68/1);
   opacity: 1;
   border-radius: 50%;
-  animation: loading__spinner 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  animation: map__loading__spinner 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 
-.loading__spinner div:nth-child(2) {
+.map__loading__spinner div:nth-child(2) {
   animation-delay: -0.5s;
 }
 
-@keyframes loading__spinner {
+@keyframes map__loading__spinner {
   0% {
     top: 18px;
     left: 18px;
@@ -395,18 +395,18 @@ p {
   }
 }
 
-.loading__bar {
+.map__loading__bar {
   width: 100%;
   max-width: 50%;
 }
 
 /* MEDIA QUERY */
 @media (min-width: 425px) {
-  .navbar__icon {
+  .map__navbar__icon {
     font-size: 12px;
   }
 
-  .card__images {
+  .map__card__images {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -414,7 +414,7 @@ p {
     gap: 8px;
   }
 
-  .card__images > img {
+  .map__card__images > img {
     width: 0;
   }
 }

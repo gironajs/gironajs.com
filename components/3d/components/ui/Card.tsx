@@ -91,28 +91,32 @@ export default function Card({ dictionary }: Props) {
   return (
     <div
       ref={refCard}
-      className={'card' + (isFullscreen ? ' card--fullscreen' : '')}
+      className={'map__card' + (isFullscreen ? ' map__card--fullscreen' : '')}
       style={{ maxHeight: maxHeight }}
     >
-      <div className="card__notch">
+      <div className="map__card__notch">
         <div
-          className="card__notch__wrapper"
+          className="map__card__notch__wrapper"
           onPointerDown={handleOnPointerDown}
           onPointerUp={handleOnPointerUp}
         ></div>
       </div>
-      <p className={'card__title' + (isScroll ? ' card__title--scrolled' : '')}>
+      <p
+        className={
+          'map__card__title' + (isScroll ? ' map__card__title--scrolled' : '')
+        }
+      >
         {getDescendantProp(dictionary, currentPlace.titleI18nKey) as string}
       </p>
-      <div className="card__close" onClick={toggleCard}>
+      <div className="map__card__close" onClick={toggleCard}>
         {isFullscreen ? <MdClose /> : <MdFullscreen />}
       </div>
       <div
         ref={refScrollWrapper}
-        className="card__scrollwrapper"
+        className="map__card__scrollwrapper"
         onScroll={handleScroll}
       >
-        <p className="card__subtitle">
+        <p className="map__card__subtitle">
           {
             getDescendantProp(
               dictionary,
@@ -120,7 +124,7 @@ export default function Card({ dictionary }: Props) {
             ) as string
           }
         </p>
-        <div className="card__images">
+        <div className="map__card__images">
           {currentPlace.images.map((imageUrl, i) => {
             //CSS BEM, I can't insert here a static width-height
             // eslint-disable-next-line @next/next/no-img-element
@@ -128,12 +132,12 @@ export default function Card({ dictionary }: Props) {
           })}
         </div>
 
-        <hr className="card__separator" />
-        <div className="card__actions">
+        <hr className="map__card__separator" />
+        <div className="map__card__actions">
           {currentPlace.googleMapsUrl && (
             <a
               href={currentPlace.googleMapsUrl}
-              className="card__actions__button"
+              className="map__card__actions__button"
               target="_blank"
             >
               <span>
@@ -145,7 +149,7 @@ export default function Card({ dictionary }: Props) {
           {currentPlace.websiteUrl && (
             <a
               href={currentPlace.websiteUrl}
-              className="card__actions__button"
+              className="map__card__actions__button"
               target="_blank"
             >
               <span>
@@ -157,7 +161,7 @@ export default function Card({ dictionary }: Props) {
           {currentPlace.wikiUrl && (
             <a
               href={currentPlace.wikiUrl}
-              className="card__actions__button"
+              className="map__card__actions__button"
               target="_blank"
             >
               <span>
@@ -168,7 +172,7 @@ export default function Card({ dictionary }: Props) {
           )}
         </div>
         <div
-          className="card__description"
+          className="map__card__description"
           dangerouslySetInnerHTML={{
             __html: getDescendantProp(
               dictionary,

@@ -26,7 +26,7 @@ export default function MapPins() {
         return (
           <Billboard key={i} follow={true} position={place.billboardPosition}>
             <Html center={true} zIndexRange={[100, 0]}>
-              <span className="map-pin" onClick={() => setCurrentPlace(place)}>
+              <span className="map__pin" onClick={() => setCurrentPlace(place)}>
                 <place.icon />
               </span>
             </Html>
