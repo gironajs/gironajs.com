@@ -1,9 +1,12 @@
 import { Html, useProgress } from '@react-three/drei';
-import useGlobalStore from '../../stores/useGlobalStore';
 import { useEffect, useState } from 'react';
 import ProgressBar from '@ramonak/react-progress-bar';
 
-export default function LoadingScreen() {
+type Props = {
+  onUnmountCb: () => void;
+};
+
+export default function LoadingScreen({ onUnmountCb }: Props) {
   //Wrapper hook of THREE.DefaultLoadingManager progress status
   const progress = useProgress((state) => state.progress);
 
@@ -11,20 +14,13 @@ export default function LoadingScreen() {
   //useProgress can give smaller numbers than current progress due to bug, we will only fetch when it increases (see useEffect)
   const [realProgress, setRealProgress] = useState(15); //UX: its much better if the user don't see a 0%
 
-  // - STATE GLOBAL ZUSTAND
-  const { set3DLoaded } = useGlobalStore((state) => {
-    return {
-      set3DLoaded: state.set3DLoaded,
-    };
-  });
-
   // - EFFECT
   useEffect(() => {
     //unmount - LoadingScreen is unmounted when the linked <Suspense fallback> is finished
     return () => {
-      set3DLoaded(true);
+      onUnmountCb();
     };
-  }, [set3DLoaded]);
+  }, [onUnmountCb]);
 
   useEffect(() => {
     if (progress > realProgress) {
