@@ -18,7 +18,11 @@
   "home": {
     "title": "La Comunitat JavaScript de Girona",
     "subtitle": "GironaJS és una comunitat JavaScript de parla catalana nascuda a Girona. <br/>Si parles català i estàs interessat en JavaScript uneix-te a la nostra comunitat. <br/>Entra ja al discord i presenta't!",
-    "members": "Membres",
+    "members": {
+      "title_1": "Coneix la",
+      "title_2": "comunitat",
+      "subtitle": "Descobreix la talentosa gent que existeix a Girona. Som molts més dels què creus!"
+    },
     "sponsors": "Patrocinadors"
   },
   "blog": {
