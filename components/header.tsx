@@ -22,6 +22,9 @@ const Header = ({ lang }: Props) => {
           <Link href="/blog" className="items-center space-x-2 flex">
             <span className="font-bold text-lg hover:text-red-500">Blog</span>
           </Link>
+          <Link href="/map" className="items-center space-x-2 flex">
+            <span className="font-bold text-lg hover:text-red-500">Map</span>
+          </Link>
         </div>
         <LocaleSwitcher locale={lang} />
       </div>
