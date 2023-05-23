@@ -1,3 +1,19 @@
+-- THIS PROJECT CONTAINS (2) TWO LICENSES --
+
+1. You may -- at your option -- use, copy, modify and redistribute all 3d models, related textures
+   and blender files included in this distribution under the directoty subtrees named `/public/assets/3d` and
+   `/blender` according to the terms and conditions of the **Attribution-NonCommercial 4.0
+   International (CC BY-NC 4.0) International License**.
+   See the file `LICENSE-CC-BY-NC.txt` in any of those folders for the full conditions of the license.
+
+2. You may use, copy, modify and redistribute all other files included in this distribution,
+   individually or in aggregate, subject to the terms and conditions of the **MIT license**. Read the following section for
+   the full conditions of the **MIT LICENSE**.
+
+Summarizing, all the files on this repository are MIT LICENSE except 3d models, textures and blender files that are CC BY-NC 4.0.
+
+---
+
 MIT License
 
 Copyright (c) 2023 GironaJS

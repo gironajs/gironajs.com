@@ -25,7 +25,19 @@
     "rehype-slug": "^5.1.0",
     "rehype-stringify": "^9.0.3",
     "server-only": "0.0.1",
-    "tailwind-merge": "^1.10.0"
+    "tailwind-merge": "^1.10.0",
+    "@ramonak/react-progress-bar": "^5.0.3",
+    "@react-three/drei": "^9.50.3",
+    "@react-three/fiber": "^8.9.2",
+    "@tweenjs/tween.js": "^19.0.0",
+    "@types/three": "^0.148.0",
+    "lamina": "1.0.6",
+    "leva": "^0.9.34",
+    "r3f-perf": "^6.7.0",
+    "react-icons": "^4.8.0",
+    "three": "^0.148.0",
+    "vite-plugin-glsl": "^1.1.0",
+    "zustand": "^4.3.7"
   },
   "devDependencies": {
     "@types/negotiator": "0.6.1",

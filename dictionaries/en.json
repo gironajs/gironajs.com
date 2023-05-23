@@ -9,7 +9,8 @@
   "nav-bar": {
     "about": "About",
     "home": "Home",
-    "blog": "Blog"
+    "blog": "Blog",
+    "map": "Map"
   },
   "locale-switcher": {
     "catalan": "Catalan",
@@ -32,5 +33,51 @@
   },
   "blog": {
     "sharePost": "Did you like the post? Please share it"
+  },
+  "map": {
+    "title": "GironaJS - 3D City Map",
+    "loading_title_html": "<span>GironaJS</span> The JavaScript Community of Girona",
+    "loading_subtitle": "- 3D City Map -",
+    "cta_googlemaps": "Google Maps",
+    "cta_website": "Website",
+    "cta_wikipedia": "Wikipedia",
+    "places": {
+      "gironajs": {
+        "navbar_name": "GironaJs",
+        "title": "GironaJS",
+        "subtitle": "La Farinera Building",
+        "description_html": "<p>The GironaJs group, where its meetings are located in the Farinera, is a community of JavaScript developers who meet regularly to share knowledge and skills. The group hosts a variety of events, including talks, workshops, and hackathons, providing valuable opportunities for developers to network and collaborate.</p><p>The Farinera is a stunning building located in the heart of Girona that has been beautifully restored and repurposed. Originally a flour mill, the building now houses a variety of businesses and organizations, including the headquarters of the GironaJs group.</p><p>The building's distinctive noucentisme design make it a standout landmark in the city. Inside, the space has been transformed into a modern and vibrant hub for creativity and innovation.</p><p>In addition to the GironaJs group, the Farinera is also home to a number of other businesses and organizations, including tech companies, design studios, and cultural associations. The building's open and collaborative atmosphere makes it a popular destination for those looking to connect with like-minded professionals and creative thinkers.</p><p>Located in the heart of the city, the Farinera is conveniently situated near the train station, making it easily accessible to visitors and commuters alike.</p><p>Overall, the Farinera is a shining example of Girona's commitment to innovation and creativity, and a must-visit destination for anyone interested in the city's vibrant tech and startup scene.</p>"
+      },
+      "cathedral": {
+        "navbar_name": "Cathedral",
+        "title": "Cathedral of Saint Mary of Girona",
+        "subtitle": "Game of Thrones: Great Sept of Baelor",
+        "description_html": "<p>The Cathedral of Girona is a stunning example of Gothic architecture and one of the city's most iconic landmarks. Located in the heart of the old town, this majestic cathedral dates back to the 11th century and is a must-visit for anyone traveling to Girona.</p><p>As you approach the cathedral, you'll be struck by its towering facade and intricate stonework. Step inside, and you'll be greeted by a breathtaking interior that's sure to leave you in awe. The soaring nave is supported by a forest of pillars, and the stained glass windows cast a kaleidoscope of color onto the walls.</p><p>But what really sets the Cathedral of Girona apart is its interior. It boasts the widest Gothic nave in the world, spanning an incredible 23 meters across. The nave is flanked by towering columns and features stunning ribbed vaults that seem to reach up to the heavens. The cathedral's intricate carvings and sculptures are also worth admiring, from the ornate altarpiece to the intricate wood carvings that adorn the choir stalls.</p><p>One of the most interesting things about the Cathedral of Girona is its role in the HBO series Game of Thrones. The cathedral was used as a filming location for the sixth season of the show, standing in for the Great Sept of Baelor in King's Landing. Fans of the show will recognize the cathedral's iconic bell tower, which was featured prominently in several episodes.</p><p>But the Cathedral of Girona is more than just a filming location – it's also an important cultural and religious landmark. The cathedral has been the seat of the Bishop of Girona since the 10th century, and its stunning architecture and rich history draw visitors from around the world. Don't miss the opportunity to explore this iconic landmark and discover the secrets that lie within its walls.</p>"
+      },
+      "forest": {
+        "navbar_name": "Forest",
+        "title": "La Devesa",
+        "subtitle": "Park and Forest",
+        "description_html": "<p>La Devesa is the largest park in Girona, spanning over 40 hectares of land. The park is situated alongside the river Onyar, Ter and Guell and offers a peaceful natural escape from the bustling city life. Visitors can explore the park's numerous walking paths, cycle tracks, and picnic areas, or simply relax and soak up the tranquil atmosphere.</p> <p>The forest's history dates back the 19th century when it was transformed into a park and named \"La Devesa\". In the early 20th century, the park underwent major renovations and was expanded, adding new trees, walking paths, and a pond.</p><p>Today, La Devesa is an important green space for the city, hosting a variety of cultural events and festivals throughout the year. The park is also home to several sports facilities, including a football pitch, basketball court, and an outdoor gym. Whether you're looking to get active or simply enjoy the beauty of nature, La Devesa is a must-visit destination in Girona.</p>"
+      },
+      "events": {
+        "navbar_name": "Events",
+        "title": "Palau de Fires de Girona",
+        "subtitle": "Girona Exhibition and Events Center",
+        "description_html": "<p>The Palau de Fires de Girona, also known as the Girona Exhibition Center, is a modern and spacious exhibition center located in the heart of the city. The center hosts a wide range of events throughout the year, including trade shows, conferences, and cultural exhibitions.</p><p>The venue is known for its versatility and state-of-the-art facilities, making it a popular choice for large-scale events. The center spans over 9000 indoor square meters plus a lot more of outdoor space. Features a range of exhibition halls, meeting rooms, and other facilities to accommodate events of all sizes.</p><p>One of the highlights of the Palau de Fires de Girona is its central location, which makes it easily accessible from all parts of the city. The center is just a short walk from the main train and bus stations, and there are plenty of parking options nearby.</p><p>Visitors to the Palau de Fires de Girona can expect to be impressed by the modern design and spacious layout of the venue. With a packed schedule of events throughout the year, there is always something exciting happening at this dynamic and versatile exhibition center.</p>"
+      },
+      "auditorium": {
+        "navbar_name": "Auditorium",
+        "title": "Girona Auditorium",
+        "subtitle": "Music Events - Palau de Congressos de Girona",
+        "description_html": "<p>The music auditorium of Girona is a stunning modern venue located in the heart of the city. The auditorium boasts a sleek and contemporary design that contrast with the surrounding historic architecture.</p><p>The auditorium hosts a variety of musical events, from classical concerts to contemporary performances, making it a must-visit destination for music lovers. The state-of-the-art acoustics and comfortable seating make for an unforgettable listening experience.</p><p>The auditorium is also home to the Girona City Orchestra, which has gained a reputation as one of the most talented and dynamic orchestras in the region. With a packed schedule of performances throughout the year, visitors to the auditorium can enjoy a diverse range of musical styles and genres.</p><p>The Geriona Choir, one of the most renowned choirs in Catalonia, calls the Girona Auditorium its home. This choir has since become an important part of the city's cultural scene. The Geriona Choir has won numerous awards and has participated in international festivals and concerts, spreading the beauty of Catalan choral music to audiences around the world.</p><p>The Girona Auditorium regularly hosts performances by the Geriona Choir as well as other local and international artists. If you're a music lover, make sure to check out the auditorium's calendar of events and catch a show during your visit to Girona.</p><p>In addition to the impressive musical offerings, the auditorium also boasts a stunning location right on the banks of the River Onyar. Visitors can enjoy picturesque views of the city's historic bridges and buildings from the spacious outdoor terrace, which is a popular spot for pre-concert drinks and socializing.</p><p>Overall, the music auditorium of Girona is a must-see destination for music lovers and anyone looking to experience the city's vibrant cultural scene.</p>"
+      },
+      "station": {
+        "navbar_name": "Station",
+        "title": "Station",
+        "subtitle": "Train, AVE and Bus Station",
+        "description_html": "<p>If you're traveling to Girona, the Girona railway station should be your first stop. This modern and well-equipped station is conveniently located in the heart of the city, making it the perfect starting point for your Girona adventure.</p><p>One of the best things about the Girona railway station is its central location. From here, you can easily explore all that the city has to offer, from its historic sites to its vibrant nightlife. The station is just a short walk from the city center, and you'll find plenty of restaurants, cafes, and shops nearby.</p><p>But that's not all – the Girona railway station is also an important transportation hub for the region. In addition to serving local trains, the station is a stop for high-speed AVE trains, which connect Girona with other major cities in Spain, such as Madrid and Barcelona. This means that you can easily plan day trips to other destinations while using Girona as your home base.</p><p>Inside the station, you'll find all the amenities you need for a comfortable and hassle-free journey. There are plenty of ticket machines and information desks to help you plan your trip, and the station has free Wi-Fi so you can stay connected while you travel. There are also plenty of shops and cafes where you can grab a snack or a cup of coffee while you wait for your train.</p><p>If you're arriving in Girona by plane, you'll be pleased to know that the Girona railway station is just a short bus ride away from the airport. The bus stop is located just outside the station, and buses run frequently throughout the day. This makes it easy to get from the airport to the city center and beyond.</p><p>All in all, the Girona railway station is the perfect starting point for your Girona adventure. With its central location, easy access to other cities, and all the amenities you need, it's the ideal transportation hub for travelers of all types.</p>"
+      }
+    }
   }
 }

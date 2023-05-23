@@ -9,7 +9,8 @@
   "nav-bar": {
     "about": "Sobre",
     "home": "Casa",
-    "blog": "Blog"
+    "blog": "Blog",
+    "map": "Mapa"
   },
   "locale-switcher": {
     "catalan": "Català",
@@ -32,5 +33,51 @@
   },
   "blog": {
     "sharePost": "T'ha agradat el post? Si us plau, comparteix-lo"
+  },
+  "map": {
+    "title": "GironaJS - Mapa 3D de la ciutat",
+    "loading_title_html": "<span>GironaJS</span> La Comunitat JavaScript de Girona",
+    "loading_subtitle": "- Mapa 3D de la ciutat -",
+    "cta_googlemaps": "Google Maps",
+    "cta_website": "Lloc Web",
+    "cta_wikipedia": "Wikipedia",
+    "places": {
+      "gironajs": {
+        "navbar_name": "GironaJs",
+        "title": "GironaJS",
+        "subtitle": "Edifici La Farinera",
+        "description_html": "<p>El grup GironaJs, on les seves trobades tenen lloc a la Farinera, és una comunitat de desenvolupadors de JavaScript que es reuneixen regularment per compartir coneixements i habilitats. El grup organitza una varietat d'esdeveniments, incloent xerrades, tallers i hackathons, que ofereixen oportunitats valuoses perquè els desenvolupadors es relacionin i col·laborin.</p><p>La Farinera és un edifici impressionant situat al cor de Girona que ha estat bellament restaurat i reutilitzat. Originalment un molí de farina, l'edifici ara acull una varietat d'empreses i organitzacions, incloent-hi la seu del grup GironaJs.</p><p>El disseny distintiu noucentista de l'edifici el converteix en un punt de referència destacat de la ciutat. A l'interior, l'espai s'ha convertit en un centre modern i vibrant per a la creativitat i la innovació.</p><p>A més del grup GironaJs, a la Farinera també hi ha altres empreses i organitzacions, com ara empreses de tecnologia, estudis de disseny i associacions culturals. L'atmosfera oberta i col·laborativa de l'edifici el converteix en un destí popular per a aquells que busquen connectar amb professionals afins i pensadors creatius.</p><p>Situada al cor de la ciutat, la Farinera es troba a prop de l'estació de tren, cosa que la fa de fàcil accés tant per als visitants com per als treballadors que viatgen en tren.</p><p>En conjunt, la Farinera és un exemple brillant del compromís de Girona amb la innovació i la creativitat, i és un destí imprescindible per a qualsevol persona interessada en l'animada escena tecnològica i d'iniciatives empresarials de la ciutat.</p>"
+      },
+      "cathedral": {
+        "navbar_name": "Catedral",
+        "title": "Catedral de Santa Maria de Girona",
+        "subtitle": "Joc de Trons: Gran Sept de Baelor",
+        "description_html": "<p>La Catedral de Girona és un impressionant exemple de l'arquitectura gòtica i un dels monuments més emblemàtics de la ciutat. Situada al cor del nucli antic, aquesta majestuosa catedral data del segle XI i és una visita obligada per a qualsevol persona que viatgi a Girona.</p><p>En apropar-vos a la catedral, quedareu impressionats per la seva imponent façana i els treballs de pedra intricats. En entrar-hi, us trobareu amb un interior impressionant que sens dubte us deixarà bocabadats. La nau elevada és sostenida per un bosc de columnes, i els vitralls projecten un mosaic de colors sobre les parets.</p><p>Però el que realment distingeix la Catedral de Girona és el seu interior. Presumeix de tenir la nau gòtica més ampla del món, amb una impressionant amplitud de 23 metres. La nau està flanquejada per imponents columnes i presenta impressionants voltes nervades que semblen arribar fins al cel. Les intrincades escultures i gravats de la catedral també valen l'admiració, des del retaule ornamentat fins als elaborats treballs de fusta que decoren els seients del cor.</p><p>Una de les coses més interessants sobre la Catedral de Girona és el seu paper a la sèrie de HBO Joc de Trons. La catedral va ser utilitzada com a lloc de rodatge per a la sisena temporada de la sèrie, representant el Gran Sept de Baelor a Desembarcament del Rei (King's Landing). Els fans de la sèrie reconeixeran la icònica torre del campanar de la catedral, que va aparèixer de manera destacada en diversos episodis.</p><p>Però la Catedral de Girona és més que un lloc de rodatge: també és un important monument cultural i religiós. La catedral ha estat la seu de l'Episcopat de Girona des del segle X, i la seva impressionant arquitectura i rica història atrauen visitants de tot el món. No perdeu l'oportunitat d'explorar aquest monument emblemàtic i descobrir els secrets que amaga dins les seves parets.</p>"
+      },
+      "forest": {
+        "navbar_name": "Bosc",
+        "title": "La Devesa",
+        "subtitle": "Parc i Bosc",
+        "description_html": "<p>La Devesa és el parc més gran de Girona, que s'estén per més de 40 hectàrees de terreny. El parc està situat al costat del riu Onyar, Ter i Güell i ofereix una escapada natural tranquil·la de la vida frenètica de la ciutat. Els visitants poden explorar els nombrosos camins per a passejar, pistes de ciclisme i àrees de pícnic del parc, o simplement relaxar-se i gaudir de l'atmosfera tranquil·la.</p> <p>La història del bosc es remunta al segle XIX, quan es va transformar en un parc i es va anomenar \"La Devesa\". A principis del segle XX, el parc va ser sotmès a importants renovacions i s'hi van afegir nous arbres, camins per a passejar i un estany.</p><p>Avui en dia, La Devesa és un espai verd important per a la ciutat, que acull una varietat d'esdeveniments culturals i festivals al llarg de l'any. El parc també alberga diverses instal·lacions esportives, com un camp de futbol, una pista de bàsquet i un gimnàs a l'aire lliure. Tant si busques activitats com gaudir de la bellesa de la natura, La Devesa és una destinació imprescindible a Girona.</p>"
+      },
+      "events": {
+        "navbar_name": "Esdeveniments",
+        "title": "Palau de Fires de Girona",
+        "subtitle": "Centre d'Exposicions i Esdeveniments de Girona",
+        "description_html": "<p>El Palau de Fires de Girona, conegut també com a Centre d'Exposicions de Girona, és un modern i ampli centre d'exposicions situat al cor de la ciutat. El centre acull una àmplia gamma d'esdeveniments al llarg de l'any, incloent-hi fires comercials, conferències i exposicions culturals.</p><p>L'espai és conegut per la seva versatilitat i les seves instal·lacions de última generació, la qual cosa el converteix en una opció popular per a esdeveniments de gran envergadura. El centre s'estén a més de 9000 metres quadrats d'espai interior i també compta amb una àmplia zona exterior. Disposa d'una varietat de sales d'exposicions, sales de reunions i altres instal·lacions per acollir esdeveniments de tota mena i mida.</p><p>Un dels punts destacats del Palau de Fires de Girona és la seva ubicació cèntrica, que el fa d'accés fàcil des de tots els punts de la ciutat. El centre es troba a poca distància a peu de les principals estacions de tren i autobús, i hi ha moltes opcions de pàrquing a prop.</p><p>Els visitants del Palau de Fires de Girona poden esperar quedar impressionats pel disseny modern i l'espaiosa distribució de l'espai. Amb una programació d'esdeveniments plena al llarg de l'any, sempre hi ha alguna cosa emocionant passant en aquest centre d'exposicions dinàmic i versàtil.</p>"
+      },
+      "auditorium": {
+        "navbar_name": "Auditori",
+        "title": "Auditori de Girona",
+        "subtitle": "Esdeveniments Musicals - Palau de Congressos de Girona",
+        "description_html": "<p>L'auditori de música de Girona és un lloc modern impressionant situat al cor de la ciutat. L'auditori destaca pel seu disseny elegant i contemporani que contrasta amb l'arquitectura històrica del voltant.</p><p>L'auditori acull una varietat d'esdeveniments musicals, des de concerts clàssics a actuacions contemporànies, convertint-lo en una destinació imperdible per als amants de la música. L'acústica d'última generació i els seients còmodes proporcionen una experiència d'escolta inoblidable.</p><p>L'auditori és també la llar de l'Orquestra Ciutat de Girona, que ha guanyat reputació com una de les orquestres més talentoses i dinàmiques de la regió. Amb una agenda plena de concerts al llarg de l'any, els visitants de l'auditori poden gaudir d'una àmplia varietat d'estils i gèneres musicals.</p><p>El Cor Geriona, un dels cors més reconeguts de Catalunya, considera l'Auditori de Girona la seva llar. Aquest cor s'ha convertit en una part important de l'escena cultural de la ciutat. El Cor Geriona ha guanyat nombrosos premis i ha participat en festivals i concerts internacionals, difonent la bellesa de la música coral catalana a audiències de tot el món.</p><p>L'Auditori de Girona acull regularment actuacions del Cor Geriona, així com d'altres artistes locals i internacionals. Si ets un amant de la música, assegura't de consultar la programació d'esdeveniments de l'auditori i assistir a un espectacle durant la teva visita a Girona.</p><p>A més de les ofertes musicals impressionants, l'auditori gaudeix d'una ubicació impressionant, just a les ribes del riu Onyar. Els visitants poden gaudir de vistes pintoresques als ponts i edificis històrics de la ciutat des de l'àmplia terrassa exterior, que és un lloc popular per prendre una copa abans del concert i socialitzar.</p><p>En resum, l'auditori de música de Girona és una destinació obligada per als amants de la música i per a tothom que vulgui experimentar l'escena cultural vibrant de la ciutat.</p>"
+      },
+      "station": {
+        "navbar_name": "Estació",
+        "title": "Estació",
+        "subtitle": "Estació de Tren, AVE i Autobusos",
+        "description_html": "<p>Si viatges a Girona, l'estació de tren de Girona hauria de ser el teu primer destí. Aquesta estació moderna i ben equipada està convenientment situada al cor de la ciutat, convertint-se en el punt de partida perfecte per a la teva aventura a Girona.</p><p>Una de les millors coses de l'estació de tren de Girona és la seva ubicació central. Des d'aquí, pots explorar fàcilment tot el que la ciutat té per oferir, des dels seus llocs històrics fins a la seva animada vida nocturna. L'estació està a només uns passos del centre de la ciutat, i hi trobaràs molts restaurants, cafeteries i botigues a prop.</p><p>Però això no és tot: l'estació de tren de Girona també és un important punt de transport per a la regió. A més de servei de trens locals, l'estació és una parada per als trens AVE d'alta velocitat, que connecten Girona amb altres ciutats importants d'Espanya, com Madrid i Barcelona. Això significa que pots planificar fàcilment excursions d'un dia a altres destinacions mentre utilitzes Girona com a base.</p><p>A l'interior de l'estació, trobaràs totes les comoditats que necessites per a un viatge còmode i sense problemes. Hi ha moltes màquines expenedores de bitllets i taules d'informació per ajudar-te a planificar el teu viatge, i l'estació té Wi-Fi gratuït perquè puguis mantenir-te connectat mentre viatges. També hi ha moltes botigues i cafeteries on pots prendre una beguda o una tassa de cafè mentre esperes el teu tren.</p><p>Si arribes a Girona en avió, estaràs encantat de saber que l'estació de tren de Girona és a només un curt trajecte amb autobús de l'aeroport. L'aparcament d'autobusos es troba just a fora de l'estació, i els autobusos circulen amb freqüència al llarg del dia. Això facilita el desplaçament des de l'aeroport fins al centre de la ciutat i més enllà.</p><p>En resum, l'estació de tren de Girona és el punt de partida perfecte per a la teva aventura a Girona. Amb la seva ubicació central, fàcil accés a altres ciutats i totes les comoditats que necessites, és el punt de transport ideal per a tots els tipus de viatgers.</p>"
+      }
+    }
   }
 }
