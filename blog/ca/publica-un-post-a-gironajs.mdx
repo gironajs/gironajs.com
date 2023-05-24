@@ -14,15 +14,13 @@ seo:
     /assets/blog/publica-un-post-a-gironajs/cover-image.jpg
 ---
 
-
 Primer de tot cal que tinguis un compte a GitHub. Si no en tens, pots crear-ne un [aquí](https://github.com).
 
 Per crear un post s'ha de fer un fork del repositori [gironajs](https://github.com/gironajs/gironajs.com):
 
 ![Fork](/assets/blog/publica-un-post-a-gironajs/github-fork.png)
 
-
-Un cop fet el fork en cas de ser el primer ens auto afegirem com autors, per fer-ho hem d'editar el fitxer ***config/member.ts*** i afegir el nostre nom d'usuari de GitHub i si volem algunes dades: 
+Un cop fet el fork en cas de ser el primer ens auto afegirem com autors, per fer-ho hem d'editar el fitxer **_config/member.ts_** i afegir el nostre nom d'usuari de GitHub i si volem algunes dades:
 
 ```ts:config/member.ts
 const members: Member[] = [
@@ -38,7 +36,7 @@ const members: Member[] = [
 ];
 ```
 
-Un cop afegits com autor, l'unic que s'ha de fer és crear un nou arxiu a la carpeta ***blog/ca/[slug-del-post]***.
+Un cop afegits com autor, l'unic que s'ha de fer és crear un nou arxiu a la carpeta **_blog/ca/[slug-del-post]_**.
 
 Per exemple, si volem crear un post amb el títol "Publica un post al blog de GironaJS" el slug serà "publica-un-post-al-blog-de-gironajs".
 
@@ -74,11 +72,9 @@ En el seguent explicarem com podem crear el contingut del post utilitzant Markdo
 
 Un cop tinguem el post creat i hagem fet un commit i un push al nostre repositori (fork) ja podrem fer un pull request al repositori original.
 
-
 ### Utilitzant Markdown i MDX pel contingut del post
 
 El contingut del post es pot escriure en [Markdown](https://www.markdownguide.org/basic-syntax/) o [MDX](https://mdxjs.com/).
-
 
 Per afegir una imatge podem fer-ho de la següent manera:
 
@@ -100,11 +96,11 @@ const foo = 'bar';
 ```
 ````
 
-També podem afegir components react, els components react es troben a la carpeta ***components/mdx/*** i s'han d'importar al fitxer ***components/index.ts***.
+També podem afegir components react, els components react es troben a la carpeta **_components/mdx/_** i s'han d'importar al fitxer **_components/index.ts_**.
 
 Un cop importat el component, podem fer servir el component a la nostra publicació.
 
-Per exemple, si volem afegir el component ***Counter*** al nostre post, podem fer-ho de la següent manera:
+Per exemple, si volem afegir el component **_Counter_** al nostre post, podem fer-ho de la següent manera:
 
 ```jsx
 <Counter />
