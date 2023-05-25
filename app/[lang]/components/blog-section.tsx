@@ -12,9 +12,8 @@ type Props = {
 
 export function BlogSection({ dictionary, posts }: Props) {
   return (
-    <div className="bg-white py-4 relative overflow-hidden">
-      <div className="gjs-gradient-background absolute w-full h-full" />
-      <div className="container px-6 py-10 mx-auto">
+    <div className="py-4 relative overflow-hidden">
+      <div className="container px-6 py-14 mx-auto">
         <h1 className="text-3xl font-semibold text-center text-gray-800 lg:text-4xl">
           {dictionary?.home.blog.title_1}{' '}
           <span className="text-red-500 font-extrabold">

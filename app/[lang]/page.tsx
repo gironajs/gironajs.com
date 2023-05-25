@@ -15,6 +15,7 @@ export default async function IndexPage({
   const posts = getBlogPostItems(lang);
   return (
     <>
+      <div className="gjs-gradient-background absolute w-full h-full top-3/4" />
       <Intro dictionary={dictionary} />
       <Members dictionary={dictionary} />
       <BlogSection dictionary={dictionary} posts={posts} />

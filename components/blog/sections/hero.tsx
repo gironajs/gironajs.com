@@ -14,7 +14,7 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
 
   return (
     <>
-      <section className="gjs-hero py-12 bg-slate-100 border-b-2 border-red-600 font-jetbrains">
+      <section className="gjs-hero pt-24 pb-12 bg-slate-100 border-b-2 border-red-600 font-jetbrains">
         <div className="gjs-hero-content gjs-blog-container mx-auto mb-40">
           <div className="gjs-hero-header">
             <div className="flex items-center py-4">

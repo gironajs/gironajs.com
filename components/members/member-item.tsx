@@ -46,7 +46,7 @@ const icons: Record<MemberResource, MemberIcon> = {
 
 export function MemberItem({ member }: Props) {
   return (
-    <div className="flex flex-col items-center p-4 transition-colors duration-300 transform border border-slate-400 rounded-xl hover:border-transparent group hover:bg-red-500">
+    <div className="flex flex-col items-center p-4 transition-colors duration-300 transform bg-white border border-slate-400 rounded-xl hover:border-transparent group hover:bg-red-500">
       <div className="overflow-hidden rounded-full ring-4 ring-red-500">
         <Image
           className="object-cover transition-transform duration-300 hover:scale-125"

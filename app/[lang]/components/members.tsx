@@ -10,8 +10,8 @@ type Props = {
 
 const Members = ({ dictionary }: Props) => {
   return (
-    <div id="members" className="bg-[#F3F4F6]">
-      <div className="container px-6 py-10 mx-auto">
+    <div id="members" className="relative">
+      <div className="container px-6 py-14 mx-auto">
         <h1 className="text-3xl font-semibold text-center text-gray-800 lg:text-4xl">
           {dictionary.home.members.title_1}{' '}
           <span className="text-red-500 font-extrabold">

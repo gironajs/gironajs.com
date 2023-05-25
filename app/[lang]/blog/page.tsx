@@ -16,7 +16,7 @@ export default async function Page({
 
   return (
     <div>
-      <section className="py-12 bg-slate-100 border-b-2 border-red-600 font-jetbrains">
+      <section className="pt-24 pb-12 bg-slate-100 border-b-2 border-red-600 font-jetbrains">
         <div className="gjs-blog-container mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-5">
             Blog posts
