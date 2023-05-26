@@ -9,7 +9,11 @@ type Props = {
   classNames?: string;
 };
 
-export function MembersList({ classNames }: Props) {
+const BlogMembersList = () => (
+  <MembersList classNames="sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3" />
+);
+
+const MembersList = ({ classNames }: Props) => {
   const randomMembers = React.useMemo(
     () => members.sort(() => 0.5 - Math.random()),
     []
@@ -18,7 +22,7 @@ export function MembersList({ classNames }: Props) {
   return (
     <div
       className={clsx(
-        'grid grid-cols-2 gap-8 mt-8 sm:grid-cols-4',
+        'grid grid-cols-1 gap-8 mt-8 xl:mt-10 md:grid-cols-2 xl:grid-cols-4',
         classNames ?? ''
       )}
     >
@@ -27,4 +31,6 @@ export function MembersList({ classNames }: Props) {
       ))}
     </div>
   );
-}
+};
+
+export { BlogMembersList, MembersList };

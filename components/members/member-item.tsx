@@ -46,7 +46,7 @@ const icons: Record<MemberResource, MemberIcon> = {
 
 export function MemberItem({ member }: Props) {
   return (
-    <div className="flex flex-col items-center p-4 transition-colors duration-300 transform bg-white border border-slate-400 rounded-xl hover:border-transparent group hover:bg-red-500">
+    <div className="flex flex-col items-center px-4 py-6 transition-colors duration-300 transform bg-white/50 border border-slate-400 rounded-xl hover:border-transparent group hover:bg-red-500">
       <div className="overflow-hidden rounded-full ring-4 ring-red-500">
         <Image
           className="object-cover transition-transform duration-300 hover:scale-125"
@@ -57,15 +57,15 @@ export function MemberItem({ member }: Props) {
         />
       </div>
 
-      <p className="mt-4 text-lg font-semibold text-gray-700 capitalize group-hover:text-white">
+      <p className="mt-4 text-lg text-center font-semibold text-gray-700 capitalize group-hover:text-white">
         {member.name}
       </p>
 
-      <p className="mt-2 text-sm text-gray-500 capitalize group-hover:text-gray-300 text-center">
+      <p className="mt-2 text-sm text-center text-gray-500 capitalize group-hover:text-gray-300 text-center">
         {member.role}{' '}
       </p>
       {member.company && (
-        <span className="font-bold text-red-500 group-hover:text-slate-200">
+        <span className="font-bold text-center text-red-500 group-hover:text-slate-200">
           {member.company}
         </span>
       )}
@@ -78,7 +78,7 @@ export function MemberItem({ member }: Props) {
             <a
               key={i}
               href={icon.getUrl(member)}
-              className="mx-2 text-gray-600 hover:text-gray-500 group-hover:text-white transition duration-300 transform hover:-translate-y-1"
+              className="member-item mx-2 text-gray-600 hover:text-gray-500 group-hover:text-white transition duration-300 transform hover:-translate-y-1"
               target="_blank"
             >
               <svg

@@ -1,5 +1,5 @@
 .gjs-blog-content {
-  a {
+  a:not(.member-item) {
     color: red;
     text-decoration: none;
 

@@ -23,7 +23,7 @@ const Members = ({ dictionary }: Props) => {
           {dictionary.home.members.subtitle}
         </p>
 
-        <MembersList classNames="grid grid-cols-1 gap-8 mt-8 xl:mt-10 md:grid-cols-2 xl:grid-cols-4"></MembersList>
+        <MembersList />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { BlogPostItem } from '@/types/blog';
 import { MDXRemote } from 'next-mdx-remote';
 import SocialShareButtons from '../social-share-buttons/social-share-buttons';
 import * as mdxComponents from '@/components/mdx';
-import { MembersList } from '@/components/members/members-list';
+import { BlogMembersList } from '@/components/members/members-list';
 
 import { Hero } from './sections/hero';
 
@@ -27,7 +27,7 @@ export function Blog({ blogPostItem, dictionary }: Props) {
         <div className="gjs-blog-content">
           <MDXRemote
             {...blogPostItem.content}
-            components={{ ...mdxComponents, MembersList }}
+            components={{ ...mdxComponents, BlogMembersList }}
           />
         </div>
 
