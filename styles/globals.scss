@@ -25,13 +25,34 @@
 
 .gjs-gradient-background {
   filter: blur(118px);
+  // background: linear-gradient(
+  //   106.89deg,
+  //   rgba(192, 132, 252, 0.11) 15.73%,
+  //   rgb(199 233 14 / 41%) 15.74%,
+  //   rgb(249 162 121 / 26%) 56.49%,
+  //   rgb(229 70 70 / 40%) 115.91%
+  // );
   background: linear-gradient(
-    106.89deg,
-    rgba(192, 132, 252, 0.11) 15.73%,
-    rgb(199 233 14 / 41%) 15.74%,
-    rgb(249 162 121 / 26%) 56.49%,
-    rgb(229 70 70 / 40%) 115.91%
+    120deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgb(229 70 70 / 40%) 17%,
+    rgb(199 233 14 / 41%) 80%,
+    rgba(255, 255, 255, 1) 100%
   );
+  background-size: 200% 200%;
+  animation: home-background-gradient 5s ease infinite;
+}
+
+@keyframes home-background-gradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }
 
 .gjs-blog-container {

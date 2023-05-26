@@ -10,7 +10,7 @@ type Props = {
 };
 
 const BlogMembersList = () => (
-  <MembersList classNames="sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3" />
+  <MembersList classNames="sm:grid-cols-2 md:grid-cols-3 xl:!grid-cols-3" />
 );
 
 const MembersList = ({ classNames }: Props) => {
