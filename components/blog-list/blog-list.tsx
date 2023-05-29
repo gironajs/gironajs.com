@@ -11,7 +11,7 @@ export default function BlogList({ posts }: { posts: BlogPostItem[] }) {
   return (
     <>
       <div className="relative w-full h-full">
-        <div className="gjs-blog-container">
+        <div className="container mx-auto py-10">
           <div className="py-4 grid grid-cols-1 md:grid-cols-2 gap-12">
             {posts.map((post) => (
               <BlogListItem key={post.filePath} post={post}></BlogListItem>

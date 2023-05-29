@@ -2,6 +2,7 @@ import BlogList from '@/components/blog-list/blog-list';
 import DiscordIcon from '@/components/icons/discord-icon';
 import GitHubIcon from '@/components/icons/github-icon';
 import { siteConfig } from '@/config/site';
+import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 import { getBlogPostItems } from '@/lib/blog';
 import { getMetadata } from '@/lib/seo';
@@ -12,23 +13,20 @@ export default async function Page({
 }: {
   params?: { slug?: string; lang: Locale };
 }) {
-  const posts = getBlogPostItems(params?.lang ?? 'ca');
+  const lang = params?.lang ?? 'ca';
+  const posts = getBlogPostItems(lang);
+  const dictionary = await getDictionary(lang);
 
   return (
     <div>
-      <section className="pt-24 pb-12 bg-slate-100 border-b-2 border-red-600 font-jetbrains">
-        <div className="gjs-blog-container mx-auto">
+      <section className="pt-24 pb-12 bg-slate-100 border-b-2 border-red-600">
+        <div className="container mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-5">
-            Blog posts
+            {dictionary.blog.title}
           </h1>
-          <p className="text-xl text-slate-900">
-            Here you can find all the blog posts published by GironaJS.
-          </p>
+          <p className="text-xl text-slate-900">{dictionary.blog.subtitle_1}</p>
           <br />
-          <p className="text-xl text-slate-900">
-            Any contribution is welcome, so if you want to write a post, please
-            contact us.
-          </p>
+          <p className="text-xl text-slate-900">{dictionary.blog.subtitle_2}</p>
 
           <div className="flex flex-wrap mt-5">
             <div
