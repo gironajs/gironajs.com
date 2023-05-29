@@ -28,7 +28,9 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
             </div>
           </div>
           <div className="gjs-hero-title">
-            <h1 className="text-xl font-bold md:text-5xl">{title}</h1>
+            <h1 className="text-4xl font-bold md:text-5xl leading-tight md:leading-tight">
+              {title}
+            </h1>
           </div>
           <div className="gjs-hero-description py-5">
             <p className="text-lg">{description}</p>
