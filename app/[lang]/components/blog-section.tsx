@@ -2,31 +2,30 @@
 
 import React from 'react';
 import { LangDictionary } from '@/get-dictionary';
-import { MembersList } from '@/components/members/members-list';
+import BlogList from '@/components/blog-list/blog-list';
+import { BlogPostItem } from '@/types/blog';
 
 type Props = {
   dictionary: LangDictionary;
+  posts: BlogPostItem[];
 };
 
-const Members = ({ dictionary }: Props) => {
+export function BlogSection({ dictionary, posts }: Props) {
   return (
-    <div id="members" className="relative">
+    <div className="py-4 relative overflow-hidden">
       <div className="container px-6 py-14 mx-auto">
         <h1 className="text-3xl font-semibold text-center text-gray-800 lg:text-4xl">
-          {dictionary.home.members.title_1}{' '}
+          {dictionary?.home.blog.title_1}{' '}
           <span className="text-red-500 font-extrabold">
-            {dictionary.home.members.title_2}
+            {dictionary?.home.blog.title_2}
           </span>
         </h1>
 
         <p className="max-w-2xl mx-auto my-6 text-center text-gray-500 font-semibold">
-          {dictionary.home.members.subtitle}
+          {dictionary?.home.blog.subtitle}
         </p>
-
-        <MembersList />
+        <BlogList posts={posts}></BlogList>
       </div>
     </div>
   );
-};
-
-export { Members };
+}

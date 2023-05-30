@@ -19,12 +19,23 @@
   "home": {
     "title": "The JavaScript Community of Girona",
     "subtitle": "GironaJS is a Catalan-speaking JavaScript community born in Girona. <br/>If you speak Catalan and are interested in JavaScript, join our community. To join enter the discord and present yourself!",
-    "sponsors": "Sponsors",
     "members": {
       "title_1": "Welcome the",
       "title_2": "community",
       "subtitle": "Meet the talented people in Girona. We are more than you think!"
-    }
+    },
+    "blog": {
+      "title_1": "Descobreix els nostres",
+      "title_2": "blogs",
+      "subtitle": ""
+    },
+    "sponsors": "Sponsors"
+  },
+  "blog": {
+    "sharePost": "Did you like the post? Please share it",
+    "title": "Blog posts",
+    "subtitle_1": "Here you can find all the blog posts published by GironaJS",
+    "subtitle_2": "Any contribution is welcome, so if you want to write a post, please contact us!"
   },
   "map": {
     "title": "GironaJS - 3D City Map",

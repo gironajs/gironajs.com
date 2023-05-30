@@ -1,0 +1,115 @@
+---
+title: Publish a blog post on GironaJS
+description: Tutorial on how to publish a blog post on GironaJS using markdown and react (mdx)
+image: /assets/blog/publica-un-post-a-gironajs/cover-image.jpg
+published: true
+publishedDate: 2023-05-30
+author: eudago
+seo:
+  metatitle: >
+    Publish a blog post on GironaJS
+  metadescription: >
+    Tutorial on how to publish a blog post on GironaJS using markdown and react (mdx)
+  image: >
+    /assets/blog/publica-un-post-a-gironajs/cover-image.jpg
+---
+
+First of all, you need to have a GitHub account. If you don't have one, you can create it [here](https://github.com).
+
+To create a post, you need to fork the repository [gironajs](https://github.com/gironajs/gironajs.com):
+
+![Fork](/assets/blog/publica-un-post-a-gironajs/github-fork.png)
+
+Once the fork is done, if you are the first one, we will automatically add ourselves as authors. To do this, we need to edit the file **_config/member.ts_** and add our GitHub username and, if desired, some details:
+
+```ts:config/member.ts
+const members: Member[] = [
+  ...
+  {
+    github: 'eudago',
+    name: 'Eudald Dachs',
+    role: 'Senior Software Development Engineer',
+    company: 'Kave Home',
+    linkedin: 'eudald-dachs',
+  }
+  ...
+];
+```
+
+After adding ourselves as authors, all we need to do is create a new file in the folder **_blog/ca/[slug-del-post]_**.
+
+For example, if we want to create a post with the title "Publish a blog post on GironaJS," the slug will be "publish-a-post-on-gironajs".
+
+This file should have the following format:
+
+```markdown:blog/en/publish-a-post-on-gironajs.mdx
+---
+title: Publish a blog post on GironaJS
+description: Introduction to the GironaJS project, the first Catalan JavaScript community
+image: /assets/blog/gironajs-the-catalan-javascript-community/cover-image.jpg
+published: true
+publishedDate: 2023-04-04
+author: eudago
+seo:
+  metatitle: >
+    GironaJS - The Catalan JavaScript Community
+  metadescription: >
+    Introduction to the GironaJS project, the first Catalan JavaScript community
+  image: >
+    /assets/blog/gironajs-the-catalan-javascript-community/cover-image.jpg
+---
+
+Post content
+```
+
+We can distinguish two parts in this file: the metadata and the post content.
+
+The metadata is part of the post content. For example, the post title, description, cover image, author, etc.
+
+It is important to add all the metadata fields as they are used to display the post.
+
+Next, we will explain how we can create the content of the post using Markdown and MDX.
+
+Once we have created the post content and made a commit and push to our repository (fork), we can proceed to create a pull request to the original repository.
+
+### Using Markdown and MDX for the post content
+
+The post content can be written in [Markdown](https://www.markdownguide.org/basic-syntax/) or [MDX](https://mdxjs.com/).
+
+To add an image, you can do it as follows:
+
+```markdown
+![GironaJS Image](/assets/blog/gironajs-the-catalan-javascript-community/cover-image.jpg)
+```
+
+To add a link, you can use the following format:
+
+```markdown
+[Link to GironaJS](https://gironajs.org)
+```
+
+To add a code block, you can use the following format:
+
+````markdown
+```js
+const foo = 'bar';
+```
+````
+
+You can also add React components. The React components are located in the **_components/mdx/_** folder and need to be imported in the **_components/index.ts_** file.
+
+Once the component is imported, you can use it in your post.
+
+For example, if you want to add the **_Counter_** component to your post, you can do it as follows:
+
+```jsx
+<Counter />
+```
+
+Here's an example of a counter:
+
+<Counter />
+
+This allows us to add React components to our post.
+
+You can find more information on the [MDX](https://mdxjs.com/) website.

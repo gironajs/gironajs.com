@@ -9,7 +9,7 @@ type Props = {
 export default function Interface({ dictionary }: Props) {
   return (
     <div className="map__ui">
-      <div className="map__ui__title">
+      <div className="map__ui__title hidden">
         <h1>{dictionary.title}</h1>
       </div>
       <div className="map__ui__content">

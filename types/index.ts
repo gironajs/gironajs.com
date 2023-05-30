@@ -12,3 +12,7 @@ export type NavItem = {
   href: string;
   disabled?: boolean;
 };
+
+export interface Dictionary<T> {
+  [key: string]: T;
+}
