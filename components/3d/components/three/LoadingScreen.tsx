@@ -4,11 +4,10 @@ import ProgressBar from '@ramonak/react-progress-bar';
 import { LangDictionary } from '@/get-dictionary';
 
 type Props = {
-  onUnmountCb: () => void;
   dictionary: LangDictionary['map'];
 };
 
-export default function LoadingScreen({ onUnmountCb, dictionary }: Props) {
+export default function LoadingScreen({ dictionary }: Props) {
   //Wrapper hook of THREE.DefaultLoadingManager progress status
   const progress = useProgress((state) => state.progress);
 
@@ -17,13 +16,6 @@ export default function LoadingScreen({ onUnmountCb, dictionary }: Props) {
   const [realProgress, setRealProgress] = useState(15); //UX: its much better if the user don't see a 0%
 
   // - EFFECT
-  useEffect(() => {
-    //unmount - LoadingScreen is unmounted when the linked <Suspense fallback> is finished
-    return () => {
-      onUnmountCb();
-    };
-  }, [onUnmountCb]);
-
   useEffect(() => {
     if (progress > realProgress) {
       //protect from negative progresses
