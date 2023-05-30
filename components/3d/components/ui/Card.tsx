@@ -10,7 +10,7 @@ type Props = {
 
 export default function Card({ dictionary }: Props) {
   // -- CONSTANTS
-  const MAX_MAX_HEIGHT = 90; //%
+  const MAX_MAX_HEIGHT = 85; //%
   const MIN_MAX_HEIGHT = 15; //%
 
   // -- STATE
