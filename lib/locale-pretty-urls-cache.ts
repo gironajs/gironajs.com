@@ -3,7 +3,7 @@ import { getBlogFilePaths } from '@/lib/blog';
 import { decodeMdxFilePathData } from '@/lib/utils';
 
 export type LocalePrettyUrlsData = Record<string, LocalePrettyUrls>; //id, LocalePrettyUrls
-export type LocalePrettyUrls = Record<string, string>; //locale, url
+export type LocalePrettyUrls = Record<Locale, string>; //locale, url
 
 /**
  * This utils uses Singleton pattern to fetch the data only once per server startup.
@@ -24,7 +24,7 @@ class LocalePrettyUrlsCache {
       getBlogFilePaths(lang).map((filePath) => {
         const { id, urlPath } = decodeMdxFilePathData(filePath, lang);
         if (!this.data[id]) {
-          this.data[id] = { [lang]: urlPath };
+          this.data[id] = { [lang]: urlPath } as LocalePrettyUrls;
         } else {
           this.data[id][lang] = urlPath;
         }
