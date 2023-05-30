@@ -25,11 +25,14 @@
       "subtitle": "Meet the talented people in Girona. We are more than you think!"
     },
     "blog": {
-      "title_1": "Descobreix els nostres",
+      "title_1": "Discover our",
       "title_2": "blogs",
       "subtitle": ""
     },
-    "sponsors": "Sponsors"
+    "sponsors": {
+      "title": "Sponsors",
+      "subtitle": ""
+    }
   },
   "blog": {
     "sharePost": "Did you like the post? Please share it",
