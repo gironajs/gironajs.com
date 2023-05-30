@@ -10,6 +10,7 @@ import './locale-switcher.scss';
 
 import { i18n, Locale } from '@/i18n-config';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon';
+import { LocalePrettyUrls } from '@/lib/locale-pretty-urls-cache';
 
 const languages: Record<Locale, string> = {
   ca: 'Català',
@@ -18,17 +19,24 @@ const languages: Record<Locale, string> = {
 
 type Props = {
   locale: Locale;
+  localeUrls?: LocalePrettyUrls; //if exists, override the dynamic logic with these urls
 };
 
-const LocaleSwitcher = ({ locale }: Props) => {
+const LocaleSwitcher = ({ locale, localeUrls }: Props) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const pathName = usePathname();
-  const redirectedPathName = (locale: string) => {
+  const redirectedPathName = (locale: Locale) => {
     if (!pathName) return '/';
-    const segments = pathName.split('/');
-    segments[1] = locale;
-    return segments.join('/');
+    if (localeUrls) {
+      //manual urls
+      return localeUrls[locale];
+    } else {
+      //dynamic way to generate localeUrls
+      const segments = pathName.split('/');
+      segments[1] = locale;
+      return segments.join('/');
+    }
   };
 
   return (

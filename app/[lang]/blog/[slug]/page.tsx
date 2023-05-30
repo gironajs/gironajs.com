@@ -6,7 +6,7 @@ import { getBlogFilePaths, getBlogPath } from '@/lib/blog';
 import markdownToHtml from '@/lib/markdown';
 import { BlogPostItem, BlogPostItemData } from '@/types/blog';
 import { getMetadata } from '@/lib/seo';
-import { removeFilePathExtension } from '@/lib/utils';
+import { decodeMdxFilePathData, removeFilePathExtension } from '@/lib/utils';
 import { Blog } from '@/components/blog/blog';
 import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
@@ -16,10 +16,8 @@ export async function generateMetadata({
 }: {
   params: { slug?: string; lang: Locale };
 }): Promise<Metadata> {
-  const postFilePath = path.join(
-    getBlogPath(params.lang),
-    `${params?.slug}.mdx`
-  );
+  const filePath = `${params?.slug}.mdx`;
+  const postFilePath = path.join(getBlogPath(params.lang), filePath);
   const source = fs.readFileSync(postFilePath);
 
   const { content, data } = matter(source);
@@ -27,6 +25,7 @@ export async function generateMetadata({
   const contentHtml = await markdownToHtml(content || '');
 
   const blogPostItem: BlogPostItem = {
+    id: decodeMdxFilePathData(filePath, params.lang).id,
     content: contentHtml,
     data: data as BlogPostItemData,
     filePath: `${params?.slug}.mdx`,
@@ -64,17 +63,15 @@ export default async function Page({
 }: {
   params: { slug: string; lang: Locale };
 }) {
-  const postFilePath = path.join(
-    getBlogPath(params.lang),
-    `${params.slug}.mdx`
-  );
+  const filePath = `${params?.slug}.mdx`;
+  const postFilePath = path.join(getBlogPath(params.lang), filePath);
   const source = fs.readFileSync(postFilePath);
-
   const { content, data } = matter(source);
 
   const contentHtml = await markdownToHtml(content || '');
 
   const blogPostItem: BlogPostItem = {
+    id: decodeMdxFilePathData(filePath, params.lang).id,
     content: contentHtml,
     data: data as BlogPostItemData,
     filePath: `${params.slug}.mdx`,

@@ -1,8 +1,8 @@
-import { BlogPostItem } from '../types/blog';
+import { BlogPostItem } from '@/types/blog';
 import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
-import { removeFilePathExtension } from './utils';
+import { decodeMdxFilePathData } from './utils';
 import { Locale } from '@/i18n-config';
 
 // Return the blog path by language
@@ -21,9 +21,11 @@ export function getBlogPostItems(lang: Locale): BlogPostItem[] {
   return getBlogFilePaths(lang).map((filePath) => {
     const source = fs.readFileSync(path.join(getBlogPath(lang), filePath));
     const { content, data } = matter(source);
-    const urlPath = `${lang}/blog/${removeFilePathExtension(filePath)}`;
+
+    const { id, urlPath } = decodeMdxFilePathData(filePath, lang);
 
     return {
+      id,
       content,
       data,
       filePath,
