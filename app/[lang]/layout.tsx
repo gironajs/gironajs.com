@@ -19,7 +19,8 @@ export default async function Root({
   children: React.ReactNode;
   params: { lang: Locale };
 }) {
-  const localeUrlsData: LocalePrettyUrlsData = localePrettyUrlsCache.get();
+  const localePrettyUrlsCacheData: LocalePrettyUrlsData =
+    localePrettyUrlsCache.getCacheForClientComponents();
 
   return (
     <html lang={params.lang}>
@@ -32,7 +33,11 @@ export default async function Root({
         className={`${interFont.className} ${interFont.variable} ${jetbrainsFont.variable} ${sourceSerifProFont.variable}`}
       >
         <div className="flex min-h-screen flex-col">
-          <Header lang={params.lang} localeUrlsData={localeUrlsData}></Header>
+          <Header
+            lang={params.lang}
+            localePrettyUrlsCacheData={localePrettyUrlsCacheData}
+            data-superjson
+          ></Header>
           <main className="flex-1">{children}</main>
         </div>
       </body>

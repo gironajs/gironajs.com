@@ -17,13 +17,16 @@ export const removeFilePathExtension = (filePath: string) => {
 export const decodeMdxFilePathData = (
   filePath: string,
   lang: string
-): { id: string; urlPath: string } => {
+): { id: string; prettyUrl: string; urlPath: string } => {
   const cleanPath = removeFilePathExtension(filePath);
-  const id = cleanPath.split('-')[0];
+  const tokens = cleanPath.split('_');
+  const id = tokens[0];
+  const prettyUrl = tokens[1];
 
   return {
     id: id,
-    urlPath: `/${lang}/blog/${cleanPath}`,
+    prettyUrl: prettyUrl,
+    urlPath: `/${lang}/blog/${prettyUrl}`,
   };
 };
 /**

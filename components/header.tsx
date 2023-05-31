@@ -12,17 +12,21 @@ import { usePathname } from 'next/navigation';
 
 type Props = {
   lang: Locale;
-  localeUrlsData: LocalePrettyUrlsData;
+  localePrettyUrlsCacheData: LocalePrettyUrlsData;
 };
 
-const Header = ({ lang, localeUrlsData }: Props) => {
+const Header = ({ lang, localePrettyUrlsCacheData }: Props) => {
   const getLocalePrettyUrls = (
     pathName: string
   ): LocalePrettyUrls | undefined => {
     //Blogpost
-    const blogpostId = pathName.match(/\/.*\/blog\/(\d*)/)?.[1] || null;
-    if (blogpostId) {
-      return localeUrlsData[blogpostId];
+    const blogpostPrettyUrl = pathName.match(/\/.*\/blog\/(.*)/)?.[1] || null;
+    if (blogpostPrettyUrl) {
+      const blogPostId =
+        localePrettyUrlsCacheData.prettyUrlToIdMap[blogpostPrettyUrl];
+      const localePrettyUrls: LocalePrettyUrls =
+        localePrettyUrlsCacheData.localePrettyUrls[blogPostId];
+      return localePrettyUrls;
     }
     return undefined;
   };

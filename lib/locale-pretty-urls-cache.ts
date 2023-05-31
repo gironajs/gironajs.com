@@ -2,8 +2,12 @@ import { i18n, Locale } from '@/i18n-config';
 import { getBlogFilePaths } from '@/lib/blog';
 import { decodeMdxFilePathData } from '@/lib/utils';
 
-export type LocalePrettyUrlsData = Record<string, LocalePrettyUrls>; //id, LocalePrettyUrls
+export type LocalePrettyUrlsData = {
+  localePrettyUrls: Record<string, LocalePrettyUrls>;
+  prettyUrlToIdMap: PrettyUrlToIdMap;
+}; //slug, LocalePrettyUrls
 export type LocalePrettyUrls = Record<Locale, string>; //locale, url
+type PrettyUrlToIdMap = Record<string, string>; //prettyUrl, id
 
 /**
  * This utils uses Singleton pattern to fetch the data only once per server startup.
@@ -17,16 +21,25 @@ class LocalePrettyUrlsCache {
    * construction calls with the `new` operator.
    */
   private constructor() {
-    this.data = {};
+    this.data = {
+      localePrettyUrls: {},
+      prettyUrlToIdMap: {},
+    } as LocalePrettyUrlsData;
 
     //On singleton initialization we cache all posts and their urls. In the future we can add more logic to fetch prettyUrl from other website pages.
     i18n.locales.map((lang: Locale) => {
       getBlogFilePaths(lang).map((filePath) => {
-        const { id, urlPath } = decodeMdxFilePathData(filePath, lang);
-        if (!this.data[id]) {
-          this.data[id] = { [lang]: urlPath } as LocalePrettyUrls;
+        const { id, prettyUrl, urlPath } = decodeMdxFilePathData(
+          filePath,
+          lang
+        );
+        this.data.prettyUrlToIdMap[prettyUrl] = id;
+        if (!this.data.localePrettyUrls[id]) {
+          this.data.localePrettyUrls[id] = {
+            [lang]: urlPath,
+          } as LocalePrettyUrls;
         } else {
-          this.data[id][lang] = urlPath;
+          this.data.localePrettyUrls[id][lang] = urlPath;
         }
       });
     });
@@ -46,11 +59,17 @@ class LocalePrettyUrlsCache {
     return LocalePrettyUrlsCache.instance;
   }
 
-  public getPostUrlsById(id: string): LocalePrettyUrls {
-    return this.data[id];
+  public getByPrettyUrl(prettyUrl: string): LocalePrettyUrls {
+    const id = this.getId(prettyUrl);
+    return this.data.localePrettyUrls[id];
   }
 
-  public get() {
+  public getId(prettyUrl: string): string {
+    return this.data.prettyUrlToIdMap[prettyUrl];
+  }
+
+  //On client componenets we cannot use the methods, therefore we pass the cache data and implement manually the logic on client.
+  public getCacheForClientComponents(): LocalePrettyUrlsData {
     return this.data;
   }
 }
