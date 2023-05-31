@@ -6,7 +6,7 @@ import { getBlogFilePaths, getBlogPath } from '@/lib/blog';
 import markdownToHtml from '@/lib/markdown';
 import { BlogPostItem, BlogPostItemData } from '@/types/blog';
 import { getMetadata } from '@/lib/seo';
-import { decodeMdxFilePathData, removeFilePathExtension } from '@/lib/utils';
+import { decodeMdxFilePathData } from '@/lib/utils';
 import { Blog } from '@/components/blog/blog';
 import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
@@ -34,9 +34,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export async function generateStaticParams({ params }: Params) {
-  return getBlogFilePaths(params.lang).map((filePath) => {
+  const lang = params.lang;
+  return getBlogFilePaths(lang).map((filePath) => {
+    const { prettyUrl } = decodeMdxFilePathData(filePath, lang);
     return {
-      slug: removeFilePathExtension(filePath),
+      slug: prettyUrl,
     };
   });
 }
