@@ -19,9 +19,9 @@ export const decodeMdxFilePathData = (
   lang: string
 ): { id: string; prettyUrl: string; urlPath: string } => {
   const cleanPath = removeFilePathExtension(filePath);
-  const tokens = cleanPath.split('_');
-  const id = tokens[0];
-  const prettyUrl = tokens[1];
+  const firstIndexOfUnderscore = cleanPath.indexOf('_');
+  const id = cleanPath.slice(0, firstIndexOfUnderscore);
+  const prettyUrl = cleanPath.slice(firstIndexOfUnderscore + 1);
 
   return {
     id: id,
