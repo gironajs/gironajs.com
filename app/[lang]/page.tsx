@@ -1,9 +1,17 @@
+import { Metadata } from 'next';
+
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 import { Intro } from './components/intro';
 import { Members } from './components/members';
 import { getBlogPostItems } from '@/lib/blog';
 import { BlogSection } from './components/blog-section';
+import { SponsorsSection } from './components/sponsors-section';
+
+// either Static metadata
+export const metadata: Metadata = {
+  title: 'GironaJS',
+};
 
 export default async function IndexPage({
   params: { lang },
@@ -19,6 +27,7 @@ export default async function IndexPage({
       <Intro dictionary={dictionary} />
       <Members dictionary={dictionary} />
       <BlogSection dictionary={dictionary} posts={posts} />
+      <SponsorsSection dictionary={dictionary} />
     </>
   );
 }

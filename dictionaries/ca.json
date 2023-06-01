@@ -29,7 +29,10 @@
       "title_2": "blogs",
       "subtitle": ""
     },
-    "sponsors": "Patrocinadors"
+    "sponsors": {
+      "title": "Patrocinadors",
+      "subtitle": ""
+    }
   },
   "blog": {
     "sharePost": "T'ha agradat el post? Si us plau, comparteix-lo",
