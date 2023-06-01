@@ -22,7 +22,6 @@ export default async function Root({
     <html lang={params.lang}>
       <head>
         <link rel="icon" href="/favicon.ico" />
-        <title>Girona JS</title>
       </head>
 
       <body
