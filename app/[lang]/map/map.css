@@ -116,7 +116,7 @@ p {
 }
 
 .map__card.map__card--fullscreen {
-  max-height: 90%;
+  max-height: 85%;
   transition: max-height 0.5s linear 0s;
 }
 

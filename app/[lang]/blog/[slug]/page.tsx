@@ -6,32 +6,18 @@ import { getBlogFilePaths, getBlogPath } from '@/lib/blog';
 import markdownToHtml from '@/lib/markdown';
 import { BlogPostItem, BlogPostItemData } from '@/types/blog';
 import { getMetadata } from '@/lib/seo';
-import { removeFilePathExtension } from '@/lib/utils';
+import { decodeMdxFilePathData } from '@/lib/utils';
 import { Blog } from '@/components/blog/blog';
 import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
+import LocalePrettyUrlsCache from '@/lib/locale-pretty-urls-cache';
 
-export async function generateMetadata({
-  params,
-}: {
+type Params = {
   params: { slug?: string; lang: Locale };
-}): Promise<Metadata> {
-  const postFilePath = path.join(
-    getBlogPath(params.lang),
-    `${params?.slug}.mdx`
-  );
-  const source = fs.readFileSync(postFilePath);
+};
 
-  const { content, data } = matter(source);
-
-  const contentHtml = await markdownToHtml(content || '');
-
-  const blogPostItem: BlogPostItem = {
-    content: contentHtml,
-    data: data as BlogPostItemData,
-    filePath: `${params?.slug}.mdx`,
-    urlPath: `/blog/${params?.slug}`,
-  };
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const blogPostItem = await generateBlogPostItem(params.lang, params.slug);
 
   const metaTags = getMetadata(
     blogPostItem.data.seo.metatitle || blogPostItem.data.title,
@@ -47,39 +33,18 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams({
-  params,
-}: {
-  params: { slug?: string; lang: Locale };
-}) {
-  return getBlogFilePaths(params.lang).map((filePath) => {
+export async function generateStaticParams({ params }: Params) {
+  const lang = params.lang;
+  return getBlogFilePaths(lang).map((filePath) => {
+    const { prettyUrl } = decodeMdxFilePathData(filePath, lang);
     return {
-      slug: removeFilePathExtension(filePath),
+      slug: prettyUrl,
     };
   });
 }
 
-export default async function Page({
-  params,
-}: {
-  params: { slug: string; lang: Locale };
-}) {
-  const postFilePath = path.join(
-    getBlogPath(params.lang),
-    `${params.slug}.mdx`
-  );
-  const source = fs.readFileSync(postFilePath);
-
-  const { content, data } = matter(source);
-
-  const contentHtml = await markdownToHtml(content || '');
-
-  const blogPostItem: BlogPostItem = {
-    content: contentHtml,
-    data: data as BlogPostItemData,
-    filePath: `${params.slug}.mdx`,
-    urlPath: `${params.lang}/blog/${params.slug}`,
-  };
+export default async function Page({ params }: Params) {
+  const blogPostItem = await generateBlogPostItem(params.lang, params.slug);
 
   const dictionary = await getDictionary(params.lang);
 
@@ -88,4 +53,27 @@ export default async function Page({
       <Blog blogPostItem={blogPostItem} dictionary={dictionary}></Blog>
     </div>
   );
+}
+
+async function generateBlogPostItem(lang: Locale, slug?: string) {
+  if (!slug) {
+    throw new Error('Blogpost must contain slug');
+  }
+  const postId = LocalePrettyUrlsCache.getId(slug);
+
+  const filePath = `${postId}_${slug}.mdx`;
+  const postFilePath = path.join(getBlogPath(lang), filePath);
+  const source = fs.readFileSync(postFilePath);
+  const { content, data } = matter(source);
+
+  const contentHtml = await markdownToHtml(content || '');
+
+  const blogPostItem: BlogPostItem = {
+    id: decodeMdxFilePathData(filePath, lang).id,
+    content: contentHtml,
+    data: data as BlogPostItemData,
+    filePath: `${slug}.mdx`,
+    urlPath: `${lang}/blog/${slug}`,
+  };
+  return blogPostItem;
 }

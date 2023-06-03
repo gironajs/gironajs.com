@@ -10,7 +10,24 @@ export function capitalizeFirstLetter(text: string): string {
 }
 
 export const removeFilePathExtension = (filePath: string) => {
-  return filePath.split('.')[0];
+  const lastIndex = filePath.lastIndexOf('.');
+  return filePath.slice(0, lastIndex);
+};
+
+export const decodeMdxFilePathData = (
+  filePath: string,
+  lang: string
+): { id: string; prettyUrl: string; urlPath: string } => {
+  const cleanPath = removeFilePathExtension(filePath);
+  const firstIndexOfUnderscore = cleanPath.indexOf('_');
+  const id = cleanPath.slice(0, firstIndexOfUnderscore);
+  const prettyUrl = cleanPath.slice(firstIndexOfUnderscore + 1);
+
+  return {
+    id: id,
+    prettyUrl: prettyUrl,
+    urlPath: `/${lang}/blog/${prettyUrl}`,
+  };
 };
 /**
  * Given any object, returns the prop subchild using dot notation as string "desc"

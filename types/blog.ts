@@ -16,6 +16,7 @@ export interface BlogPostItemData {
 }
 
 export interface BlogPostItem {
+  id: string;
   content: any;
   data: BlogPostItemData;
   filePath: string;

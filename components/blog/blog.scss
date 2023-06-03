@@ -48,7 +48,6 @@
     margin-top: 16px;
     font-size: 20px;
     line-height: 24px;
-    line-height: 32px;
   }
 
   > p {
@@ -114,7 +113,7 @@
       unicode-bidi: isolate;
       font-variant-numeric: tabular-nums;
       text-transform: none;
-      text-indent: 0px !important;
+      text-indent: 0 !important;
       text-align: start !important;
       text-align-last: start !important;
     }

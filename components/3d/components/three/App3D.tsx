@@ -28,16 +28,9 @@ export default function App3D({ isDebug = true, dictionary }: Props) {
       <Leva hidden={!isDebug} />
 
       <Canvas flat shadows>
-        <Suspense
-          fallback={
-            <LoadingScreen
-              onUnmountCb={onLoadingScreenCompleted}
-              dictionary={dictionary}
-            />
-          }
-        >
+        <Suspense fallback={<LoadingScreen dictionary={dictionary} />}>
           {isDebug && <Perf position="top-left" />}
-          <Experience />
+          <Experience onMountCb={onLoadingScreenCompleted} />
         </Suspense>
       </Canvas>
 

@@ -14,8 +14,13 @@ import CameraOrbitController from './CameraOrbitController';
 import MapPins from './MapPins';
 import Forest from './Forest';
 import { Dragon } from './Dragon';
+import { useEffect } from 'react';
 
-export default function Experience() {
+type Props = {
+  onMountCb: () => void;
+};
+
+export default function Experience({ onMountCb }: Props) {
   // - STATE
 
   // - DEBUG
@@ -51,6 +56,11 @@ export default function Experience() {
     //Do the TWEEN update only once for all components, therefore in the parent component
     TWEEN.update();
   });
+
+  // - EFFECT
+  useEffect(() => {
+    onMountCb();
+  }, [onMountCb]);
 
   // - JSX
   return (

@@ -36,9 +36,11 @@ const members: Member[] = [
   {
     github: 'JOGUI22',
     name: 'Jordi Casadevall',
-    role: 'Platform Engineer',
+    role: 'Senior Software Engineer',
     company: 'Wikiloc Outdoor Navigation',
     linkedin: 'jordi-casadevall-franco',
+    twitter: 'JOGUI22',
+    website: 'https://jordi.casa',
   },
 ];
 
