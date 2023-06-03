@@ -43,10 +43,10 @@ const Header = ({ lang, localePrettyUrlsCacheData }: Props) => {
               {siteConfig.name}
             </span>
           </Link>
-          <Link href="/blog" className="items-center space-x-2 flex">
+          <Link href={`/${lang}/blog`} className="items-center space-x-2 flex">
             <span className="font-bold text-lg hover:text-red-500">Blog</span>
           </Link>
-          <Link href="/map" className="items-center space-x-2 flex">
+          <Link href={`/${lang}/map`} className="items-center space-x-2 flex">
             <span className="font-bold text-lg hover:text-red-500">Map</span>
           </Link>
         </div>
