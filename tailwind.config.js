@@ -12,7 +12,7 @@ module.exports = {
     extend: {
       fontFamily: {
         jetbrains: ['var(--font-jetbrains-mono)'],
-        inter: ['var(--font-inter)'],
+        lato: ['var(--font-lato)'],
         'source-serif-pro': ['var(--font-source-serif-pro)'],
       },
     },

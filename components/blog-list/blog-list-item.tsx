@@ -1,11 +1,14 @@
 'use client';
 
 import { formatDatePretty } from '@/lib/date';
+import { useGetLocale } from '@/lib/locale';
 import { BlogPostItem } from '@/types/blog';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function BlogListItem({ post }: { post: BlogPostItem }) {
+  const locale = useGetLocale();
+
   return (
     <div className="overflow-hidden shadow-lg relative bg-white border-b border-background-100 rounded flex flex-col">
       <div className="overflow-hidden border border-background-100 cursor-pointer pb-[63%] h-0">
@@ -37,7 +40,7 @@ export default function BlogListItem({ post }: { post: BlogPostItem }) {
           </p>
         </div>
         <span className="text-sm">
-          {formatDatePretty(post.data.publishedDate)}
+          {formatDatePretty(post.data.publishedDate, locale)}
         </span>
       </div>
     </div>

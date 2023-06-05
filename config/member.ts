@@ -23,7 +23,7 @@ const members: Member[] = [
     github: 'llorenspujol',
     role: 'Senior Frontend Developer 🎨',
     company: 'Katoid',
-    linkedin: 'llorenspujol',
+    linkedin: 'llorenç-pujol-ferriol-46575bb9',
     twitter: 'llorenspujol',
   },
   {

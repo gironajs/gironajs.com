@@ -1,4 +1,4 @@
-import { JetBrains_Mono, Inter, Source_Serif_Pro } from 'next/font/google';
+import { Lato, JetBrains_Mono, Source_Serif_Pro } from 'next/font/google';
 
 export const jetbrainsFont = JetBrains_Mono({
   subsets: ['latin'],
@@ -6,11 +6,11 @@ export const jetbrainsFont = JetBrains_Mono({
   display: 'swap',
 });
 
-export const interFont = Inter({
-  weight: ['400', '500'],
+export const latoFont = Lato({
+  weight: ['400', '700'],
   style: ['normal'],
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-lato',
   display: 'swap',
 });
 

@@ -5,9 +5,12 @@ import ArrowRightIcon from '@/components/icons/arrow-right';
 import { membersDictionary } from '@/config/member';
 import { formatDatePretty } from '@/lib/date';
 import { BlogPostItemData } from '@/types/blog';
+import { useGetLocale } from '@/lib/locale';
 
 export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
   const { title, author: username, publishedDate, description, image } = props;
+
+  const locale = useGetLocale();
 
   // TODO: We may want to resolve the author on a server component to not ship all the list of members to the client.
   const author = membersDictionary[username];
@@ -44,7 +47,9 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
               height={48}
             />
             <span className="text-xs flex-1 font-bold">{author.name}</span>
-            <span className="text-xs">{formatDatePretty(publishedDate)}</span>
+            <span className="text-xs">
+              {formatDatePretty(publishedDate, locale)}
+            </span>
           </div>
         </div>
       </section>

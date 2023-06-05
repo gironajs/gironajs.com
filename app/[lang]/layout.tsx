@@ -5,7 +5,7 @@ import { Header } from '@/components/header';
 import { i18n, Locale } from '@/i18n-config';
 import '@/styles/globals.scss';
 import '@/styles/prism-themes/prism-material-oceanic.css';
-import { jetbrainsFont, interFont, sourceSerifProFont } from './fonts';
+import { jetbrainsFont, latoFont, sourceSerifProFont } from './fonts';
 import localePrettyUrlsCache, {
   LocalePrettyUrlsData,
 } from '@/lib/locale-pretty-urls-cache';
@@ -31,7 +31,7 @@ export default async function Root({
       </head>
 
       <body
-        className={`${interFont.className} ${interFont.variable} ${jetbrainsFont.variable} ${sourceSerifProFont.variable}`}
+        className={`${jetbrainsFont.variable} ${latoFont.className} ${latoFont.variable} ${sourceSerifProFont.variable}`}
       >
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}

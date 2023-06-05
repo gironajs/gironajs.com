@@ -14,6 +14,8 @@
   h2,
   h3,
   h4 {
+    font-family: var(--font-lato);
+    font-weight: bold;
     margin-bottom: 16px;
   }
 
@@ -47,11 +49,15 @@
     font-family: var(--font-source-serif-pro);
     margin-top: 16px;
     font-size: 20px;
-    line-height: 24px;
+    line-height: 32px;
   }
 
   > p {
     margin-bottom: 12px;
+    color: rgba(41, 41, 41, 1);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.003em;
   }
 
   blockquote {
@@ -84,6 +90,7 @@
       margin-top: 64px;
     }
 
+    > blockquote,
     > p,
     > ul {
       margin-top: 16px !important;

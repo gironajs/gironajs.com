@@ -2038,10 +2038,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==
 
-fox-awesome-cli@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/fox-awesome-cli/-/fox-awesome-cli-1.2.0.tgz#eb17542b59f0169515335d094dde8047f3947be1"
-  integrity sha512-r5l5oB9rvpAZafIy4X+TPk8dJztIlKvcgjjRvuWpewi58wmFkhFRM9eJX93sZloB5hdoNipUWgjwVvJvxvEbhg==
+fox-awesome-cli@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/fox-awesome-cli/-/fox-awesome-cli-1.3.0.tgz#2fd9508d24dd2655d0a3dfb79cf8152ca6cdb03a"
+  integrity sha512-UV7/DFk23o1iCAl263xA3g5uXOMiWtrff1YzRZ4TVohqGEAP33XtzUS+dl3x2YenopnNgVGrwf1O1LBStHJT6g==
   dependencies:
     axios "^0.21.1"
     chalk "4.1.0"
