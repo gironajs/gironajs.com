@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { membersDictionary } from '@/config/member';
 
 type Props = {
-  ringColor?: string;
+  ringColor?: 'white' | 'slate';
   memberIds: string[];
   size: 'sm' | 'md';
 };
@@ -37,7 +37,8 @@ const AvatarStack = ({ memberIds, ringColor = 'white', size }: Props) => {
           <Image
             alt="twitter-profile"
             className={clsx(
-              `object-cover rounded-full inline-block rounded-full ring-2 ring-${ringColor} transition-transform`,
+              `object-cover rounded-full inline-block rounded-full ring-2 transition-transform`,
+              ringColor === 'white' ? 'ring-white' : 'ring-slate-100',
               size === 'md' ? ' w-[48px] h-[48px]' : ' w-[32px] h-[32px]'
             )}
             src={`https://github.com/${member.github}.png`}

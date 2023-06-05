@@ -49,11 +49,7 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
           </div>
           <div className="gjs-hero-footer flex items-center">
             <div className="flex flex-1 gap-3">
-              <AvatarStack
-                memberIds={memberIds}
-                ringColor="slate-100"
-                size="md"
-              />
+              <AvatarStack memberIds={memberIds} ringColor="slate" size="md" />
               <div className="flex items-center">
                 {members.map((member, i) => (
                   <a
