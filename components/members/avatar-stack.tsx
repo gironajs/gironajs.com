@@ -5,11 +5,12 @@ import clsx from 'clsx';
 import { membersDictionary } from '@/config/member';
 
 type Props = {
+  ringColor?: string;
   memberIds: string[];
   size: 'sm' | 'md';
 };
 
-const AvatarStack = ({ memberIds, size }: Props) => {
+const AvatarStack = ({ memberIds, ringColor = 'white', size }: Props) => {
   const members = React.useMemo(
     () =>
       memberIds
@@ -36,7 +37,7 @@ const AvatarStack = ({ memberIds, size }: Props) => {
           <Image
             alt="twitter-profile"
             className={clsx(
-              'object-cover rounded-full inline-block rounded-full ring-2 ring-slate-100 transition-transform',
+              `object-cover rounded-full inline-block rounded-full ring-2 ring-${ringColor} transition-transform`,
               size === 'md' ? ' w-[48px] h-[48px]' : ' w-[32px] h-[32px]'
             )}
             src={`https://github.com/${member.github}.png`}

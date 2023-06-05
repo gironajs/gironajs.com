@@ -40,7 +40,11 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
           </div>
           <div className="gjs-hero-footer flex items-center">
             <div className="flex flex-1 gap-3">
-              <AvatarStack memberIds={memberIds} size="md" />
+              <AvatarStack
+                memberIds={memberIds}
+                ringColor="slate-100"
+                size="md"
+              />
             </div>
             <span className="text-xs">
               {formatDatePretty(publishedDate, locale)}
