@@ -4,7 +4,7 @@ export interface BlogPostItemData {
   published: boolean;
   publishedDate: Date;
   image: string;
-  author: string; // It may be a good idea to support authors in plural in the future. A blog may be co-authored by multiple members
+  authors: string;
   seo: {
     metatitle: string;
     metadescription: string;
