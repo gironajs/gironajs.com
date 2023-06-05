@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import ArrowRightIcon from '@/components/icons/arrow-right';
+import { membersDictionary } from '@/config/member';
 import { formatDatePretty } from '@/lib/date';
 import { BlogPostItemData } from '@/types/blog';
 import { useGetLocale } from '@/lib/locale';
@@ -14,6 +15,14 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
   const locale = useGetLocale();
 
   const memberIds = React.useMemo(() => authors.split(','), [authors]);
+
+  const members = React.useMemo(
+    () =>
+      memberIds
+        .map((memberId) => membersDictionary[memberId])
+        .sort(() => 0.5 - Math.random()),
+    [memberIds]
+  );
 
   return (
     <>
@@ -45,6 +54,19 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
                 ringColor="slate-100"
                 size="md"
               />
+              <div className="flex items-center">
+                {members.map((member, i) => (
+                  <a
+                    className="text-xs font-bold hover:text-red-500 transition mr-1"
+                    key={member.github}
+                    href={`https://github.com/${member.github}`}
+                    target="_blank"
+                  >
+                    {member.name}
+                    {i !== members.length - 1 ? ',' : ''}
+                  </a>
+                ))}
+              </div>
             </div>
             <span className="text-xs">
               {formatDatePretty(publishedDate, locale)}
