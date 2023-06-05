@@ -1,13 +1,21 @@
 'use client';
 
-import { formatDatePretty } from '@/lib/date';
-import { useGetLocale } from '@/lib/locale';
-import { BlogPostItem } from '@/types/blog';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { formatDatePretty } from '@/lib/date';
+import { useGetLocale } from '@/lib/locale';
+import { BlogPostItem } from '@/types/blog';
+import { AvatarStack } from '@/components/members/avatar-stack';
+
 export default function BlogListItem({ post }: { post: BlogPostItem }) {
   const locale = useGetLocale();
+
+  const memberIds = React.useMemo(
+    () => post.data.authors.split(','),
+    [post.data.authors]
+  );
 
   return (
     <div className="overflow-hidden shadow-lg relative bg-white border-b border-background-100 rounded flex flex-col">
@@ -39,9 +47,12 @@ export default function BlogListItem({ post }: { post: BlogPostItem }) {
             {post.data.description}
           </p>
         </div>
-        <span className="text-sm">
-          {formatDatePretty(post.data.publishedDate, locale)}
-        </span>
+        <div className="flex gap-3 items-center justify-between">
+          <AvatarStack memberIds={memberIds} size="sm" />
+          <span className="text-sm">
+            {formatDatePretty(post.data.publishedDate, locale)}
+          </span>
+        </div>
       </div>
     </div>
   );

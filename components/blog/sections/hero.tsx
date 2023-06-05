@@ -7,26 +7,21 @@ import { membersDictionary } from '@/config/member';
 import { formatDatePretty } from '@/lib/date';
 import { BlogPostItemData } from '@/types/blog';
 import { useGetLocale } from '@/lib/locale';
+import { AvatarStack } from '@/components/members/avatar-stack';
 
 export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
-  const {
-    title,
-    authors: blogAuthors,
-    publishedDate,
-    description,
-    image,
-  } = props;
+  const { title, authors, publishedDate, description, image } = props;
 
   const locale = useGetLocale();
 
-  // TODO: We may want to resolve the author on a server component to not ship all the list of members to the client.
-  const authors = React.useMemo(
+  const memberIds = React.useMemo(() => authors.split(','), [authors]);
+
+  const members = React.useMemo(
     () =>
-      blogAuthors
-        .split(',')
-        .map((blogAuthor) => membersDictionary[blogAuthor])
+      memberIds
+        .map((memberId) => membersDictionary[memberId])
         .sort(() => 0.5 - Math.random()),
-    [blogAuthors]
+    [memberIds]
   );
 
   return (
@@ -53,25 +48,21 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
             <p className="text-lg">{description}</p>
           </div>
           <div className="gjs-hero-footer flex items-center">
-            <div className="flex flex-1 flex-col gap-2">
-              {authors.map((author) => (
-                <div key={author.github} className="flex gap-3 items-center">
-                  <Image
-                    className="w-[48px] h-[48px] rounded-full"
-                    alt="twitter-profile"
-                    src={`https://github.com/${author.github}.png`}
-                    width={48}
-                    height={48}
-                  />
+            <div className="flex flex-1 gap-3">
+              <AvatarStack memberIds={memberIds} ringColor="slate" size="md" />
+              <div className="flex items-center">
+                {members.map((member, i) => (
                   <a
-                    className="text-xs font-bold hover:text-red-500 transition"
-                    href={`https://github.com/${author.github}`}
+                    className="text-xs font-bold hover:text-red-500 transition mr-1"
+                    key={member.github}
+                    href={`https://github.com/${member.github}`}
                     target="_blank"
                   >
-                    {author.name}
+                    {member.name}
+                    {i !== members.length - 1 ? ',' : ''}
                   </a>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
             <span className="text-xs">
               {formatDatePretty(publishedDate, locale)}
