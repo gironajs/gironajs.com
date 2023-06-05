@@ -3,31 +3,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import ArrowRightIcon from '@/components/icons/arrow-right';
-import { membersDictionary } from '@/config/member';
 import { formatDatePretty } from '@/lib/date';
 import { BlogPostItemData } from '@/types/blog';
 import { useGetLocale } from '@/lib/locale';
+import { AvatarStack } from '@/components/members/avatar-stack';
 
 export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
-  const {
-    title,
-    authors: blogAuthors,
-    publishedDate,
-    description,
-    image,
-  } = props;
+  const { title, authors, publishedDate, description, image } = props;
 
   const locale = useGetLocale();
 
-  // TODO: We may want to resolve the author on a server component to not ship all the list of members to the client.
-  const authors = React.useMemo(
-    () =>
-      blogAuthors
-        .split(',')
-        .map((blogAuthor) => membersDictionary[blogAuthor])
-        .sort(() => 0.5 - Math.random()),
-    [blogAuthors]
-  );
+  const memberIds = React.useMemo(() => authors.split(','), [authors]);
 
   return (
     <>
@@ -53,25 +39,8 @@ export function Hero(props: Omit<BlogPostItemData, 'seo'>) {
             <p className="text-lg">{description}</p>
           </div>
           <div className="gjs-hero-footer flex items-center">
-            <div className="flex flex-1 flex-col gap-2">
-              {authors.map((author) => (
-                <div key={author.github} className="flex gap-3 items-center">
-                  <Image
-                    className="w-[48px] h-[48px] rounded-full"
-                    alt="twitter-profile"
-                    src={`https://github.com/${author.github}.png`}
-                    width={48}
-                    height={48}
-                  />
-                  <a
-                    className="text-xs font-bold hover:text-red-500 transition"
-                    href={`https://github.com/${author.github}`}
-                    target="_blank"
-                  >
-                    {author.name}
-                  </a>
-                </div>
-              ))}
+            <div className="flex flex-1 gap-3">
+              <AvatarStack memberIds={memberIds} size="md" />
             </div>
             <span className="text-xs">
               {formatDatePretty(publishedDate, locale)}
