@@ -68,7 +68,7 @@ export default function Experience({ onMountCb }: Props) {
       <CameraOrbitController />
 
       <color args={[backgroundColor]} attach="background" />
-      <Environment preset="city" />
+      <Environment files="/assets/3d/hdr/potsdamer_platz_1k.hdr" />
       <AccumulativeShadows
         temporal
         frames={100}
