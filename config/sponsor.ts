@@ -18,4 +18,13 @@ export const sponsors: Sponsor[] = [
       height: 196,
     },
   },
+  {
+    name: 'Katoid',
+    url: 'https://katoid.com/',
+    image: {
+      url: '/assets/sponsors/katoid-logo.png',
+      width: 700,
+      height: 211,
+    },
+  },
 ];

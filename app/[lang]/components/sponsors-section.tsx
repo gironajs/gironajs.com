@@ -22,11 +22,16 @@ export function SponsorsSection({ dictionary }: Props) {
           {dictionary?.home.sponsors.subtitle}
         </p>
 
-        <div className="my-10 flex justify-center">
+        <div className="my-10 flex justify-center flex-wrap">
           {...sponsors.map((sponsor, index) => (
-            <Link key={index} href={sponsor.url} target="_blank">
+            <Link
+              key={index}
+              href={sponsor.url}
+              target="_blank"
+              className="flex items-center m-10"
+            >
               <Image
-                className="object-cover"
+                className="object-cover w-[249px]"
                 src={sponsor.image.url}
                 width={sponsor.image.width}
                 height={sponsor.image.height}
