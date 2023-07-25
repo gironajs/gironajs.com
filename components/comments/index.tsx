@@ -1,29 +1,24 @@
 'use client';
 
-import Giscus, { Repo } from '@giscus/react';
+import Giscus from '@giscus/react';
 
 export interface CommentsProps {
-  repo?: Repo;
-  repoId?: string;
-  category?: string;
-  categoryId?: string;
+  lang?: string;
 }
 
-const Comments = ({ repo, repoId, category, categoryId }: CommentsProps) => {
-  if (!repo || !repoId) return null;
-
+const Comments = ({ lang }: CommentsProps) => {
   return (
     <Giscus
-      repo={repo}
-      repoId={repoId}
-      category={category}
-      categoryId={categoryId}
+      repo="gironajs/gironajs.com"
+      repoId="R_kgDOJGXldQ"
+      category="Announcements"
+      categoryId="DIC_kwDOJGXldc4CYEIX"
       mapping="pathname"
       reactionsEnabled="1"
       emitMetadata="0"
       inputPosition="top"
       theme="light"
-      lang="en"
+      lang={lang || 'ca'}
       loading="lazy"
     />
   );

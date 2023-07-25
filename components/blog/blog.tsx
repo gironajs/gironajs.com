@@ -9,23 +9,18 @@ import { BlogMembersList } from '@/components/members/members-list';
 
 import { Hero } from './sections/hero';
 import Comments from '../comments';
-import { Repo } from '@giscus/react';
 
 import './blog.scss'; // TODO: This styles will be global even only imported here. We should
 
 type Props = {
   blogPostItem: BlogPostItem;
   dictionary: LangDictionary;
+  lang: string;
 };
 
-export function Blog({ blogPostItem, dictionary }: Props) {
+export function Blog({ blogPostItem, dictionary, lang }: Props) {
   const host = `https://gironajs.com`; // TODO: Put host value on environment variables
   const getFullHref = (post: BlogPostItem) => `${host}/${post.urlPath}`;
-
-  const repo = process.env.COMMENTS_REPO as Repo;
-  const repoId = process.env.COMMENTS_REPO_ID;
-  const category = process.env.COMMENTS_CATEGORY;
-  const categoryId = process.env.COMMENTS_CATEGORY_ID;
 
   return (
     <div>
@@ -46,12 +41,7 @@ export function Blog({ blogPostItem, dictionary }: Props) {
             title={blogPostItem.data.title}
           />
         </div>
-        <Comments
-          repo={repo}
-          repoId={repoId}
-          category={category}
-          categoryId={categoryId}
-        />
+        <Comments lang={lang} />
       </div>
     </div>
   );
