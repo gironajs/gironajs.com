@@ -8,15 +8,17 @@ import * as mdxComponents from '@/components/mdx';
 import { BlogMembersList } from '@/components/members/members-list';
 
 import { Hero } from './sections/hero';
+import Comments from '../comments';
 
 import './blog.scss'; // TODO: This styles will be global even only imported here. We should
 
 type Props = {
   blogPostItem: BlogPostItem;
   dictionary: LangDictionary;
+  lang: string;
 };
 
-export function Blog({ blogPostItem, dictionary }: Props) {
+export function Blog({ blogPostItem, dictionary, lang }: Props) {
   const host = `https://gironajs.com`; // TODO: Put host value on environment variables
   const getFullHref = (post: BlogPostItem) => `${host}/${post.urlPath}`;
 
@@ -39,6 +41,7 @@ export function Blog({ blogPostItem, dictionary }: Props) {
             title={blogPostItem.data.title}
           />
         </div>
+        <Comments lang={lang} />
       </div>
     </div>
   );

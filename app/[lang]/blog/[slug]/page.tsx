@@ -50,7 +50,11 @@ export default async function Page({ params }: Params) {
 
   return (
     <div className="relative">
-      <Blog blogPostItem={blogPostItem} dictionary={dictionary}></Blog>
+      <Blog
+        blogPostItem={blogPostItem}
+        dictionary={dictionary}
+        lang={params.lang}
+      ></Blog>
     </div>
   );
 }
