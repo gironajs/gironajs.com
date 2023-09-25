@@ -43,7 +43,7 @@ async function EventsPage() {
   });
 
   return (
-    <div className="bg-stone-900 min-h-screen">
+    <div className="bg-stone-900 min-h-screen px-4">
       <section className="pt-24 pb-12">
         <div className="container px-4 mx-auto flex flex-wrap">
           <div className="w-full text-center max-w-2xl mx-auto">
@@ -55,7 +55,7 @@ async function EventsPage() {
               by GironaJS or propose a new event that you would like attend or
               organize.
             </p>
-            <div className="flex flex-wrap justify-center mt-8">
+            <div className="flex flex-wrap justify-center mt-8 md:flex-row flex-col">
               <div className="shadow border border-neutral-200 rounded-md sm:mr-3 mt-2 sm:mt-0">
                 <a
                   href="https://github.com/gironajs/trobades/issues/new?assignees=&labels=&projects=&template=peticions.md&title="
@@ -118,9 +118,9 @@ async function EventsPage() {
         ))}
       </section>
 
-      <div className="w-full text-center max-w-2xl mx-auto mt-12 flex">
+      <div className="w-full max-w-2xl mx-auto mt-12 flex gap-8 md:flex-row flex-col">
         <div className="flex-1">
-          <h2 className="text-3xl font-bold text-white mb-5 text-center">
+          <h2 className="text-3xl font-bold text-white mb-5 text-left">
             How events works?
           </h2>
         </div>
@@ -141,7 +141,7 @@ async function EventsPage() {
               .
             </p>
           </div>
-          <div className="mt-12">
+          <div className="mt-12 mb-12">
             <h3 className="text-xl font-bold text-slate-200 mb-5 text-left">
               Organize an event
             </h3>
