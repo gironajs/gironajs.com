@@ -45,7 +45,8 @@
 
   > blockquote,
   > p,
-  > ul {
+  > ul,
+  > ol {
     font-family: var(--font-source-serif-pro);
     margin-top: 16px;
     font-size: 20px;
@@ -92,7 +93,8 @@
 
     > blockquote,
     > p,
-    > ul {
+    > ul,
+    > ol {
       margin-top: 16px !important;
       font-size: 18px !important;
       line-height: 28px !important;
@@ -104,13 +106,14 @@
     margin: 16px 0;
   }
 
-  > ul {
+  > ul,
+  > ol {
     list-style-type: disc;
     padding-top: 14px;
     padding-bottom: 14px;
     padding-inline-start: 40px;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 18px;
 
     li:not(:last-child) {
       margin-bottom: 8px;
