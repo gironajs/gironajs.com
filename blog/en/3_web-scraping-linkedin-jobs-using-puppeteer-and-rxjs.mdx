@@ -68,15 +68,18 @@ The code snippet below initializes a Puppeteer browser instance in a non-headles
 })();
 ```
 
+> Some of the snippets in this blog may omit parts for clarity. You can find the complete code in this [repository](https://github.com/llorenspujol/linkedin-jobs-scraper).
+
+
 ## Go to Linkedin jobs list and extract the jobs data
 
 This is the core part of this blog,  where we dive into the process of accessing LinkedIn's job listings, parsing the HTML content, and retrieving the job data in JSON format.
 
 ### 1- Constructing the URL for Navigating LinkedIn Job Listings
 
-To access LinkedIn's job listings, we need to construct a URL using the following function:
+To access LinkedIn's job listings, we need to construct a URL using the function `urlQueryPage`:
 
-```ts
+```ts:src/linkedin.ts
 export const urlQueryPage = (search: ScraperSearchParams) =>
     `https://linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${search.searchText}
     &start=${search.nPage * 25}${search.locationText ? '&location=' + search.locationText : ''}`
@@ -445,7 +448,36 @@ function waitForJobSearchCard(page: Page) {
 
 In this code, we address the errors mentioned earlier, namely the 429 status code error and the authwall issue. Overcoming these errors is crucial for ensuring the long-term success of web scraping from LinkedIn.
 
-To handle these errors, the code employs a custom retry strategy implemented by the `retryStrategyByCondition` function. This strategy essentially increases the time between each retry after a failure, allowing the code to be more resilient when faced with these common LinkedIn errors. This retry mechanism helps in managing the challenges associated with LinkedIn scraping and enhances the overall reliability of the process.
+To handle these errors, the code employs a custom retry strategy implemented by the [`retryStrategyByCondition`](https://github.com/llorenspujol/linkedin-jobs-scraper/blob/12b48449d773800bada82cbbfc09f76af5ac9289/src/scraper.utils.ts#L33) function:
+
+```ts:src/scraper.utils.ts
+export const retryStrategyByCondition = ({maxRetryAttempts = 3, scalingDuration = 1000, retryConditionFn = (error) => true}: {
+    maxRetryAttempts?: number,
+    scalingDuration?: number,
+    retryConditionFn?: (error) => boolean
+} = {}) => (attempts: Observable<any>) => {
+    return attempts.pipe(
+        mergeMap((error, i) => {
+            const retryAttempt = i + 1;
+            if (
+                retryAttempt > maxRetryAttempts ||
+                !retryConditionFn(error)
+            ) {
+                return throwError(error);
+            }
+            console.log(
+                `Attempt ${retryAttempt}: retrying in ${retryAttempt *
+                scalingDuration}ms`
+            );
+            // retry after 1s, 2s, etc...
+            return timer(retryAttempt * scalingDuration);
+        }),
+        finalize(() => console.log('retryStrategyOnlySpecificErrors - finalized'))
+    );
+};
+```
+
+This strategy essentially increases the time between each retry after a failure, allowing the code to be more resilient when faced with these common LinkedIn errors. This retry mechanism helps in managing the challenges associated with LinkedIn scraping and enhances the overall reliability of the process.
 
 
 > Note: It's important to be aware that LinkedIn may blacklist our IP address, and simply waiting for more time might not be an effective solution. To mitigate this potential issue and reduce the occurrence of errors, a recommended practice is to implement IP rotation at regular intervals. As an example, utilizing a VPN as a proxy and periodically switching between different geographic locations presents an easy and effective solution to this challenge.

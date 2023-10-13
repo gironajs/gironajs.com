@@ -67,15 +67,19 @@ El fragment de codi a continuació inicialitza una instància de navegador Puppe
 })();
 ```
 
+> Alguns dels fragments en aquest blog poden ometre parts per claredat. Podeu trobar el codi complet en aquest [repositori](https://github.com/llorenspujol/linkedin-jobs-scraper).
+
+This translation maintains the meaning of the original English text in Catalan.
+
 ## Anar a la llista de llocs de treball de LinkedIn i extreure les dades
 
 Aquesta és la part central d'aquest bloc, on ens submergim en el procés d'accés a les ofertes de treball de LinkedIn, analitzant el contingut HTML i recuperant les dades del lloc de treball en format JSON.
 
 ### 1- Construint la URL per Navegar per les Ofertes de Treball de LinkedIn
 
-Per accedir a les ofertes de treball de LinkedIn, necessitem construir una URL utilitzant la funció següent:
+Per accedir a les ofertes de treball de LinkedIn, necessitem construir una URL utilitzant la funció `urlQueryPage`:
 
-```ts
+```ts:src/linkedin.ts
 export const urlQueryPage = (search: ScraperSearchParams) =>
     `https://linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${search.searchText}
     &start=${search.nPage * 25}${search.locationText ? '&location=' + search.locationText : ''}`
@@ -252,10 +256,6 @@ This approach is a recommended best practice that works reliably in all scenario
 Aquest enfocament és una millor pràctica recomanada que funciona de manera fiable en tots els escenaris. Les Promeses són "eager", mentre que els Observables són "lazy" i només s'inicien quan algú s'hi subscriu. L'operador `defer` ens permet convertir a "lazy" una Promesa.
 
 
-### 3- Add an asynchronous loop to iterate through all the pages
-
-In the previous step we understood how to obtain all the jobs data from a LinkedIn page. What we want to do now is use that code as many times as possible to get as many data we can. To achieve this, first, we need to iterate through all the possible pages:
-
 ### 3- Afegir un Bucle Asíncron per Iterar a través de Totes les Pàgines
 
 En l'etapa anterior, hem après com obtenir totes les dades de les ofertes de treball d'una pàgina de LinkedIn. Ara, el que volem fer és utilitzar aquest codi tantes vegades com sigui possible per recopilar tantes dades com puguem. Per aconseguir-ho, primer necessitem iterar a través de totes les pàgines disponibles:
@@ -283,7 +283,7 @@ export function getJobsFromPageRecursive(page: Page, searchParams: ScraperSearch
 ```
 El codi anterior és un bucle asíncron creat amb recursió.
 
-> En RxJS, no podem utilitzar un bucle(`for`) com ho fem amb await/async. Hem d'utilitzar un bucle recursiu en el seu lloc. Encara que inicialment pugui semblar una limitació, en un context asíncron, aquest mètode resulta ser més avantatjós en nombroses situacions
+> En RxJS, no podem utilitzar un bucle amb la paraula clau `for` com ho fem amb await/async. Hem d'utilitzar un bucle recursiu en el seu lloc. Encara que inicialment pugui semblar una limitació, en un context asíncron, aquest mètode resulta ser més avantatjós en nombroses situacions
 
 Podríem implementar això utilitzant Promises en lloc d'Observables? Absolutament, aquí teniu el codi equivalent escrit amb Promises:
 
@@ -325,17 +325,6 @@ const jobs = await getJobsFromLinkedinPage(page, searchParams);
 ...però això acoblaria innecessàriament el nostre codi de "scraping" amb la part que gestiona les dades de les ofertes de treball (un cas comú serà guardar les ofertes de treball en una base de dades).
 
 Així doncs, en aquest exemple veiem clarament un dels molts avantatges que els Observables ofereixen respecte a les Promeses.
-
-
-
-
-
-
-
-
-
-
-
 
 
 ### 4- Afegim un altre bucle asíncron per iterar a través de tots els paràmetres de cerca especificats
@@ -467,7 +456,36 @@ function waitForJobSearchCard(page: Page) {
 
 En aquest codi, abordem els errors esmentats anteriorment, és a dir, l'error de resposta 429 i el problema de l'authwall. Superar aquests errors és crucial per assegurar l'èxit a llarg termini del scraping web de LinkedIn.
 
-Per gestionar aquests errors, el codi utilitza una estratègia de reintents personalitzada implementada per la funció `retryStrategyByCondition`. Aquesta estratègia, bàsicament, augmenta el temps entre cada reintent després d'un fracàs, permetent que el codi sigui més resistent quan s'enfronta a aquests errors comuns de LinkedIn. Aquest mecanisme de reintent ajuda a gestionar els desafiaments associats amb el scraping de LinkedIn i millora la fiabilitat global del procés.
+Per gestionar aquests errors, el codi utilitza una estratègia de reintents personalitzada implementada per la funció [`retryStrategyByCondition`](https://github.com/llorenspujol/linkedin-jobs-scraper/blob/12b48449d773800bada82cbbfc09f76af5ac9289/src/scraper.utils.ts#L33):
+
+```ts:src/scraper.utils.ts
+export const retryStrategyByCondition = ({maxRetryAttempts = 3, scalingDuration = 1000, retryConditionFn = (error) => true}: {
+    maxRetryAttempts?: number,
+    scalingDuration?: number,
+    retryConditionFn?: (error) => boolean
+} = {}) => (attempts: Observable<any>) => {
+    return attempts.pipe(
+        mergeMap((error, i) => {
+            const retryAttempt = i + 1;
+            if (
+                retryAttempt > maxRetryAttempts ||
+                !retryConditionFn(error)
+            ) {
+                return throwError(error);
+            }
+            console.log(
+                `Attempt ${retryAttempt}: retrying in ${retryAttempt *
+                scalingDuration}ms`
+            );
+            // retry after 1s, 2s, etc...
+            return timer(retryAttempt * scalingDuration);
+        }),
+        finalize(() => console.log('retryStrategyOnlySpecificErrors - finalized'))
+    );
+};
+```
+
+Aquesta estratègia, bàsicament, augmenta el temps entre cada reintent després d'un fracàs, permetent que el codi sigui més resistent quan s'enfronta a aquests errors comuns de LinkedIn. Aquest mecanisme de reintent ajuda a gestionar els desafiaments associats amb el scraping de LinkedIn i millora la fiabilitat global del procés.
 
 > Nota: És important ser conscient que LinkedIn pot posar a la llista negra la nostra adreça IP, i simplement esperar més temps pot no ser una solució efectiva. Per mitigar aquest problema potencial i reduir l'ocurrència d'errors, una pràctica recomanada és implementar una rotació d'IP a intervals regulars. Com a exemple, utilitzar una VPN com a proxy i canviar periòdicament entre diferents ubicacions geogràfiques presenta una solució fàcil i efectiva a aquest repte.
 
