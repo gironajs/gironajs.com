@@ -14,11 +14,11 @@ seo:
     /assets/blog/web-scraping-de-feines-a-linkedin-utilitzant-puppeteer-i-rxjs/cover-image.png
 ---
 
-El web scraping pot semblar una tasca senzilla, però hi ha molts reptes a superar. En aquest blog, ens endinsarem en com fer scraping a LinkedIn per extreure llistats de treball. Per fer això, utilitzarem [Puppeteer](https://pptr.dev/) i [RxJS](https://rxjs.dev/). L'objectiu és assolir web scraping d'una manera declarativa, modular i escalable.
+El web scraping pot semblar una tasca senzilla, però hi ha molts reptes a superar. En aquest blog, ens endinsarem en com fer "scraping" a LinkedIn per extreure ofertes de feina. Per fer això, utilitzarem [Puppeteer](https://pptr.dev/) i [RxJS](https://rxjs.dev/). L'objectiu és assolir web scraping d'una manera declarativa, modular i escalable.
 
 ## Entenent el Web scraping
 
-El web scraping és una tècnica d'extracció de dades utilitzada per recopilar informació de llocs web. Involucra el procés automatitzat d'obtenció de dades específiques de pàgines web, com ara text, imatges, enllaços i més, i després emmagatzemar o processar aquestes dades per a diversos propòsits.
+El web scraping és una tècnica d'extracció de dades utilitzada per recopilar informació de llocs web. Consisteix en un procés automatitzat d'obtenció de dades de pàgines web, com ara text, imatges, enllaços i més, per a després emmagatzemar o processar aquestes dades per a diversos propòsits.
 
 ### Puppeteer
 
@@ -26,8 +26,8 @@ El web scraping és una tècnica d'extracció de dades utilitzada per recopilar 
 
 ### RxJS
 
-[RxJS](https://rxjs.dev/) és una biblioteca per a la programació reactiva en JavaScript. Proporciona un conjunt d'eines i abstraccions per treballar amb fluxos de dades asincrònics. Utilitzarem RxJS en aquest exemple perquè ofereix els avantatges següents:
-- Codi asincrònic declaratiu
+[RxJS](https://rxjs.dev/) és una biblioteca per a la programació reactiva en JavaScript. Proporciona un conjunt d'eines i abstraccions per treballar amb fluxos de dades asíncrons. Utilitzarem RxJS en aquest exemple perquè ofereix els avantatges següents:
+- Codi asíncron declaratiu
 - Millora de la gestió d'errors
 - Lògica de reintent millorada
 - Adaptació del codi simplificada
@@ -73,7 +73,7 @@ This translation maintains the meaning of the original English text in Catalan.
 
 ## Anar a la llista de llocs de treball de LinkedIn i extreure les dades
 
-Aquesta és la part central d'aquest bloc, on ens submergim en el procés d'accés a les ofertes de treball de LinkedIn, analitzant el contingut HTML i recuperant les dades del lloc de treball en format JSON.
+Aquesta és la part central d'aquest bloc, on ens submergim en el procés d'accés a les ofertes de treball de LinkedIn, analitzant el contingut HTML i recuperant les dades d'ofertes de feina en format JSON.
 
 ### 1- Construint la URL per Navegar per les Ofertes de Treball de LinkedIn
 
@@ -96,7 +96,7 @@ Exemples de url poden ser:
 ### 2- Navegant a la URL i Extraient Dades de les Ofertes
 Amb la nostra URL objectiu identificada, podem procedir amb les dues accions principals requerides:
 
-1. Navegar a la URL de les Ofertes de Treball: Aquest pas implica dirigir la nostra eina de raspallat web a la URL on estan allotjades les ofertes de treball.
+1. Navegar a la URL de les Ofertes de Treball: Aquest pas implica dirigir la nostra eina de "scraping" web a la URL on estan allotjades les ofertes de treball.
 
 2. Extreure dades de les ofertes de feina i convertint-les a JSON: Un cop estem a la pàgina d'ofertes de treball, utilitzarem tècniques de "scraping" web per extreure les dades de les ofertes i retornar-les en format JSON.
 
@@ -235,30 +235,26 @@ export function getJobsFromLinkedinPage(page: Page): Observable<JobInterface[]> 
 
 ```
 
-El codi proporcionat extreu efectivament tota la informació de treball disponible de la pàgina. Encara que el codi és molt estètic, aconsegueix la feina, que és típic per a codi de "scraping" web.
+El codi proporcionat extreu efectivament tota la informació de treball disponible de la pàgina. Encara que el codi no és molt estètic, aconsegueix la feina, que és típic per a codi de "scraping" web.
 
 > En un context de programació estàndard, generalment és aconsellable descompondre el codi en funcions més petites i aïllades per millorar la llegibilitat i la mantenibilitat. No obstant això, quan es tracta de codi executat dins de `page.evaluate` en Puppeteer, estem una mica limitats perquè aquest codi s'executa en la instància de Puppeteer (Chrome), no en el nostre entorn Node.js. Per tant, tot el codi ha de ser autocontingut dins de la crida de `page.evaluate`. L'única excepció aquí són les variables (com `stacks` en el nostre cas), que poden passar-se com a arguments a `page.evaluate`, sempre que no continguin funcions o objectes complexos que no es puguin serialitzar.
-
-In this case, the only challenging part to scrape is the salary information, as it involves converting a text format like '$65,000.00 - $90,000.00' into separate salaryMin and salaryMax values.
-Additionally, we've encapsulated the entire code within a try/catch block to gracefully handle errors. While we currently log errors to the console, it's advisable to consider implementing a mechanism to store these error logs on disk. This practice becomes particularly important because web pages often undergo changes, necessitating frequent updates to the HTML parsing code.
 
 En aquest cas, l'únic component desafiant "per escrapejar"(to scrape) és la informació del salari, ja que implica convertir un format de text com '$65,000.00 - $90,000.00' en valors de salari mínim i màxim separats.
 A més, hem encapsulat tot el codi dins d'un bloc try/catch per gestionar els errors de manera elegant. Encara que actualment registrem els errors a la consola, és aconsellable considerar la implementació d'un mecanisme per emmagatzemar aquests registres d'error en disc. Aquesta pràctica es torna particularment important perquè les pàgines web sovint experimenten canvis, cosa que necessita actualitzacions freqüents al codi de l'anàlisi HTML.
 
 
-Finalment, és important notar que sempre utilitzem els operadors `defer` i `fromPromise` per convertir Promeses en Observables:
+Finalment, és important remarcar que sempre utilitzem els operadors `defer` i `fromPromise` per convertir Promeses en Observables:
 
 ```typescript
 defer(() => fromPromise(myPromise()))
 ```
-This approach is a recommended best practice that works reliably in all scenarios. Promises are eager, whereas Observables are lazy and only initiate when someone subscribes to them. The defer operator allows us to make a Promise lazy.
 
-Aquest enfocament és una millor pràctica recomanada que funciona de manera fiable en tots els escenaris. Les Promeses són "eager", mentre que els Observables són "lazy" i només s'inicien quan algú s'hi subscriu. L'operador `defer` ens permet convertir a "lazy" una Promesa.
+Aquesta estratègia és la més recomanada ja que funciona de manera fiable en tots els escenaris. Les Promeses són "eager", mentre que els Observables són "lazy" i només s'inicien quan algú s'hi subscriu. L'operador `defer` ens permet convertir a "lazy" una Promesa.
 
 
 ### 3- Afegir un Bucle Asíncron per Iterar a través de Totes les Pàgines
 
-En l'etapa anterior, hem après com obtenir totes les dades de les ofertes de treball d'una pàgina de LinkedIn. Ara, el que volem fer és utilitzar aquest codi tantes vegades com sigui possible per recopilar tantes dades com puguem. Per aconseguir-ho, primer necessitem iterar a través de totes les pàgines disponibles:
+En el pas anterior, hem après com obtenir totes les dades de les ofertes de treball d'una pàgina de LinkedIn. Ara, el que volem fer és utilitzar aquest codi tantes vegades com sigui possible per recopilar tantes dades com puguem. Per aconseguir-ho, primer necessitem iterar a través de totes les pàgines disponibles:
 
 
 ```ts:src/linkedin.ts
@@ -313,7 +309,7 @@ export async function getJobsFromAllPages(page: Page, searchParams: ScraperSearc
 }
 
 ```
-Aquest codi realitza accions gairebé idèntiques a les que utilitza Observables, però amb una diferència crítica: només emet quan totes les pàgines han acabat el seu processament. En contrast, la implementació que fa ús d'Observables emet després de cada pàgina. Crear un "stream" de dades és vital en aquest cas perquè volem gestionar les ofertes de treball tan aviat com es resolguin.
+Aquest codi realitza accions gairebé idèntiques a les que utilitza Observables, però amb una diferència crítica: només emet quan totes les pàgines han acabat el seu processament. En canvi, la implementació que fa ús d'Observables emet després de cada pàgina. Crear un "stream" de dades és vital en aquest cas perquè volem gestionar les ofertes de treball tan aviat com es resolguin.
 
 Certament, podríem introduir la nostra lògica després de la línia:
 
@@ -342,8 +338,6 @@ const searchParamsList: { searchText: string; locationText: string }[] = [
   // ...
 ];
 ```
-
-To iterate through the `searchParamsList` array, we essentially need to convert it from an Array to an Observable using the `fromArray` operator. Subsequently, we will use the `concatMap` operator to sequentially process each searchText and locationText pair. The power of RxJS here is that, in the case where we may want to switch from sequential to parallel processing, we just need to change the `concatMap` for a `mergeMap`. In this case, it is not recommended because we will exceed LinkedIn's rate limits, but it's something to consider in other scenarios.
 
 Per iterar asíncronament a través de l'array `searchParamsList`, bàsicament necessitem convertir-lo d'un Array a un Observable utilitzant l'operador `fromArray`. Subseqüentment, utilitzarem l'operador `concatMap` per processar de manera seqüencial cada parell de searchText i locationText. La força de RxJS aquí és que, en el cas que de voler canviar de processament seqüencial a paral·lel, simplement hem de canviar el `concatMap` per un `mergeMap`. En aquest cas no es recomana perquè superariem el límit de peticions (per temps) de LinkedIn, però és una cosa a tenir en compte en altres escenaris.
 
