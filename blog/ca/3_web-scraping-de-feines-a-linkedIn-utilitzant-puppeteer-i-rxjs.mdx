@@ -27,12 +27,12 @@ El web scraping és una tècnica d'extracció de dades utilitzada per recopilar 
 ### RxJS
 
 [RxJS](https://rxjs.dev/) és una biblioteca per a la programació reactiva en JavaScript. Proporciona un conjunt d'eines i abstraccions per treballar amb fluxos de dades asíncrons. Utilitzarem RxJS en aquest exemple perquè ofereix els avantatges següents:
+
 - Codi asíncron declaratiu
 - Millora de la gestió d'errors
 - Lògica de reintent millorada
 - Adaptació del codi simplificada
 - Una àmplia gamma d'operadors per ajudar-nos al llarg del procés
-
 
 ## 1. Inicialització de Puppeteer
 
@@ -58,17 +58,16 @@ El fragment de codi a continuació inicialitza una instància de navegador Puppe
 
   const page = await browser.newPage()
 
-    /** 
+    /**
      * 1. Go lo linkedin jobs url
      * 2. Get the jobs
      * 3. Repeat step 1 with other search parameters
      */
-    
+
 })();
 ```
 
 > Alguns dels fragments en aquest blog poden ometre parts per claredat. Podeu trobar el codi complet en aquest [repositori](https://github.com/llorenspujol/linkedin-jobs-scraper).
-
 
 ## 2. Anar a la llista de llocs de treball de LinkedIn i extreure les dades
 
@@ -88,10 +87,25 @@ En aquest cas, ja he realitzat la investigació prèvia per trobar aquesta URL. 
 Per a aquest exemple, els nostres paràmetres de cerca seran `searchText`, `pageNumber` i opcionalment `locationText`.
 
 Exemples de url poden ser:
-1. <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Angular&start=0" target="_blank">https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Angular&start=0</a>
-2. <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=React&location=Barcelona&start=0" target="_blank">https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=React&location=Barcelona&start=0</a>
-3. <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0" target="_blank">https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0</a>
 
+1. <a
+     href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Angular&start=0"
+     target="_blank"
+   >
+     https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Angular&start=0
+   </a>
+2. <a
+     href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=React&location=Barcelona&start=0"
+     target="_blank"
+   >
+     https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=React&location=Barcelona&start=0
+   </a>
+3. <a
+     href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0"
+     target="_blank"
+   >
+     https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0
+   </a>
 
 ### 2.2. Navega a l'URL i extreu les ofertes de feina
 
@@ -243,20 +257,17 @@ El codi proporcionat extreu tota la informació de les ofertes de feina de la p�
 En aquest cas, l'únic component desafiant per passar de HTML text a JSON és la informació del salari, ja que implica convertir un format de text com '$65,000.00 - $90,000.00' en dos valors numèrics de salari mínim i màxim separats.
 A més, hem encapsulat tot el codi dins d'un bloc try/catch per gestionar els errors de manera elegant. Encara que actualment registrem els errors a la consola, és aconsellable considerar la implementació d'un mecanisme per emmagatzemar aquests registres d'error en disc. Aquesta pràctica es torna particularment important perquè les pàgines web sovint experimenten canvis, cosa que necessita actualitzacions freqüents al codi de l'anàlisi HTML.
 
-
 Finalment, és important remarcar que sempre utilitzem els operadors `defer` i `fromPromise` per convertir Promeses en Observables:
 
 ```typescript
-defer(() => fromPromise(myPromise()))
+defer(() => fromPromise(myPromise()));
 ```
 
 Aquesta estratègia és la més recomanada ja que funciona de manera fiable en tots els escenaris. Les Promeses són "eager", mentre que els Observables són "lazy" i només s'inicien quan algú s'hi subscriu. L'operador `defer` ens permet convertir a "lazy" una Promesa. Per més informació pots anar a aquest [enllaç](https://stackoverflow.com/questions/39319279/convert-promise-to-observable/69360357#69360357)
 
-
 ## 3. Afegeix un bucle asíncron per iterar a través de totes les pàgines
 
 En el pas anterior, hem après com obtenir totes les dades de les ofertes de feina d'una pàgina de LinkedIn. Ara, el que volem fer és utilitzar aquest codi tantes vegades com sigui possible per recopilar tantes dades com puguem. Per aconseguir-ho, primer necessitem iterar a través de totes les pàgines disponibles:
-
 
 ```ts:src/linkedin.ts
 function getJobsFromAllPages(page: Page, initSearchParams: ScraperSearchParams): Observable<ScraperResult> {
@@ -280,6 +291,7 @@ function getJobsFromAllPages(page: Page, initSearchParams: ScraperSearchParams):
     );
 }
 ```
+
 El codi anterior incrementa el número de pàgina fins que arribem a una pàgina on no hi ha ofertes de feina (que seria l'última pàgina). Per realitzar aquest bucle en RxJS, utilitzem l'operador `expand`, que projecta recursivament cada valor de la font (source) a un Observable que es fusiona en l'Observable de sortida. La seva funcionalitat està ben explicada [aquí](https://ncjamieson.com/understanding-expand/).
 
 > En RxJS, no podem utilitzar un bucle amb la paraula clau `for` com ho fem amb await/async. Hem d'utilitzar un bucle recursiu en el seu lloc. Encara que inicialment pugui semblar una limitació, en un context asíncron, aquest mètode resulta ser més avantatjós en nombroses situacions
@@ -287,31 +299,40 @@ El codi anterior incrementa el número de pàgina fins que arribem a una pàgina
 Així doncs, com seria el codi equivalent utilitzant Promeses? Aquí en tenim un exemple:
 
 ```typescript
-export async function getJobsFromAllPages(page: Page, searchParams: ScraperSearchParams): Promise<ScraperResult> {
-    const results: ScraperResult = { jobs: [], searchParams };
+export async function getJobsFromAllPages(
+  page: Page,
+  searchParams: ScraperSearchParams
+): Promise<ScraperResult> {
+  const results: ScraperResult = { jobs: [], searchParams };
 
-    try {
-        while (true) {
-            const jobs = await getJobsFromLinkedinPage(page, searchParams);
-            console.log(`Linkedin - Query: ${searchParams.searchText}, Location: ${searchParams.locationText}, Page: ${searchParams.nPage}, nJobs: ${jobs.length}, url: ${urlQueryPage(searchParams)}`);
+  try {
+    while (true) {
+      const jobs = await getJobsFromLinkedinPage(page, searchParams);
+      console.log(
+        `Linkedin - Query: ${searchParams.searchText}, Location: ${
+          searchParams.locationText
+        }, Page: ${searchParams.nPage}, nJobs: ${
+          jobs.length
+        }, url: ${urlQueryPage(searchParams)}`
+      );
 
-            results.jobs.push(...jobs);
+      results.jobs.push(...jobs);
 
-            if (jobs.length === 0) {
-                break;
-            }
+      if (jobs.length === 0) {
+        break;
+      }
 
-            searchParams.nPage++;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        results.jobs = []; // Clear the jobs in case of an error.
+      searchParams.nPage++;
     }
+  } catch (error) {
+    console.error('Error:', error);
+    results.jobs = []; // Clear the jobs in case of an error.
+  }
 
-    return results;
+  return results;
 }
-
 ```
+
 Aquest codi és gairebé equivalent al basat en Observables, amb una diferència crítica: només emet quan totes les pàgines han acabat de processar. En canvi, la implementació utilitzant Observables emet després de cada pàgina. Crear un "stream" és crucial en aquest cas perquè volem gestionar les ofertes de feina tan aviat siguin resoltes.
 
 Certament, podríem introduir la nostra lògica després de la línia:
@@ -321,12 +342,13 @@ const jobs = await getJobsFromLinkedinPage(page, searchParams);
 
 /* Handle the jobs here */
 ```
+
 ...però això acoblaria innecessàriament el nostre codi de "scraping" amb la part que gestiona les dades de les ofertes de feina. Gestionar les dades de les ofertes pot implicar algunes transformacions, crides a alguna API, i finalment, guardar les dades a una base de dades.
 
 Així doncs, en aquest exemple veiem clarament un dels molts avantatges que els Observables ofereixen respecte a les Promeses.
 
-
 ## 4. Afegim un altre bucle asíncron per iterar a través de tots els paràmetres de cerca especificats
+
 Ara que sabem com iterar a través de totes les pàgines, podem passar a l'últim pas: crear un bucle per iterar a través de diferents paràmetres de cerca.
 
 Per aconseguir-ho, primer definirem l'estructura de dades en la qual emmagatzemarem aquests paràmetres de cerca i la denominarem `searchParamsList`:
@@ -367,22 +389,22 @@ export function getJobsFromLinkedin(browser: Browser): Observable<ScraperResult>
 }
 ```
 
-
 Aquest codi iterarà a través de diversos paràmetres de cerca, un a la vegada, i recuperarà ofertes de feina per a cada combinació de `searchText` i `locationText`.
 
-**🎉 Felicitats! Ara ja sou capaços de fer "scraping" a LinkedIn i a qualsevol altre pàgia web! 🎉**
+**🎉 Felicitats! Ara ja sou capaços de fer "scraping" a LinkedIn i a qualsevol altre pàgina web! 🎉**
 
 Tot i això, LinkedIn, igual que moltes altres pàgines web, té tècniques per prevenir el web scraping. Anem a veure com solventar-les 👇.
-
 
 ## Errors comuns al fer "scraping" a LinkedIn
 
 Si executem el codi proporcionat, ràpidament ens trobarem amb nombrosos errors de LinkedIn, fent difícil fer "scraping" amb èxit d'una quantitat significativa d'informació. Hi ha dos errors comuns que necessitem abordar:
 
 ### 1. Resposta "status code" 429
+
 Aquesta resposta pot passar durant el scraping, i significa que estem fent massa sol·licituds en un petit període de temps. Si ens trobem amb aquest error hem de reduir la velocitat en què es duen a terme les peticions fins que desaparegui.
 
 ### 2. Authwall de LinkedIn
+
 De tant en tant, LinkedIn ens pot redirigir a un authwall en lloc de la pàgina desitjada. Quan apareix l'authwall, l'única opció és esperar una mica més abans de fer la pròxima sol·licitud.
 
 ### Com superar aquests errors de manera efectiva
@@ -485,7 +507,6 @@ Aquesta estratègia augmenta el temps entre cada intent després d'un error. D'a
 
 > Nota: És important ser conscient que LinkedIn pot posar a la llista negra la nostra adreça IP, i simplement esperar més temps pot no ser una solució efectiva. Per mitigar aquest problema potencial i reduir els errors, una pràctica recomanada és fer una rotació d'IPs de tant en tant.
 
-
 ## Paraules finals
 
 El web scraping pot violar freqüentment els termes de servei d'un lloc web. Sempre reviseu i respecteu l'arxiu robots.txt d'un lloc web i els seus Termes de Servei. En aquest cas, **aquest codi ha de ser utilitzat NOMÉS amb fins docents i de hobby**. LinkedIn prohibeix específicament qualsevol extracció de dades del seu lloc web; podeu llegir més [aquí](https://www.linkedin.com/legal/crawling-terms).
@@ -499,4 +520,3 @@ Pots trobar-me a [Twitter](https://twitter.com/llorenspujol), [Linkedin](https:/
 També, gràcies a [aleix10kst](https://github.com/aleix10kst) per ajudar en el procés de revisió del blog 🙌.
 
 Bon Scraping!🕷
-

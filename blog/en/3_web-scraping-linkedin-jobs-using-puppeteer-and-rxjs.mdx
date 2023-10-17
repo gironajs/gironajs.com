@@ -16,7 +16,6 @@ seo:
 
 Web scraping may seem like a simple task, but there are many challenges to overcome. In this blog, we will dive into how to scrape LinkedIn to extract job listings. To do this, we will use [Puppeteer](https://pptr.dev/) and [RxJS](https://rxjs.dev/). The goal is to achieve web scraping in a declarative, modular, and scalable manner.
 
-
 ## What is web scraping?
 
 Web scraping is a data extraction technique used to gather information from websites. It involves the automated process of retrieving specific data from web pages, such as text, images, links, and more, and then storing or processing that data for various purposes.
@@ -28,12 +27,12 @@ Web scraping is a data extraction technique used to gather information from webs
 ### RxJS
 
 [RxJS](https://rxjs.dev/) is a library for reactive programming in JavaScript. It provides a set of tools and abstractions for working with asynchronous data streams. We will use RxJS in this example because it offers the following advantages:
+
 - Declarative asyncrononous code
 - Improved error handling
 - Enhanced retry logic
 - Simplified code adaptation
 - A wide range of operators to assist us throughout the process
-
 
 ## 1. Puppeteer initialization
 
@@ -59,21 +58,20 @@ The code snippet below initializes a Puppeteer browser instance in a non-headles
 
   const page = await browser.newPage()
 
-    /** 
+    /**
      * 1. Go lo linkedin jobs url
      * 2. Get the jobs
      * 3. Repeat step 1 with other search parameters
      */
-    
+
 })();
 ```
 
 > Some of the snippets in this blog may omit parts for clarity. You can find the complete code in this [repository](https://github.com/llorenspujol/linkedin-jobs-scraper).
 
-
 ## 2. Go to Linkedin jobs list and extract the job offers data
 
-This is the core part of this blog, where we dive into the process of accessing LinkedIn's job listings, parsing the HTML content, and retrieving the job data in JSON format.
+This is the core part of this blog, where we dive into the process of accessing LinkedIn's job listings, parsing the HTML content, and retrieving the offers data in JSON format.
 
 ### 2.1. Construct the URL for navigating to LinkedIn job offers page
 
@@ -89,19 +87,33 @@ In this case, I have already done the previous investigation to find this URL. O
 For this example, our search parameters will be `searchText`, `pageNumber`, and optionally `locationText`.
 
 Examples of url can be:
-1. <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Angular&start=0" target="_blank">https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Angular&start=0</a>
-2. <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=React&location=Barcelona&start=0" target="_blank">https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=React&location=Barcelona&start=0</a>
-3. <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0" target="_blank">https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0</a>
 
+1. <a
+     href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Angular&start=0"
+     target="_blank"
+   >
+     https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Angular&start=0
+   </a>
+2. <a
+     href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=React&location=Barcelona&start=0"
+     target="_blank"
+   >
+     https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=React&location=Barcelona&start=0
+   </a>
+3. <a
+     href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0"
+     target="_blank"
+   >
+     https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0
+   </a>
 
 ### 2.2. Navigate to the URL and extract the job offers
-
 
 With our target URL identified, we can proceed with the two primary actions required:
 
 1. Navigating to the Job Listings URL: This step involves directing our web scraping tool to the URL where the job listings are hosted.
 
-2. Extracting job data and converting to JSON: Once we're on the job listings page, we'll employ web scraping techniques to extract the jobs data and return them in JSON format.
+2. Extracting the job offers data and converting to JSON: Once we're on the jobs listings page, we'll employ web scraping techniques to extract the jobs data and return them in JSON format.
 
 ```ts:src/linkedin.ts
 
@@ -245,13 +257,13 @@ The code provided extracts the information of all jobs from the page. While it m
 In this case, the only challenging part to scrape is the salary information, as it involves converting a text format like '$65,000.00 - $90,000.00' into separate salaryMin and salaryMax values.
 Additionally, we've encapsulated the entire code within a try/catch block to correctly handle errors. While we currently log errors to the console, it's advisable to consider implementing a mechanism to store these error logs on disk. This practice becomes particularly important because web pages often undergo changes, necessitating frequent updates to the HTML parsing code.
 
-
 Lastly, It's important to note that we always use the `defer` and `fromPromise` operators to convert Promises into Observables:
-```typescript
-defer(() => fromPromise(myPromise()))
-```
-> This approach is a recommended best practice that works reliably in all scenarios. Promises are eager, whereas Observables are lazy and only initiate when someone subscribes to them. The defer operator allows us to make a Promise lazy. Go to this [link](https://stackoverflow.com/questions/39319279/convert-promise-to-observable/69360357#69360357) for more information about it
 
+```typescript
+defer(() => fromPromise(myPromise()));
+```
+
+> This approach is a recommended best practice that works reliably in all scenarios. Promises are eager, whereas Observables are lazy and only initiate when someone subscribes to them. The defer operator allows us to make a Promise lazy. Go to this [link](https://stackoverflow.com/questions/39319279/convert-promise-to-observable/69360357#69360357) for more information about it
 
 ## 3. Add an asynchronous loop to iterate through all pages
 
@@ -279,6 +291,7 @@ function getJobsFromAllPages(page: Page, initSearchParams: ScraperSearchParams):
     );
 }
 ```
+
 The code above increments the page number until we reach a page where there are no jobs. To perform this loop in RxJS, we use the operator `expand`, which recursively projects each source value to an Observable that is merged into the output Observable. Its functionality is well explained [here](https://ncjamieson.com/understanding-expand/).
 
 > In RxJS, we cannot use a `for` loop as we do with await/async. We are required to use another technique like `expand` operator or a recursive loop instead. While it might initially appear as a limitation, in an asynchronous context, this method proves to be more advantageous in numerous situations.
@@ -286,31 +299,40 @@ The code above increments the page number until we reach a page where there are 
 So, what would the equivalent code using Promises look like? Here's an example:
 
 ```typescript
-export async function getJobsFromAllPages(page: Page, searchParams: ScraperSearchParams): Promise<ScraperResult> {
-    const results: ScraperResult = { jobs: [], searchParams };
+export async function getJobsFromAllPages(
+  page: Page,
+  searchParams: ScraperSearchParams
+): Promise<ScraperResult> {
+  const results: ScraperResult = { jobs: [], searchParams };
 
-    try {
-        while (true) {
-            const jobs = await getJobsFromLinkedinPage(page, searchParams);
-            console.log(`Linkedin - Query: ${searchParams.searchText}, Location: ${searchParams.locationText}, Page: ${searchParams.nPage}, nJobs: ${jobs.length}, url: ${urlQueryPage(searchParams)}`);
+  try {
+    while (true) {
+      const jobs = await getJobsFromLinkedinPage(page, searchParams);
+      console.log(
+        `Linkedin - Query: ${searchParams.searchText}, Location: ${
+          searchParams.locationText
+        }, Page: ${searchParams.nPage}, nJobs: ${
+          jobs.length
+        }, url: ${urlQueryPage(searchParams)}`
+      );
 
-            results.jobs.push(...jobs);
+      results.jobs.push(...jobs);
 
-            if (jobs.length === 0) {
-                break;
-            }
+      if (jobs.length === 0) {
+        break;
+      }
 
-            searchParams.nPage++;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        results.jobs = []; // Clear the jobs in case of an error.
+      searchParams.nPage++;
     }
+  } catch (error) {
+    console.error('Error:', error);
+    results.jobs = []; // Clear the jobs in case of an error.
+  }
 
-    return results;
+  return results;
 }
-
 ```
+
 This code is nearly equivalent to the Observable-based one, with one critical difference: it only emits when all pages have finished processing. In contrast, the implementation using Observables emits after each page. Creating a stream is crucial in this case because we want to handle the jobs as soon as they are resolved.
 
 Certainly, we could introduce our logic following the line:
@@ -320,12 +342,13 @@ const jobs = await getJobsFromLinkedinPage(page, searchParams);
 
 /* Handle the jobs here */
 ```
-...but this would unnecessarily couple our scraping code with the part that handles the jobs data. Handling the jobs data may involve some transformations, API calls, and finally, saving the data into a database. 
+
+...but this would unnecessarily couple our scraping code with the part that handles the jobs data. Handling the jobs data may involve some transformations, API calls, and finally, saving the data into a database.
 
 In this example, we clearly see one of the many benefits Observables offer over Promises.
 
-
 ## 4. Add another asynchronous loop on top to iterate through all specified serach params
+
 Now that we know how to iterate through all pages for a given set of search parameters, we can move on to the final step: creating a loop to iterate through different search parameters.
 
 To accomplish this, we will first define the data structure in which we will store these search parameters and name it `searchParamsList`:
@@ -345,9 +368,9 @@ To iterate through the `searchParamsList` array, we essentially need to convert 
 
 ```ts:src/linkedin.ts
 /**
- * Creates a new page and scrapes LinkedIn job data for each pair of searchText and locationText, recursively retrieving data until there are no more pages.
+ * Creates a new page and scrapes LinkedIn job offers data for each pair of searchText and locationText, recursively retrieving data until there are no more pages.
  * @param browser A Puppeteer instance
- * @returns An Observable that emits scraped job data as ScraperResult
+ * @returns An Observable that emits scraped job offers data as ScraperResult
  */
 export function getJobsFromLinkedin(browser: Browser): Observable<ScraperResult> {
     // Create a new page
@@ -365,9 +388,10 @@ export function getJobsFromLinkedin(browser: Browser): Observable<ScraperResult>
     return createPage.pipe(switchMap(page => scrapeJobs(page)));
 }
 ```
+
 This code will iterate through various search parameters, one at a time, and retrieve jobs for each combination of technology and location.
 
-**🎉 Congratulations! You are now capable of scraping LinkedIn job data! 🎉**
+**🎉 Congratulations! You are now capable of scraping LinkedIn job offers! 🎉**
 
 However, LinkedIn, like many other websites, has techniques to prevent web scraping. Let's see how to solve them 👇.
 
@@ -379,7 +403,6 @@ If we run the code as it is now, we will quickly encounter numerous errors from 
 
 This response can occur during scraping, and it means that we are making too many requests in a short period of time. If we encounter this error, we need to reduce the rate at which requests are being made until it disappears.
 
-
 ### 2. Linkedin Authwall
 
 From time to time, LinkedIn may redirect us to an authwall instead of the desired page. When the authwall appears, the only option is to wait a bit longer before making the next request.
@@ -387,7 +410,6 @@ From time to time, LinkedIn may redirect us to an authwall instead of the desire
 ### How to overcome 429 status code response and Linkedin authwall
 
 Those errors have to be handled in the function `getJobsFromLinkedinPage`, we extend that function and separate the scraping html code in another function named `getLinkedinJobsFromJobsPage`. The code looks like this:
-
 
 ```ts:src/linkedin.ts
 const AUTHWALL_PATH = 'linkedin.com/authwall';
@@ -485,7 +507,6 @@ This strategy essentially increases the time between each retry after a failure.
 
 > Note: It's important to be aware that LinkedIn can blacklist our IP address, and simply waiting longer might not be an effective solution. To mitigate this potential problem and reduce errors, a recommended practice is to rotate IPs from time to time.
 
-
 ## Final Words
 
 Web scraping can frequently violate the terms of service of a website. Always review and respect a website's robots.txt file and its Terms of Service. In this case, **this code should be used ONLY for teaching and hobby purposes**. LinkedIn specifically prohibits any data extraction from its website; you can read more [here](https://www.linkedin.com/legal/crawling-terms).
@@ -499,4 +520,3 @@ You can find me on [Twitter](https://twitter.com/llorenspujol), [Linkedin](https
 Also, thanks to [aleix10kst](https://github.com/aleix10kst) for helping in the blog review process 🙌.
 
 Safe Scraping!🕷
-
