@@ -14,7 +14,7 @@ seo:
     /assets/blog/web-scraping-de-feines-a-linkedin-utilitzant-puppeteer-i-rxjs/cover-image.png
 ---
 
-El web scraping pot semblar una tasca senzilla, però hi ha molts reptes a superar. En aquest blog, ens endinsarem en com fer "scraping" a LinkedIn per extreure ofertes de feina. Per fer això, utilitzarem [Puppeteer](https://pptr.dev/) i [RxJS](https://rxjs.dev/). L'objectiu és assolir web scraping d'una manera declarativa, modular i escalable.
+El web scraping pot semblar una tasca senzilla, però hi ha molts reptes a superar. En aquest blog, aprendrem en com fer "scraping" a LinkedIn per extreure ofertes de feina. Per fer això, utilitzarem [Puppeteer](https://pptr.dev/) i [RxJS](https://rxjs.dev/). L'objectiu és assolir web scraping d'una manera declarativa, modular i escalable.
 
 ## Què és el web scraping?
 
@@ -34,7 +34,7 @@ El web scraping és una tècnica d'extracció de dades utilitzada per recopilar 
 - Una àmplia gamma d'operadors per ajudar-nos al llarg del procés
 
 
-## Inicialització de Puppeteer
+## 1. Inicialització de Puppeteer
 
 El fragment de codi a continuació inicialitza una instància de navegador Puppeteer en un mode no "headless" (es a dir, amb interfície gràfica) i posteriorment crea una nova pàgina web. Això representa el procés d'inicialització més fonamental i directe per a Puppeteer:
 
@@ -69,13 +69,12 @@ El fragment de codi a continuació inicialitza una instància de navegador Puppe
 
 > Alguns dels fragments en aquest blog poden ometre parts per claredat. Podeu trobar el codi complet en aquest [repositori](https://github.com/llorenspujol/linkedin-jobs-scraper).
 
-This translation maintains the meaning of the original English text in Catalan.
 
-## Anar a la llista de llocs de treball de LinkedIn i extreure les dades
+## 2. Anar a la llista de llocs de treball de LinkedIn i extreure les dades
 
-Aquesta és la part central d'aquest bloc, on ens submergim en el procés d'accés a les ofertes de feina de LinkedIn, analitzant el contingut HTML i recuperant les dades d'ofertes de feina en format JSON.
+Aquesta és la part central d'aquest blog, on ens submergim en el procés d'accés a les ofertes de feina de LinkedIn, analitzant el contingut HTML i recuperant les dades d'ofertes de feina en format JSON.
 
-### 1- Construeix l'URL per navegar fins a la pàgina d'ofertes de feina de LinkedIn
+### 2.1. Construeix l'URL per navegar fins a la pàgina d'ofertes de feina de LinkedIn
 
 Per accedir a les ofertes de feina de LinkedIn, necessitem construir una URL utilitzant la funció `urlQueryPage`:
 
@@ -94,7 +93,7 @@ Exemples de url poden ser:
 3. <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0" target="_blank">https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0</a>
 
 
-### 2- Navega a l'URL i extreu les ofertes de feina
+### 2.2. Navega a l'URL i extreu les ofertes de feina
 
 Amb la nostra URL identificada, podem procedir amb les dues accions principals requerides:
 
@@ -254,7 +253,7 @@ defer(() => fromPromise(myPromise()))
 Aquesta estratègia és la més recomanada ja que funciona de manera fiable en tots els escenaris. Les Promeses són "eager", mentre que els Observables són "lazy" i només s'inicien quan algú s'hi subscriu. L'operador `defer` ens permet convertir a "lazy" una Promesa. Per més informació pots anar a aquest [enllaç](https://stackoverflow.com/questions/39319279/convert-promise-to-observable/69360357#69360357)
 
 
-### 3- Afegeix un bucle asíncron per iterar a través de totes les pàgines
+## 3. Afegeix un bucle asíncron per iterar a través de totes les pàgines
 
 En el pas anterior, hem après com obtenir totes les dades de les ofertes de feina d'una pàgina de LinkedIn. Ara, el que volem fer és utilitzar aquest codi tantes vegades com sigui possible per recopilar tantes dades com puguem. Per aconseguir-ho, primer necessitem iterar a través de totes les pàgines disponibles:
 
@@ -327,7 +326,7 @@ const jobs = await getJobsFromLinkedinPage(page, searchParams);
 Així doncs, en aquest exemple veiem clarament un dels molts avantatges que els Observables ofereixen respecte a les Promeses.
 
 
-### 4- Afegim un altre bucle asíncron per iterar a través de tots els paràmetres de cerca especificats
+## 4. Afegim un altre bucle asíncron per iterar a través de tots els paràmetres de cerca especificats
 Ara que sabem com iterar a través de totes les pàgines, podem passar a l'últim pas: crear un bucle per iterar a través de diferents paràmetres de cerca.
 
 Per aconseguir-ho, primer definirem l'estructura de dades en la qual emmagatzemarem aquests paràmetres de cerca i la denominarem `searchParamsList`:
@@ -380,10 +379,10 @@ Tot i això, LinkedIn, igual que moltes altres pàgines web, té tècniques per 
 
 Si executem el codi proporcionat, ràpidament ens trobarem amb nombrosos errors de LinkedIn, fent difícil fer "scraping" amb èxit d'una quantitat significativa d'informació. Hi ha dos errors comuns que necessitem abordar:
 
-#### 1- Resposta "status code" 429
+### 1. Resposta "status code" 429
 Aquesta resposta pot passar durant el scraping, i significa que estem fent massa sol·licituds en un petit període de temps. Si ens trobem amb aquest error hem de reduir la velocitat en què es duen a terme les peticions fins que desaparegui.
 
-#### 2- Authwall de LinkedIn
+### 2. Authwall de LinkedIn
 De tant en tant, LinkedIn ens pot redirigir a un authwall en lloc de la pàgina desitjada. Quan apareix l'authwall, l'única opció és esperar una mica més abans de fer la pròxima sol·licitud.
 
 ### Com superar aquests errors de manera efectiva
@@ -493,7 +492,11 @@ El web scraping pot violar freqüentment els termes de servei d'un lloc web. Sem
 
 Recomano utilitzar el web scraping per a l'aprenentatge, l'ensenyament i projectes de hobby. Sempre recordeu de respectar el lloc web, eviteu llançar massa sol·licituds i assegureu-vos que les dades s'utilitzen de manera respectuosa.
 
-Podeu trobar tot el codi actualitzat en aquest [repositori](https://github.com/llorenspujol/linkedin-jobs-scraper)!
+Tot el codi actualitzat es troba en aquest [repositori](https://github.com/llorenspujol/linkedin-jobs-scraper), no dubtis a donar-li una estrella si t'ha ajudat! 🙏⭐
+
+Pots trobar-me a [Twitter](https://twitter.com/llorenspujol), [Linkedin](https://www.linkedin.com/in/lloren%C3%A7-pujol-ferriol-46575bb9/) o [Github](https://github.com/llorenspujol).
+
+També, gràcies a [aleix10kst](https://github.com/aleix10kst) per ajudar en el procés de revisió del blog 🙌.
 
 Bon Scraping!🕷
 

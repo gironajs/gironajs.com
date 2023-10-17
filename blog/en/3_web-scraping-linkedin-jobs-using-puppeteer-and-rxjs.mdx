@@ -35,7 +35,7 @@ Web scraping is a data extraction technique used to gather information from webs
 - A wide range of operators to assist us throughout the process
 
 
-## Puppeteer initialization
+## 1. Puppeteer initialization
 
 The code snippet below initializes a Puppeteer browser instance in a non-headless mode and subsequently creates a new web page. This represents the most fundamental and straightforward initialization process for Puppeteer:
 
@@ -71,11 +71,11 @@ The code snippet below initializes a Puppeteer browser instance in a non-headles
 > Some of the snippets in this blog may omit parts for clarity. You can find the complete code in this [repository](https://github.com/llorenspujol/linkedin-jobs-scraper).
 
 
-## Go to Linkedin jobs list and extract the job offers data
+## 2. Go to Linkedin jobs list and extract the job offers data
 
 This is the core part of this blog, where we dive into the process of accessing LinkedIn's job listings, parsing the HTML content, and retrieving the job data in JSON format.
 
-### 1- Construct the URL for navigating to LinkedIn job offers page
+### 2.1. Construct the URL for navigating to LinkedIn job offers page
 
 To access LinkedIn's job listings, we need to construct a URL using the function `urlQueryPage`:
 
@@ -94,7 +94,7 @@ Examples of url can be:
 3. <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0" target="_blank">https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=python&start=0</a>
 
 
-### 2- Navigate to the URL and extract the job offers
+### 2.2. Navigate to the URL and extract the job offers
 
 
 With our target URL identified, we can proceed with the two primary actions required:
@@ -253,7 +253,7 @@ defer(() => fromPromise(myPromise()))
 > This approach is a recommended best practice that works reliably in all scenarios. Promises are eager, whereas Observables are lazy and only initiate when someone subscribes to them. The defer operator allows us to make a Promise lazy. Go to this [link](https://stackoverflow.com/questions/39319279/convert-promise-to-observable/69360357#69360357) for more information about it
 
 
-### 3- Add an asynchronous loop to iterate through all pages
+## 3. Add an asynchronous loop to iterate through all pages
 
 In the previous step, we learned how to obtain all job offers data from a LinkedIn page. Now, we want to use that code as many times as possible to gather as much data as we can. To achieve this, we first need to iterate through all available pages:
 
@@ -325,7 +325,7 @@ const jobs = await getJobsFromLinkedinPage(page, searchParams);
 In this example, we clearly see one of the many benefits Observables offer over Promises.
 
 
-### 4- Add another asynchronous loop on top to iterate through all specified serach params
+## 4. Add another asynchronous loop on top to iterate through all specified serach params
 Now that we know how to iterate through all pages for a given set of search parameters, we can move on to the final step: creating a loop to iterate through different search parameters.
 
 To accomplish this, we will first define the data structure in which we will store these search parameters and name it `searchParamsList`:
@@ -375,12 +375,12 @@ However, LinkedIn, like many other websites, has techniques to prevent web scrap
 
 If we run the code as it is now, we will quickly encounter numerous errors from LinkedIn, making it difficult to successfully scrape a significant amount of information. There are two common errors that we need to address:
 
-#### 1- 429 status code response
+### 1. 429 status code response
 
 This response can occur during scraping, and it means that we are making too many requests in a short period of time. If we encounter this error, we need to reduce the rate at which requests are being made until it disappears.
 
 
-#### 2- Linkedin Authwall
+### 2. Linkedin Authwall
 
 From time to time, LinkedIn may redirect us to an authwall instead of the desired page. When the authwall appears, the only option is to wait a bit longer before making the next request.
 
@@ -492,7 +492,11 @@ Web scraping can frequently violate the terms of service of a website. Always re
 
 I recommend web scraping for learning, teaching, and hobby projects. Always remember to consistently respect the scraped site, avoid launching too many requests, and ensure the data is used respectfully.
 
-You can find all the updated code in this [repository](https://github.com/llorenspujol/linkedin-jobs-scraper)!
+All the updated code is in this [repository](https://github.com/llorenspujol/linkedin-jobs-scraper), don't doubt to give an star if it helped! 🙏⭐
+
+You can find me on [Twitter](https://twitter.com/llorenspujol), [Linkedin](https://www.linkedin.com/in/lloren%C3%A7-pujol-ferriol-46575bb9/) or [Github](https://github.com/llorenspujol).
+
+Also, thanks to [aleix10kst](https://github.com/aleix10kst) for helping in the blog review process 🙌.
 
 Safe Scraping!🕷
 
