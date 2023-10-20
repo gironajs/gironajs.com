@@ -78,9 +78,9 @@ This is the core part of this blog, where we dive into the process of accessing 
 To access LinkedIn's job listings, we need to construct a URL using the function `urlQueryPage`:
 
 ```ts:src/linkedin.ts
-export const urlQueryPage = (search: ScraperSearchParams) =>
-    `https://linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${search.searchText}
-    &start=${search.nPage * 25}${search.locationText ? '&location=' + search.locationText : ''}`
+export const urlQueryPage = (searchParams: ScraperSearchParams) =>
+    `https://linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${searchParams.searchText}
+    &start=${searchParams.pageNumber * 25}${searchParams.locationText ? '&location=' + searchParams.locationText : ''}`
 ```
 
 In this case, I have already done the previous investigation to find this URL. Our objective is to find a URL that we can parameterize with our desired search parameters.
@@ -117,19 +117,24 @@ With our target URL identified, we can proceed with the two primary actions requ
 
 ```ts:src/linkedin.ts
 
+export interface ScraperSearchParams {
+    searchText: string;
+    locationText: string;
+    pageNumber: number;
+}
+
 /** main function */
-export function getJobsFromLinkedinPage(page: Page, searchParams): Observable<JobInterface[]> {
-    return defer(() => navigateToJobsPage(page, searchParams))
+export function goToLinkedinJobsPageAndExtractJobs(page: Page, searchParams: ScraperSearchParams): Observable<JobInterface[]> {
+    return defer(() => fromPromise(navigateToJobsPage(page, searchParams)))
         .pipe(switchMap(() => getJobsFromLinkedinPage(page)));
 }
 
 /* Utility functions  */
+export const urlQueryPage = (searchParams: ScraperSearchParams) =>
+    `https://linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${searchParams.searchText}
+    &start=${searchParams.pageNumber * 25}${searchParams.locationText ? '&location=' + searchParams.locationText : ''}`
 
-export const urlQueryPage = (search: ScraperSearchParams) =>
-    `https://linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${search.searchText}
-    &start=${search.nPage * 25}${search.locationText ? '&location=' + search.locationText : ''}`
-
-function navigateToJobsPage(page: Page, searchParams): Promise<Response | null> {
+function navigateToJobsPage(page: Page, searchParams: ScraperSearchParams): Promise<Response | null> {
     return page.goto(urlQueryPage(searchParams), { waitUntil: 'networkidle0' });
 }
 
@@ -380,7 +385,7 @@ export function getJobsFromLinkedin(browser: Browser): Observable<ScraperResult>
     const scrapeJobs = (page: Page): Observable<ScraperResult> =>
         fromArray(searchParamsList).pipe(
             concatMap(({ searchText, locationText }) =>
-                getJobsFromPageRecursive(page, { searchText, locationText, nPage: 0 })
+                getJobsFromAllPages(page, { searchText, locationText, pageNumber: 0 })
             )
         )
 
