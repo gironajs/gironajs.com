@@ -38,7 +38,9 @@
     "sharePost": "T'ha agradat el post? Si us plau, comparteix-lo",
     "title": "Blog",
     "subtitle_1": "Aquí pots trobar totes les entrades del blog publicades per GironaJS",
-    "subtitle_2": "Qualsevol contribució és benvinguda, així que si vols escriure una entrada, si us plau, contacta'ns!"
+    "subtitle_2": "Qualsevol contribució és benvinguda, així que si vols escriure una entrada, si us plau, contacta'ns!",
+    "edit_github": "Has trobat una errada? ",
+    "edit_github_link": "Edita-la al Github"
   },
   "map": {
     "title": "GironaJS - Mapa 3D de la ciutat",
