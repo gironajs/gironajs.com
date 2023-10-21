@@ -22,7 +22,6 @@ type Props = {
 export function Blog({ blogPostItem, dictionary, lang }: Props) {
   const host = `https://gironajs.com`; // TODO: Put host value on environment variables
   const getFullHref = (post: BlogPostItem) => `${host}/${post.urlPath}`;
-  console.log(blogPostItem);
   return (
     <div>
       <Hero {...blogPostItem.data} />
