@@ -20,6 +20,39 @@ export default function SocialShareButtons({
   return (
     <div className="social-share-buttons">
       <div>
+        {/* Sharingbutton Copy */}
+        <button
+          className="resp-sharing-button__link resp-sharing-button--copy"
+          onClick={async () => {
+            if ('clipboard' in navigator) {
+              try {
+                await navigator.clipboard.writeText(location.href);
+              } catch (error) {
+                console.error(error);
+              }
+            }
+          }}
+          aria-label="Copy link to post"
+          type="button"
+        >
+          <div className="resp-sharing-button resp-sharing-button--copy resp-sharing-button--small">
+            <div
+              aria-hidden="true"
+              className="resp-sharing-button__icon resp-sharing-button__icon--solid"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                fill="#000000"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </div>
+          </div>
+        </button>
         {/* Sharingbutton Facebook */}
         <a
           className="resp-sharing-button__link"
