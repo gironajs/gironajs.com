@@ -38,7 +38,9 @@
     "sharePost": "Did you like the post? Please share it",
     "title": "Blog posts",
     "subtitle_1": "Here you can find all the blog posts published by GironaJS",
-    "subtitle_2": "Any contribution is welcome, so if you want to write a post, please contact us!"
+    "subtitle_2": "Any contribution is welcome, so if you want to write a post, please contact us!",
+    "edit_github": "Have you found a mistake? ",
+    "edit_github_link": "Edit it on Github!"
   },
   "map": {
     "title": "GironaJS - 3D City Map",
