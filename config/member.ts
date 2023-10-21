@@ -51,6 +51,13 @@ const members: Member[] = [
     linkedin: 'aleix-canet-vidal',
     website: 'https://aleixcanet.dev',
   },
+  {
+    github: 'Carles-Piqueras',
+    name: 'Carles Piqueras',
+    role: 'Full-Stack Developer',
+    company: 'Nexus Geographics',
+    linkedin: 'carles-piqueras-carreras',
+  },
 ];
 
 const membersDictionary: Dictionary<Member> = members.reduce(
