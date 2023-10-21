@@ -52,6 +52,13 @@ const members: Member[] = [
     website: 'https://aleixcanet.dev',
   },
   {
+    github: 'Carles-Piqueras',
+    name: 'Carles Piqueras',
+    role: 'Full-Stack Developer',
+    company: 'Nexus Geographics',
+    linkedin: 'carles-piqueras-carreras',
+  },
+  {
     github: 'biels',
     name: 'Biel Simon',
     role: 'Senior Javascipt Engineer',
