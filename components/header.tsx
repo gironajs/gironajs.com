@@ -9,13 +9,15 @@ import {
   LocalePrettyUrlsData,
 } from '@/lib/locale-pretty-urls-cache';
 import { usePathname } from 'next/navigation';
+import { LangDictionary } from '@/get-dictionary';
 
 type Props = {
   lang: Locale;
   localePrettyUrlsCacheData: LocalePrettyUrlsData;
+  dictionary: LangDictionary;
 };
 
-const Header = ({ lang, localePrettyUrlsCacheData }: Props) => {
+const Header = ({ lang, localePrettyUrlsCacheData, dictionary }: Props) => {
   const getLocalePrettyUrls = (
     pathName: string
   ): LocalePrettyUrls | undefined => {
@@ -49,6 +51,14 @@ const Header = ({ lang, localePrettyUrlsCacheData }: Props) => {
           <Link href={`/${lang}/map`} className="items-center space-x-2 flex">
             <span className="font-bold text-lg hover:text-red-500">Map</span>
           </Link>
+        </div>
+        <div className="mr-[56px]">
+          <a
+            className="block px-2 py-1 border border-transparent text-center text-base font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 md:py-2 md:text-lg md:px-5 w-[max-content]"
+            href={'https://www.meetup.com/gironajs/'}
+          >
+            {dictionary?.header.meetup}
+          </a>
         </div>
         <LocaleSwitcher locale={lang} localeUrls={localePrettyUrls} />
       </div>
