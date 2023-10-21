@@ -52,7 +52,7 @@ const Header = ({ lang, localePrettyUrlsCacheData, dictionary }: Props) => {
             <span className="font-bold text-lg hover:text-red-500">Map</span>
           </Link>
         </div>
-        <div className="mr-[40px]">
+        <div className="mr-[56px]">
           <a
             className="block px-2 py-1 border border-transparent text-center text-base font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 md:py-2 md:text-lg md:px-5 w-[max-content]"
             href={'https://www.meetup.com/gironajs/'}
