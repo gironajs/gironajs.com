@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.gironajs.com
+
+# Sitemaps
+Sitemap: https://www.gironajs.com/sitemap.xml
