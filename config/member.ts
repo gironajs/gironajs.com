@@ -66,6 +66,13 @@ const members: Member[] = [
     twitter: 'biel_simon',
     linkedin: 'biel-simon-16554760',
   },
+  {
+    github: 'mcmontseny',
+    name: 'Marc Casamitjana',
+    role: 'Frontend Developer',
+    company: 'Kave Home',
+    linkedin: 'mcmontseny',
+  },
 ];
 
 const membersDictionary: Dictionary<Member> = members.reduce(
