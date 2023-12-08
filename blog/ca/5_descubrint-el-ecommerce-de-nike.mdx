@@ -1,0 +1,727 @@
+---
+title: Descobrint el ecommerce de nike
+description: Article sobre les tecnologies que s'utilitzen a l'ecommerce de nike
+image: /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
+published: true
+publishedDate: 2023-12-01
+authors: eudago
+seo:
+  metatitle: >
+    Descobrint el ecommerce de nike
+  metadescription: >
+    Article sobre les tecnologies que s'utilitzen a l'ecommerce de nike
+  image: >
+    /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
+---
+
+El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza un ecommerce "gran" com en aquest cas es el de nike.
+
+Primer de tot si inspeccionem la pàgina podem veure que utilitza el framework [Next.js](https://nextjs.org/), 
+
+```html {1,3-4}
+<div id="experience-wrapper">
+    <div id="__next">
+        <div id="ciclp-app" class=""><div>
+        <script type="application/ld+json" data-qa="WebPageScript">
+            {"@context":"http://schema.org","@type":"WebPage","@id":"https://www.nike.com/#webpage","url":"https://www.nike.com/","name":"nike"}
+        </script>
+```
+
+On podem trobar el div amb l'id ```__next```, això o que en uns dels primer showcases que podem veure a la propia web de nextjs. 
+
+
+<div className="gjs-blog-content" style={{display: 'flex', gap: 20, justifyContent: 'space-between'}}>
+    <img src="/assets/blog/descubrint-el-ecommerce-de-nike/webpack-sources.png" />
+
+    <div className="gjs-blog-content">
+        <p>Dins del la pestanya sources dels devtools del navegador podem veure que hi ha la "carpeta" <b>webpack://</b>, aquesta carpeta es una carpeta virtual que ens permet veure els fitxers originals, ja que tenen habilitada l'opció de source maps a la configuració de webpack.</p>
+        <br></br>
+        <p>
+        També podem veure la carpeteta de webpack dins d'altres carpetes, com ara són les de <b>_N_E</b>, <b>analytics-client</b>, <b>privacy-consent</b>, <b>privacy-Core</b> i <b>WebShellClient</b> etc.
+        Això ens facilitara la vida a l'hora de veure de que tractent ja que no haurem de tractar amb codi minificat ni uglificat.
+        </p>
+    </div>
+</div>
+
+També podem usar les [react devtools](https://react.dev/learn/react-developer-tools) per poder veure les props i els estats dels components que es renderitzen a la pàgina:
+
+![react-devtools](/assets/blog/descubrint-el-ecommerce-de-nike/react-devtools.png)
+
+Si analitzem una mica podem veure que estan utilitzan Redux per la gestió de l'estat de l'aplicació, el cual es carrega al primer component de la pagina, aqui tenim un [tutorial](https://blog.logrocket.com/use-redux-next-js/) de com s'utilitza redux amb nextjs.
+
+Al primer component de la pàgina també podem veure les rutes dins de nextjs, per exemple la home és:
+
+```json
+isSsr:true
+query: {
+  "page": [
+    "es",
+    "ca"
+  ]
+}
+route: "/[[...page]]"
+```
+En canvi a la url de les ofertes amb path **/es/ca/w/ofertes-3yaep**:
+
+```json
+isSsr:true
+query: {
+    country: "es", 
+    language: "ca", 
+    slug: ["ofertes-3yaep"]
+}
+route:"/[country]/[language]/w/[[...slug]]"
+```
+
+O un producte amb path **/es/ca/t/dri-fit-samarreta-de-fitnes-home-v75KxD/AR6029-063**:
+
+```json
+isSsr:true
+query: {
+    slug: "dri-fit-samarreta-de-fitnes-home-v75KxD", 
+    styleColor: "AR6029-063", 
+}
+route:"/t/[slug]/[styleColor]"
+```
+
+Una de les coses que podem treure de les propietats que rep el primer component es el tipus de renderitzat que utiltizen amb el nextJs.
+
+```json
+__N_SSP: true
+__N_SSG: undefined
+```
+
+Podem veure que aquestes pagines es renderitzen amb server side rendering (SSR), i dins del 
+server side rendering podem veure que no fan servir [server side generation (SSG)](https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation), si no que les pagines són generades a partir del [getServerSideProp (SSP)](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props),
+això segurament es per la cantitat de productes que tenen i per mantenir les pagines mes actualitzades.
+
+En canvi la pagina de perfil (/es/ca/member/profile/) si que utilitza el SSG, tot i que realment el contingut rellevant es carrega amb el client side rendering (CSR).
+
+```json
+__N_SSG: true
+route:"/[country]/[language]/member/profile"
+```
+
+
+També podem analitzar la cache de les diferentes pagines mirant el Cache'Control dels headers de resposta a la primera petició:
+
+
+<table>
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Cache-Control</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>/es/ca/</td>
+            <td>max-age=646</td>
+        </tr>
+        <tr>
+            <td>/es/ca/w/ofertes-3yaep</td>
+            <td>max-age=287</td>
+        </tr>
+        <tr>
+            <td>/es/ca/t/dri-fit-samarreta-de-fitnes-home-v75KxD/AR6029-063</td>
+            <td>max-age=899</td>
+        </tr>
+    </tbody>
+</table>
+
+Del que podem veure que la home es refresca cada 10 minuts, les ofertes cada 5 minuts i els productes cada 15 minuts.
+
+
+
+## Design System
+
+## Estils
+
+```js
+import styled from '@emotion/styled';
+```
+
+
+@nike/nike-design-system-components
+
+## Tokens
+
+Podem fixar-nos que en alguns components fan us dels tokens importats de ```@nike/design-system-base```, com podem veure al fitxer components/dialog/styles.js:
+
+```js
+import styled from '@emotion/styled';
+import { Modal } from '@nike/nr-sole-modal';
+import tokens from '@nike/design-system-base';
+
+export const StyledModal = styled(Modal)`
+  @media only screen and (max-width: ${tokens.bp('tablet')}px) {
+    transition: visibility 0s ease, bottom 0.5s ease;
+  }
+  & .modal-container {
+    border-radius: 16px;
+    padding: 24px;
+    text-align: left;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease 0.2s, transform 0.4s ease 0.2s, height 0.4s ease;
+    padding: 12px;
+
+    /*  desktop media query minus one for ipad pro */
+    @media only screen and (max-width: ${tokens.bp('desktop') - 1}px) {
+      &.modal-container {
+        max-width: 100%;
+        position: fixed;
+        padding: 16px 0 0;
+        bottom: 0px;
+        border-radius: 0;
+      }
+    }
+  }
+`;
+```
+
+d'aqui podem extreure els tokens:
+
+```json
+{
+    "default": {
+        "opts": {
+            "fontSizeUnit": "px"
+        },
+        "ds": {
+            "type": {
+                "baseFontSize": "16px",
+                "sizes": {
+                    "xs": "14px",
+                    "sm": "20px",
+                    "baseline": "16px",
+                    "md": "22px",
+                    "lg": "26px",
+                    "xl": "30px"
+                },
+                "size": {
+                    "brandMarketing": {
+                        "xs": "14px",
+                        "sm": "20px",
+                        "baseline": "16px",
+                        "md": "60px",
+                        "lg": "80px",
+                        "xl": "120px"
+                    },
+                    "desktop": {
+                        "xs": "14px",
+                        "sm": "20px",
+                        "baseline": "16px",
+                        "md": "24px",
+                        "lg": "28px",
+                        "xl": "36px"
+                    }
+                },
+                "fontFamily": {
+                    "base": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+                    "brand": "\"Nike TG\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+                    "marketing": "\"Nike Futura\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+                },
+                "lineHeight": {
+                    "mobile": {
+                        "14": 1.7142857142857142,
+                        "16": 1.75,
+                        "20": 1.5,
+                        "22": 1.4545454545454546,
+                        "24": 1.5,
+                        "26": 1.3076923076923077,
+                        "28": 1.4285714285714286,
+                        "30": 1.3333333333333333,
+                        "36": 1.3333333333333333,
+                        "40": 0.9,
+                        "60": 0.8333333333333334,
+                        "80": 0.875,
+                        "120": 0.8333333333333334
+                    },
+                    "tablet": {
+                        "20": 1.6,
+                        "60": 0.9333333333333333
+                    }
+                },
+                "fontWeight": {
+                    "regular": 400,
+                    "medium": 500
+                }
+            },
+            "colors": {
+                "colorPalette": {
+                    "black": {
+                        "base": "#111111",
+                        "light": "rgba(0, 0, 0, 0.75)",
+                        "dark": "#0D0D0D"
+                    },
+                    "white": {
+                        "base": "#ffffff",
+                        "light": "rgba(255, 255, 255, 0.75)",
+                        "dark": "#BFBFBF"
+                    },
+                    "grey": {
+                        "base": "#757575",
+                        "light": "rgba(117, 117, 117, 0.75)",
+                        "dark": "#585858"
+                    },
+                    "orange": {
+                        "base": "#FA5400",
+                        "light": "rgba(250, 84, 0, 0.75)",
+                        "dark": "#BC3F00"
+                    },
+                    "red": {
+                        "base": "#d43f21"
+                    },
+                    "green": {
+                        "base": "#128a09"
+                    }
+                },
+                "brand": {
+                    "black": "#111111",
+                    "white": "#ffffff",
+                    "grey": "#757575",
+                    "orange": "#FA5400",
+                    "red": "#d43f21",
+                    "green": "#128a09",
+                    "inactiveGrey": "#CCCCCC",
+                    "borderGrey": "#E5E5E5",
+                    "primaryGrey": "#F5F5F5",
+                    "secondaryGrey": "#FAFAFA",
+                    "accent": "#FA5400",
+                    "error": "#d43f21",
+                    "success": "#128a09"
+                }
+            },
+            "breakpoints": {
+                "mobile": 0,
+                "tablet": 600,
+                "desktop": 960,
+                "largeDesktop": 1440,
+                "extraLargeDesktop": 1920
+            },
+            "mediaQueries": {
+                "mobile": "only screen and (min-width: 0px)",
+                "sm": "(max-width: 599px)",
+                "md": "(min-width: 600px) and (max-width: 959px)",
+                "lg": "(min-width: 960px) and (max-width: 1439px)",
+                "xl": "(min-width: 1440px) and (max-width: 1919px)",
+                "xxl": "(min-width: 1920px)",
+                "tablet": "only screen and (min-width: 600px)",
+                "desktop": "only screen and (min-width: 960px)",
+                "largeDesktop": "only screen and (min-width: 1440px)",
+                "extraLargeDesktop": "only screen and (min-width: 1920px)"
+            },
+            "zIndex": {
+                "z0": 0,
+                "z1": 1,
+                "z2": 2,
+                "z3": 3,
+                "z4": 4,
+                "z5": 5,
+                "z6": 6,
+                "z7": 7,
+                "z8": 8,
+                "z9": 9,
+                "z10": 10,
+                "low": 0,
+                "mid": 5,
+                "high": 10
+            },
+            "scaleIncrement": 4,
+            "spacing": {
+                "baseline": 16,
+                "padding": "4px",
+                "scale": [
+                    0,
+                    4,
+                    8,
+                    12,
+                    16,
+                    20,
+                    24,
+                    28,
+                    32,
+                    36,
+                    40,
+                    44,
+                    48,
+                    52,
+                    56,
+                    60,
+                    64,
+                    68,
+                    72,
+                    76,
+                    80,
+                    84,
+                    88,
+                    92,
+                    96,
+                    100,
+                    104,
+                    108,
+                    112,
+                    116
+                ]
+            },
+            "layout": {
+                "gutter": 16,
+                "maxWidth": 1808,
+                "grid": {
+                    "columnCount": 12,
+                    "columnWidth": {
+                        "1": "8.333333333333334%",
+                        "2": "16.666666666666668%",
+                        "3": "25%",
+                        "4": "33.333333333333336%",
+                        "5": "41.66666666666667%",
+                        "6": "50%",
+                        "7": "58.333333333333336%",
+                        "8": "66.66666666666667%",
+                        "9": "75%",
+                        "10": "83.33333333333334%",
+                        "11": "91.66666666666667%",
+                        "12": "100%"
+                    }
+                }
+            },
+            "transition": {
+                "default": {
+                    "duration": "250ms",
+                    "timing": "cubic-bezier(0.77, 0, 0.175, 1)",
+                    "transition": "all 250ms cubic-bezier(0.77, 0, 0.175, 1)"
+                }
+            },
+            "borderRadius": 24
+        }
+    }
+}
+```
+
+Colors:
+
+<div style={{display: 'flex', justifyContent: 'space-between'}}>
+    <div style={{background: '#111111', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#ffffff', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#757575', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#FA5400', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#d43f21', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#128a09', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#CCCCCC', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#E5E5E5', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#F5F5F5', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#FAFAFA', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#FA5400', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#d43f21', width: '100px', height: '100px'}}></div>
+    <div style={{background: '#128a09', width: '100px', height: '100px'}}></div>
+</div>
+
+### Internacionalització
+
+Si mirem el network ja podem veure algunes peticions que porten el i18n al seu path, aquest és el cas de la pàgina de favorits (https://www.nike.com/favorites): 
+
+***https://www.nike.com/assets/i18n/dotcom-fragments-recommendations/en-US.json***
+
+On la resposta es un json amb una key que porta un objecte amb les keys de "value" i "description":
+
+```json
+{
+    "favorites.productRecommendationsCarousel.title": {
+        "value": "You Might Also Like",
+        "description": "The title for the product recommendations carousel displayed on the favorites page"
+    },
+    "profile.favoritesCarousel.title": {
+        "value": "Favorites",
+        "description": "Title for the favorites section"
+    },
+    "profile.favoritesCarousel.viewAllLink": {
+        "value": "View All",
+        "description": "The link that takes users to the page where they can view all of their Favorites"
+    },
+    "recommendations.badges.member_access_label": {
+        "value": "Member Access",
+        "description": "This text is displayed in carousel card for member exclusive product"
+    },
+    "recommendations.badges.member_exclusive": {
+        "value": "Get this product with your free Nike Membership Profile",
+        "description": "This text is displayed in carousel card for member exclusive product"
+    },
+    "recommendations.badges.nike_by_you": {
+        "value": "Nike by You",
+        "description": "This text is displayed in carousel card for Nike by You product"
+    },
+    "recommendations.badges.nike_by_you_label": {
+        "value": "Customize",
+        "description": "This text is displayed in carousel card for Nike by You product"
+    },
+    "recommendations.favorites.title": {
+        "value": "Find Your Next Favorite",
+        "description": "Default Title of Recommendations"
+    },
+    "recommendations.next.label": {
+        "value": "Next Recommended Product",
+        "description": "Next Button Title"
+    },
+    "recommendations.nullsearch.title": {
+        "value": "These popular items might interest you",
+        "description": "Product wall null search title for recommendations carousel"
+    },
+    "recommendations.previous.label": {
+        "value": "Previous Recommended Product",
+        "description": "Previous Product Label for Button"
+    },
+    "recommendations.top_trending": {
+        "value": "Top Trending",
+        "description": "Title for a component which will display our top trending products for user's market place"
+    }
+}
+```
+
+webpack://Recommendations Carousel/src/constants/translations.ts
+
+
+També podem veure com dins del script amb el tag ```<script id="__NEXT_DATA__" type="application/json">``` podem trobar traduccions amb el mateix format:
+
+```json
+  {
+    "props": {
+      "pageProps": {
+        "locale": {
+          "urlParam": "en",
+          "language": "en",
+          "intl": "en-US",
+          "langRegion": "en-US",
+          "hreflang": "en-US",
+          "default": true,
+          "country": "us",
+          "currency": "USD",
+          "countryName": "United States",
+          "countryNames": {
+            "en": "United States"
+          },
+          "currencySymbol": "$",
+          "merchGroup": "US",
+          "cloudUrlFragment": "",
+          "translationsLanguage": "en-US"
+        },
+        "translations": {
+          "91330387": {
+            "value": "Name of wishlist is not unique.",
+            "description": "/buy/list_items/v1/ NOT_UNIQUE - Name is not unique."
+          },
+          "99668031": {
+            "value": "No locations are defined for an item.",
+            "description": "/buy/cart_reviews/v2/NO_AVAILABLE_LOCATIONS_FOUND - No locations are defined for an item"
+          },
+          "accessibility.skipToContent": {
+            "value": "Skip to content. (Press Enter)",
+            "description": "When a blind user is on this button, it allows them to skip passed the menu and into the main content area."
+          },
+          "cart.emptyMsg": {
+            "value": "There are no items in your bag.",
+            "description": "Empty Message for Cart"
+          },
+          "cart.emptyMsg.cta": {
+            "value": "Continue Shopping",
+            "description": "CTA for empty Cart"
+          },
+          "cartSummary.learnMore": {
+            "value": "The actual tax will be calculated based on the applicable state and local sales taxes when your order is shipped. \u003ca href=\"{learnMoreLinkUrl}\"\u003eLearn More\u003c/a\u003e",
+            "description": "Cart summary learn more"
+          },
+          "cta.add": {
+            "value": "Add",
+            "description": "Add warranty"
+          },
+          "cta.addAGiftBag": {
+            "value": "Add a Gift Bag",
+            "description": "Add Gift Bag"
+          },
+```
+
+
+Aquesta arquitectura fa que tinguin valors repetits com pot ser el done de les cookies i el done de la wishlist:
+
+
+```json
+"hf_cookie_label_done": {
+    "value": "Done",
+    "description": "Done"
+},
+...
+"wishlist.done": {
+    "value": "Done",
+    "description": "Wishlist done editing"
+},
+```
+
+I sembla ser que la descripció no es fa servir a la web, simplement es per donar context del value.
+
+### Feature Flags
+
+Petició a: https://www.nike.com/assets/experience/cart/static/feature-flags.json
+
+
+```json
+{
+    "bopisEnabled": [],
+    "bopisExperimentEnabled": [],
+    "digitalGiftCardsEnabled": [],
+    "eddEnabled": [],
+    "estimatedTaxEnabled": [],
+    "estimatedTaxTooltipEnabled": [],
+    "foffEnabled": [],
+    "giftBagEnabled": [],
+    "giftMessageEnabled": [],
+    "marketingMessageEnabled": [],
+    "membershipBannerEnabled": [],
+    "membershipLinksEnabled": [],
+    "multiCurrencyPricingEnabled": [],
+    "physicalGiftCardsEnabled": [],
+    "promotionCodesEnabled": [],
+    "recommendationsEnabled": [],
+    "subtotalTooltipEnabled": [],
+    "wishlistEnabled": [
+        "ae",
+        "at",
+        "au",
+        ...
+    ]
+}
+```
+
+
+```json
+abTests:true
+animateAccordionPanels:false
+cookieSettings:true
+cookieSettingsBanner:false
+cutOverPdpToSegment:true
+debug:false
+enableChat:false
+enableMAP:false
+enableNikeShopModals:true
+filterByNikeDotComChannel:
+true
+globalNavUseGeoPrivacy:true
+gridRecommendations:true
+hideBuyingTools:false
+hideEDDFasterShippingOptionMsg:false
+incentivizedReviewsMessage:true
+incentivizedReviewsMessageNA:false
+includeFacebookAppId:false
+isZoomEnabled:false
+loadForterScript:true
+loadStylitics:true
+loadWebShell:true
+loadWebShellOnWall:false
+logoutShouldClearCart:true
+lowInventoryMessage:true
+notifyMe:true
+recommendations:true
+reserveForYou:true
+sendPIDsOnWall:true
+shareNBY:true
+showAvailabilityDate:false
+showCNNewYearsLink:false
+showCgc:true
+showColorWayPicker:true
+showEDDAndBopisABTesting:false
+showEGift:false
+showElevatedCarousel:true
+showElevatedContent:true
+showEstimatedDeliveryDate:false
+showEstimatedDeliveryDateAndPickup:false
+showFeedsPromoExclusionMessage:true
+showFit:false
+showGeoMismatch:true
+showGiftCardMessage:true
+showGiftCardTypeLink:false
+showGiftCards:true
+showJerseyId:true
+showKlarnaPayLaterMessage:false
+showKlarnaPayMessage:false
+showLargeGiftCardOrder:false
+showLaunchDebug:false
+showLaunchProduct:true
+showLeftHandNavCategories:true
+showMobileWriteReview:true
+showMoreInfo:true
+showNBY:true
+showNBYMessageHub:true
+showNikeId:true
+showOmni:false
+showPhysicalGiftCards
+:
+true
+showPickupLocation
+:
+true
+showPromoBanner
+:
+true
+showPromoExclusionMsg
+:
+false
+showPromoMsg:true
+showReadMore:true
+showRelatedCategories:true
+showReviews:true
+showSEOCopy:true
+showSinglesDaySalesLink:false
+showSizeAndFit:true
+showSizeCalculator:false
+showSocialLinksNBY:true
+showUniteTimers:false
+showWidthSelector:true
+showWishlist:true
+skipPercentOff:false
+skipSegmentDupedEvents:true
+skipSustainability:false
+swooshEligibleGeo:false
+useBounceExchange:false
+useDotcomNav:true
+useDotcomNavESI:true
+useExclusiveAccess:true
+useFeedsMoreInfoMessage:true
+useFeedsSizeFitMessage:true
+useFeedsSustainabilityMessage:true
+useMAPCollection:true
+useNBYCloudUrl:true
+useNBYImageService:true
+useNeo:true
+useNewRelic:true
+useNotifyMeV2:false
+useOfferRFY:false
+useOptimizelyX:false
+usePersonalizedNullSearch:false
+useRollupKey:true
+useSentryIO:false
+useServiceCanonicalUrl:true
+useSwitchboardRecommendations:false
+useTTReviews:true
+useTTV5Reviews:true
+useUniteStaging:false
+wallFavorites:false
+wallFiltersBtnFilterLabel:false
+wallImpressions:true
+wallNoResultsCarousel:true
+```
+
+### A/B testing
+
+
+```js:nike/analytics-client/src/analytics-event/abtest.ts
+import { CacheSelector } from '../cache';
+const getABTest = (_rawEvent, cache) => {
+    const adobeTargetId = cache.get(CacheSelector.MBOX);
+    return {
+        adobeTargetId: typeof adobeTargetId === 'string' ? adobeTargetId : undefined,
+    };
+};
+export { getABTest };
+```
+
+### Observabilitat
+
+Si mirem la consola del navegador podem veure que nike esta utiltizant el servi de [newrelic](https://newrelic.com/)
