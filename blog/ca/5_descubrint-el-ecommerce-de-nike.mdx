@@ -1,5 +1,5 @@
 ---
-title: Descobrint el ecommerce de nike
+title: Enginyeria inversa del ecommerce de Nike amb només el navegador
 description: Article sobre les tecnologies que s'utilitzen a l'ecommerce de nike
 image: /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
 published: true
@@ -14,7 +14,7 @@ seo:
     /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
 ---
 
-El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza un ecommerce "gran" com en aquest cas es el de nike.
+El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza un ecommerce "gran" com en aquest cas es el de nike i fer-ho utilitzant les developer tools del navegador.
 
 Primer de tot si inspeccionem la pàgina podem veure que utilitza el framework [Next.js](https://nextjs.org/), 
 
@@ -132,19 +132,121 @@ També podem analitzar la cache de les diferentes pagines mirant el Cache'Contro
 Del que podem veure que la home es refresca cada 10 minuts, les ofertes cada 5 minuts i els productes cada 15 minuts.
 
 
+Si mirem les peticiones un dels headers que portla la resposta es el de **Akamai-Grn**, si busquem akami pel codi o directament a google podem veure que es tractara d'alguns serveis de l'empresa [Akami](https://en.wikipedia.org/wiki/Akamai_Technologies) com ara cyberseguretat, cloud services o CDN entre molts altres.
 
-## Design System
+```js
+import { useRef } from 'react';
+import { useQuery } from 'react-query';
+import { fetchClient } from '@nike/fetch-client';
+import { getExperimentDriver } from '@nike/ux-tread-optimizely';
+import useOptimizelyEnabled from './use-optimizely-enabled';
 
-## Estils
+export const PROD_OPTIMIZELY_URL = `https://${process.env.NEXT_PUBLIC_HOST_NAME}/assets/vendor/optimizely/prod/5aUCtZvFuDLjvdqdf2w53M.json`;
+export const DEV_OPTIMIZELY_URL = `https://assets.commerce.nikecloud.com/vendor/optimizely/test/3srgubLSVD2VBXqgkJtCRh.json`; // NOTE - we need to use this for now until akamai is fixed
+export const OPTIMIZELY_ERROR_MESSAGE = 'Error fetching optimizely datafile';
+
+const useOptimizelyDataFile = () => {
+  const optimizelyEnabled = useOptimizelyEnabled();
+  const optimizelyClient = useRef();
+  const isProd = process.env.NODE_ENV === 'production';
+  const optimizelyUrl = isProd ? PROD_OPTIMIZELY_URL : DEV_OPTIMIZELY_URL;
+
+  const { data } = useQuery(
+    optimizelyUrl,
+    () => fetchClient(optimizelyUrl, { method: 'GET' }, OPTIMIZELY_ERROR_MESSAGE),
+    { enabled: optimizelyEnabled },
+  );
+
+  if (data) {
+    optimizelyClient.current = getExperimentDriver(data);
+  }
+
+  return { datafile: data, optimizelyClient: optimizelyClient };
+};
+
+export default useOptimizelyDataFile;
+```
+
+En aquest cas sembla que es tracta d'un servei de CDN.
+
+## Design system
+
+Si indaguem una mica per respondre a la pregunta de com gestionen els estils per els components de react, veiem que en alguns dels components s'utilitza [emotion](https://emotion.sh/docs/introduction), una llibreria css-in-js:
 
 ```js
 import styled from '@emotion/styled';
 ```
 
+A part podem veure diferents paquets que fan referencia a un design system com ara el **@nike/nike-design-system-components** on podem veure que tenen diferents components:
 
-@nike/nike-design-system-components
+- Accordion
+- Buttons
+- Cards/ProductCard
+- Carousel
+- Details
+- **Layout**
 
-## Tokens
+Dins de layout hi han diferents components per gestionar el layout de la pàgina, com ara el AspectRation, Box, Grid, Stack, ...
+
+També podem trobar quin son els espais que utilitzent: 
+
+```js
+export var getSpacing = function(t) {
+    var n = "var(--podium-cds-size-spacing-".concat(t.toLowerCase(), ")");
+    return ["xs", "s", "m", "l", "xl", "xxl", "xxxl", "xxxxl"].includes(t) ? n : t
+};
+```
+
+On els valors de les variables són:
+
+```css
+--podium-cds-size-spacing-xs: 4px;
+--podium-cds-size-spacing-s: 8px;
+--podium-cds-size-spacing-m: 12px;
+--podium-cds-size-spacing-l: 24px;
+--podium-cds-size-spacing-xl: 36px;
+--podium-cds-size-spacing-xxl: 60px;
+--podium-cds-size-spacing-xxxl: 84px;
+--podium-cds-size-spacing-xxxxl: 120px;
+```
+
+- Loaders/Skeleton
+- NikeDesignSystemProvider
+- PullQuote
+- SelectionControls/Switch
+- SizeChart
+- **Typography/Text**
+
+Aqui podem trobar un mapping depenent del tipus de text quin element de html es renderitzara, per temes de seo:
+
+```js
+export var componentMapping = {
+    body1: "p",
+    body2: "p",
+    body3: "p",
+    body1Strong: "p",
+    body2Strong: "p",
+    body3Strong: "p",
+    legal: "p",
+    editorialBody1: "p",
+    editorialBody1Strong: "p",
+    oversize1: "p",
+    oversize2: "p",
+    oversize3: "p",
+    display1: "h1",
+    display2: "h2",
+    display3: "h3",
+    display4: "h4",
+    title1: "h1",
+    title2: "h2",
+    title3: "h3",
+    title4: "h4",
+    conversation1: "p",
+    conversation2: "p",
+    conversation3: "p",
+    conversation4: "p"
+};
+```
 
 Podem fixar-nos que en alguns components fan us dels tokens importats de ```@nike/design-system-base```, com podem veure al fitxer components/dialog/styles.js:
 
@@ -725,3 +827,28 @@ export { getABTest };
 ### Observabilitat
 
 Si mirem la consola del navegador podem veure que nike esta utiltizant el servi de [newrelic](https://newrelic.com/)
+
+## Graphql
+
+Una de les preguntes que em feia era si feien servir graphql o tot eran api custom/restful, tot i que clarament dominen més les apis rest, si que utiltizen graphql, en aquest cas especificament pel tema de les wishlists a l'hora de recuperar els items per exemple.
+
+```js
+import graphqlFetch from '@nike/graphql-fetch';
+import { fetchClient } from '@nike/fetch-client';
+import { DOTCOM_UX_ID } from '@nike/ux-tread-dotcom-constants';
+
+const graphqlClient = args =>
+  graphqlFetch({
+    fetchClient,
+    url: process.env.GRAND_URL || 'https://api.nike.com/cic/grand/v1/graphql',
+    callerId: window.NikeShop?.getVersion(),
+    appId: DOTCOM_UX_ID,
+    ...args,
+  });
+
+export default graphqlClient;
+```
+
+A part d'això no n'he pogut extreure gaire res més ja que fent la tipica petició per recuperar informació sobre el schema no retorna res (429 too many request).
+
+![react-devtools](/assets/blog/descubrint-el-ecommerce-de-nike/graphql-error.png)
