@@ -1,6 +1,8 @@
 import { client } from '@/github-api/client';
+import { cn } from '@/lib/utils';
 import { Issue, IssueLabel, Paginated } from '@/types/events';
 import { gql } from '@apollo/client';
+import Image from 'next/image';
 
 const issueQuery = gql`
   query {
@@ -29,6 +31,21 @@ const issueQuery = gql`
   }
 `;
 
+const images = [
+  { src: '/assets/events/P1080125.jpg', type: 'vertical' },
+  { src: '/assets/events/P1080128.jpg', type: 'horizontal' },
+  { src: '/assets/events/20231108_200715.jpg', type: 'horizontal' },
+  { src: '/assets/events/20231108_171727.jpg', type: 'vertical' },
+  { src: '/assets/events/20231108_190921.jpg', type: 'vertical' },
+  { src: '/assets/events/P1080106.jpg', type: 'horizontal' },
+  { src: '/assets/events/P1080123.jpg', type: 'horizontal' },
+  { src: '/assets/events/20231108_191042.jpg', type: 'vertical' },
+  { src: '/assets/events/20231108_192226.jpg', type: 'vertical' },
+  { src: '/assets/events/P1080186.jpg', type: 'horizontal' },
+  { src: '/assets/events/P1080128.jpg', type: 'horizontal' },
+  { src: '/assets/events/P1080173.jpg', type: 'vertical' },
+];
+
 async function EventsPage() {
   const {
     data,
@@ -46,8 +63,8 @@ async function EventsPage() {
     <div className="bg-stone-900 min-h-screen px-4">
       <section className="pt-24 pb-12">
         <div className="container px-4 mx-auto flex flex-wrap">
-          <div className="w-full text-center max-w-2xl mx-auto">
-            <h1 className="text-4xl font-bold text-slate-200 mb-5">
+          <div className="w-full text-center max-w-2xl mx-auto md:mt-20">
+            <h1 className="text-4xl md:text-7xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
               GironaJS Events
             </h1>
             <p className="text-xl text-gray-400 mt-4">
@@ -117,6 +134,22 @@ async function EventsPage() {
           </div>
         ))}
       </section>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start max-w-5xl mx-auto gap-10 py-20">
+        {images.map((el, i) => (
+          <Image
+            key={'grid-1' + i}
+            src={el.src}
+            className={cn(
+              el.type === 'horizontal' && 'col-span-2',
+              'h-80 w-full object-cover object-center-center rounded-lg gap-10 !m-0 !p-0'
+            )}
+            height="400"
+            width="400"
+            alt="thumbnail"
+          />
+        ))}
+      </div>
 
       <div className="w-full max-w-2xl mx-auto mt-12 flex gap-8 md:flex-row flex-col">
         <div className="flex-1">
