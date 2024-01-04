@@ -1,4 +1,6 @@
+import { getDictionary } from '@/get-dictionary';
 import { client } from '@/github-api/client';
+import { Locale } from '@/i18n-config';
 import { cn } from '@/lib/utils';
 import { Issue, IssueLabel, Paginated } from '@/types/events';
 import { gql } from '@apollo/client';
@@ -46,7 +48,7 @@ const images = [
   { src: '/assets/events/P1080173.jpg', type: 'vertical' },
 ];
 
-async function EventsPage() {
+async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
   const {
     data,
   }: {
@@ -59,18 +61,18 @@ async function EventsPage() {
     query: issueQuery,
   });
 
+  const dictionary = await getDictionary(lang);
+
   return (
     <div className="bg-stone-900 min-h-screen px-4">
       <section className="pt-24 pb-12">
         <div className="container px-4 mx-auto flex flex-wrap">
           <div className="w-full text-center max-w-2xl mx-auto md:mt-20">
             <h1 className="text-4xl md:text-7xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
-              GironaJS Events
+              {dictionary.events.title}
             </h1>
             <p className="text-xl text-gray-400 mt-4">
-              Here you can find Meetups, conferences, workshops, etc organized
-              by GironaJS or propose a new event that you would like attend or
-              organize.
+              {dictionary.events.subtitle}
             </p>
             <div className="flex flex-wrap justify-center mt-8 md:flex-row flex-col">
               <div className="shadow border border-neutral-200 rounded-md sm:mr-3 mt-2 sm:mt-0">
@@ -78,7 +80,7 @@ async function EventsPage() {
                   href="https://github.com/gironajs/trobades/issues/new?assignees=&labels=&projects=&template=peticions.md&title="
                   className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-black bg-white border border-transparent leading-6 rounded-md hover:bg-slate-50 hover:text-black focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10"
                 >
-                  <span className="mr-2">Propose an event</span>
+                  <span className="mr-2"> {dictionary.events.propose}</span>
                 </a>
               </div>
               <div className="shadow border border-neutral-200 rounded-md sm:ml-3 mt-2 sm:mt-0">
@@ -86,7 +88,7 @@ async function EventsPage() {
                   href="https://github.com/gironajs/trobades/issues/new?assignees=&labels=&projects=&template=xerrades.md&title="
                   className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-black bg-white border border-transparent leading-6 rounded-md hover:bg-slate-50 hover:text-black focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10"
                 >
-                  <span className="mr-2">Organize an event</span>
+                  <span className="mr-2">{dictionary.events.organize}</span>
                 </a>
               </div>
             </div>
@@ -96,10 +98,10 @@ async function EventsPage() {
 
       <div className="w-full text-center max-w-2xl mx-auto mt-12">
         <h2 className="text-3xl font-bold text-slate-200 mb-5 text-center">
-          Upcoming events
+          {dictionary.events.list.title}
         </h2>
         <p className="text-xl text-gray-400 mt-4 text-center">
-          There are the next events that the community is organizing.
+          {dictionary.events.list.subtitle}
         </p>
       </div>
 
@@ -154,17 +156,16 @@ async function EventsPage() {
       <div className="w-full max-w-2xl mx-auto mt-12 flex gap-8 md:flex-row flex-col">
         <div className="flex-1">
           <h2 className="text-3xl font-bold text-white mb-5 text-left">
-            How events works?
+            {dictionary.events.cta.message}
           </h2>
         </div>
         <div className="flex-1 flex flex-col">
           <div className="">
             <h3 className="text-xl font-bold text-slate-200 mb-5 text-left">
-              Propose an event
+              {dictionary.events.cta.one.title}
             </h3>
             <p className="text-md text-gray-400 mt-4 text-left">
-              If you have an idea for an event that you would like to attend,
-              you can propose it using github issues with this{' '}
+              {dictionary.events.cta.one.subtitle}{' '}
               <a
                 className="text-slate-200 hover:text-slate-100"
                 href="https://github.com/gironajs/trobades/issues/new?assignees=&labels=&projects=&template=peticions.md&title="
@@ -176,11 +177,10 @@ async function EventsPage() {
           </div>
           <div className="mt-12 mb-12">
             <h3 className="text-xl font-bold text-slate-200 mb-5 text-left">
-              Organize an event
+              {dictionary.events.cta.two.title}
             </h3>
             <p className="text-md text-gray-400 mt-4 text-left">
-              If you want to organize an event, you can propose it using the
-              github issues with this{' '}
+              {dictionary.events.cta.two.subtitle}{' '}
               <a
                 className="text-slate-200 hover:text-slate-100"
                 href="https://github.com/gironajs/trobades/issues/new?assignees=&labels=&projects=&template=xerrades.md&title="

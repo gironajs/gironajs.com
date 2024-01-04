@@ -85,5 +85,26 @@
         "description_html": "<p>Si viatges a Girona, l'estació de tren de Girona hauria de ser el teu primer destí. Aquesta estació moderna i ben equipada està convenientment situada al cor de la ciutat, convertint-se en el punt de partida perfecte per a la teva aventura a Girona.</p><p>Una de les millors coses de l'estació de tren de Girona és la seva ubicació central. Des d'aquí, pots explorar fàcilment tot el que la ciutat té per oferir, des dels seus llocs històrics fins a la seva animada vida nocturna. L'estació està a només uns passos del centre de la ciutat, i hi trobaràs molts restaurants, cafeteries i botigues a prop.</p><p>Però això no és tot: l'estació de tren de Girona també és un important punt de transport per a la regió. A més de servei de trens locals, l'estació és una parada per als trens AVE d'alta velocitat, que connecten Girona amb altres ciutats importants d'Espanya, com Madrid i Barcelona. Això significa que pots planificar fàcilment excursions d'un dia a altres destinacions mentre utilitzes Girona com a base.</p><p>A l'interior de l'estació, trobaràs totes les comoditats que necessites per a un viatge còmode i sense problemes. Hi ha moltes màquines expenedores de bitllets i taules d'informació per ajudar-te a planificar el teu viatge, i l'estació té Wi-Fi gratuït perquè puguis mantenir-te connectat mentre viatges. També hi ha moltes botigues i cafeteries on pots prendre una beguda o una tassa de cafè mentre esperes el teu tren.</p><p>Si arribes a Girona en avió, estaràs encantat de saber que l'estació de tren de Girona és a només un curt trajecte amb autobús de l'aeroport. L'aparcament d'autobusos es troba just a fora de l'estació, i els autobusos circulen amb freqüència al llarg del dia. Això facilita el desplaçament des de l'aeroport fins al centre de la ciutat i més enllà.</p><p>En resum, l'estació de tren de Girona és el punt de partida perfecte per a la teva aventura a Girona. Amb la seva ubicació central, fàcil accés a altres ciutats i totes les comoditats que necessites, és el punt de transport ideal per a tots els tipus de viatgers.</p>"
       }
     }
+  },
+  "events": {
+    "title": "GironaJS Events",
+    "subtitle": "Aquí podeu trobar trobades, conferències, tallers, etc. organitzats per GironaJS o proposar un nou esdeveniment al qual us agradaria assistir o organitzar.",
+    "organize": "Organitzar un esdeveniment",
+    "propose": "Proposar un esdeveniment",
+    "list": {
+      "title": "Pròxims esdeveniments",
+      "subtitle": "Aquests són els propers esdeveniments que la comunitat està organitzant."
+    },
+    "cta": {
+      "message": "Com funcionen els esdeveniments?",
+      "one": {
+        "title": "1. Proposar un esdeveniment",
+        "subtitle": "Si voleu proposar un esdeveniment, si us plau, ompliu el formulari a continuació i ens posarem en contacte amb vosaltres el més aviat possible."
+      },
+      "two": {
+        "title": "2. Organitzar l'esdeveniment",
+        "subtitle": "Un cop l'esdeveniment estigui aprovat, podeu organitzar-lo i us ajudarem a promocionar-lo."
+      }
+    }
   }
 }
