@@ -110,6 +110,9 @@
         "title": "2. Organitzar l'esdeveniment",
         "subtitle": "Un cop l'esdeveniment estigui aprovat, podeu organitzar-lo i us ajudarem a promocionar-lo."
       }
+    },
+    "sponsors": {
+      "title": "Alguns patrocinadors ens ajuden a fer possible aquests esdeveniments amb menjar, begudes, ubicació i molt més, gràcies a ells!"
     }
   }
 }

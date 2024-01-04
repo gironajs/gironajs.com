@@ -10,6 +10,15 @@ module.exports = {
       },
     },
     extend: {
+      animation: {
+        'infinite-scroll': 'infinite-scroll 25s linear infinite',
+      },
+      keyframes: {
+        'infinite-scroll': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-100%)' },
+        },
+      },
       fontFamily: {
         jetbrains: ['var(--font-jetbrains-mono)'],
         lato: ['var(--font-lato)'],

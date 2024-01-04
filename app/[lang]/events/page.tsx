@@ -1,3 +1,4 @@
+import { sponsors } from '@/config/sponsor';
 import { getDictionary } from '@/get-dictionary';
 import { client } from '@/github-api/client';
 import { Locale } from '@/i18n-config';
@@ -5,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Issue, IssueLabel, Paginated } from '@/types/events';
 import { gql } from '@apollo/client';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const issueQuery = gql`
   query {
@@ -193,6 +195,41 @@ async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
           </div>
         </div>
       </div>
+
+      <section className="py-12 grid grid-cols-1 gap-4 max-w-6xl mx-auto">
+        <h3 className="text-2xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+          {dictionary.events.sponsors.title}
+        </h3>
+
+        <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div
+              aria-hidden={i === 1}
+              key={`sponsors-${i}`}
+              className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+            >
+              {...sponsors.map((sponsor, index) => (
+                <Link
+                  key={index}
+                  href={sponsor.url}
+                  target="_blank"
+                  className="flex items-center m-10"
+                >
+                  <div className="bg-white rounded-md shadow-md p-4">
+                    <Image
+                      className="object-cover w-[249px]"
+                      src={sponsor.image.url}
+                      width={sponsor.image.width}
+                      height={sponsor.image.height}
+                      alt={`${sponsor.name} sponsor image`}
+                    />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
