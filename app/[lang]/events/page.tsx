@@ -196,10 +196,19 @@ async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
         </div>
       </div>
 
-      <section className="py-12 grid grid-cols-1 gap-4 max-w-6xl mx-auto">
+      <section className="py-12 grid grid-cols-1 gap-4 max-w-6xl mx-auto justify-items-center">
         <h3 className="text-2xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
           {dictionary.events.sponsors.title}
         </h3>
+
+        <a
+          href="mailto:contact.gironajs@gmail.com"
+          className="m-8 shadow border border-neutral-200 rounded-md sm:mr-3 mt-2 sm:mt-0"
+        >
+          <p className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-black bg-white border border-transparent leading-6 rounded-md hover:bg-slate-50 hover:text-black focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10">
+            {dictionary.events.sponsors.contact}
+          </p>
+        </a>
 
         <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
           {Array.from({ length: 2 }).map((_, i) => (
