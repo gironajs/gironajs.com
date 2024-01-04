@@ -44,8 +44,9 @@ const images = [
   { src: '/assets/events/20231108_191042.jpg', type: 'vertical' },
   { src: '/assets/events/20231108_192226.jpg', type: 'vertical' },
   { src: '/assets/events/P1080186.jpg', type: 'horizontal' },
-  { src: '/assets/events/P1080128.jpg', type: 'horizontal' },
+  { src: '/assets/events/20231108_200742.jpg', type: 'vertical' },
   { src: '/assets/events/P1080173.jpg', type: 'vertical' },
+  { src: '/assets/events/20231108_205607.jpg', type: 'vertical' },
 ];
 
 async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
