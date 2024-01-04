@@ -9,6 +9,7 @@ import { jetbrainsFont, latoFont, sourceSerifProFont } from './fonts';
 import localePrettyUrlsCache, {
   LocalePrettyUrlsData,
 } from '@/lib/locale-pretty-urls-cache';
+import { getDictionary } from '@/get-dictionary';
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
@@ -23,6 +24,7 @@ export default async function Root({
 }) {
   const localePrettyUrlsCacheData: LocalePrettyUrlsData =
     localePrettyUrlsCache.getCacheForClientComponents();
+  const dictionary = await getDictionary(params.lang);
 
   return (
     <html lang={params.lang}>
@@ -51,6 +53,7 @@ export default async function Root({
             lang={params.lang}
             localePrettyUrlsCacheData={localePrettyUrlsCacheData}
             data-superjson
+            dictionary={dictionary}
           ></Header>
           <main className="flex-1">{children}</main>
         </div>

@@ -8,7 +8,8 @@
     "typescript:check": "tsc --noEmit",
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@apollo/client": "^3.8.4",
@@ -27,6 +28,7 @@
     "negotiator": "0.6.3",
     "next": "^13.2.4",
     "next-mdx-remote": "^4.4.1",
+    "next-sitemap": "~4.2.3",
     "r3f-perf": "^6.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

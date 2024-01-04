@@ -27,4 +27,13 @@ export const sponsors: Sponsor[] = [
       height: 211,
     },
   },
+  {
+    name: 'Kave Home',
+    url: 'https://kavehome.com/',
+    image: {
+      url: '/assets/sponsors/kavehome-logo.png',
+      width: 1957,
+      height: 275,
+    },
+  },
 ];

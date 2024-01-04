@@ -27,6 +27,9 @@ export function middleware(request: NextRequest) {
     [
       '/manifest.json',
       '/favicon.ico',
+      '/robots.txt',
+      '/sitemap.xml',
+      '/sitemap-0.xml', // Consider using regex for more flexible sitemap matching in the future. Keeping it simple for now.
       // Your other files in `public`
     ].includes(pathname)
   )

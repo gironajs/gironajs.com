@@ -46,6 +46,15 @@
     stroke: none;
   }
 
+  .resp-sharing-button--copy {
+    background-color: #eee;
+    border-radius: 5px;
+  }
+
+  .resp-sharing-button--copy:hover {
+    background-color: #ddd;
+  }
+
   .resp-sharing-button--twitter {
     background-color: #55acee;
   }
