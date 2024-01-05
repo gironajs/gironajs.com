@@ -14,7 +14,7 @@ seo:
     /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
 ---
 
-El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza un ecommerce "gran" com en aquest cas es el de nike i fer-ho utilitzant les developer tools del navegador.
+El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza i com les utiltiza un ecommerce "gran" com en aquest cas es el de nike i fer-ho utilitzant les developer tools del navegador.
 
 Primer de tot si inspeccionem la pàgina podem veure que utilitza el framework [Next.js](https://nextjs.org/), 
 
@@ -34,7 +34,7 @@ On podem trobar el div amb l'id ```__next```, això o que en uns dels primer sho
     <img src="/assets/blog/descubrint-el-ecommerce-de-nike/webpack-sources.png" />
 
     <div className="gjs-blog-content">
-        <p>Dins del la pestanya sources dels devtools del navegador podem veure que hi ha la "carpeta" <b>webpack://</b>, aquesta carpeta es una carpeta virtual que ens permet veure els fitxers originals, ja que tenen habilitada l'opció de source maps a la configuració de webpack.</p>
+        <p>Dins del la pestanya sources dels devtools del navegador podem veure que hi ha la "carpeta" <b>webpack://</b>, aquesta carpeta es una carpeta virtual que ens permet veure els fitxers originals, ja que tenen habilitada l'opció de source maps a la configuració de webpack (cosa una mica rara tot sigui dit).</p>
         <br></br>
         <p>
         També podem veure la carpeteta de webpack dins d'altres carpetes, com ara són les de <b>_N_E</b>, <b>analytics-client</b>, <b>privacy-consent</b>, <b>privacy-Core</b> i <b>WebShellClient</b> etc.
@@ -103,7 +103,7 @@ route:"/[country]/[language]/member/profile"
 ```
 
 
-També podem analitzar la cache de les diferentes pagines mirant el Cache'Control dels headers de resposta a la primera petició:
+També podem analitzar la cache de les diferentes pagines mirant el Cache-Control dels headers de resposta a la primera petició:
 
 
 <table>
@@ -129,7 +129,7 @@ També podem analitzar la cache de les diferentes pagines mirant el Cache'Contro
     </tbody>
 </table>
 
-Del que podem veure que la home es refresca cada 10 minuts, les ofertes cada 5 minuts i els productes cada 15 minuts.
+Del que podem veure que la home es refresca cada 10 minuts, les ofertes cada 5 minuts i els productes cada 15 minuts, pero el tema del caching millor el deixem per un futur article.
 
 
 Si mirem les peticiones un dels headers que portla la resposta es el de **Akamai-Grn**, si busquem akami pel codi o directament a google podem veure que es tractara d'alguns serveis de l'empresa [Akami](https://en.wikipedia.org/wiki/Akamai_Technologies) com ara cyberseguretat, cloud services o CDN entre molts altres.
@@ -639,8 +639,11 @@ També podem veure com dins del script amb el tag ```<script id="__NEXT_DATA__" 
             "value": "Add a Gift Bag",
             "description": "Add Gift Bag"
           },
+        }
+      }
+    }
+  }
 ```
-
 
 Aquesta arquitectura fa que tinguin valors repetits com pot ser el done de les cookies i el done de la wishlist:
 
@@ -659,10 +662,297 @@ Aquesta arquitectura fa que tinguin valors repetits com pot ser el done de les c
 
 I sembla ser que la descripció no es fa servir a la web, simplement es per donar context del value.
 
+### Events
+
+Un dels events que podem veure que s'estan enviant es el de optimizely, que com ells mateixos es descriuen en un sistema "all-in-one" per marketing.  
+  
+Aquí podem veure el payload que s'envia a la petició:
+
+```
+https://logx.optimizely.com/v1/events 
+```
+
+Payload:
+
+```json
+{
+    "client_name": "javascript-sdk",
+    "client_version": "3.5.0",
+    "account_id": "6194110778",
+    "project_id": "9011010262",
+    "revision": "13131",
+    "anonymize_ip": true,
+    "enrich_decisions": true,
+    "visitors": [
+        {
+            "snapshots": [
+                {
+                    "decisions": [
+                        {
+                            "campaign_id": "24062810741",
+                            "experiment_id": "24082260985",
+                            "variation_id": "24099740550"
+                        }
+                    ],
+                    "events": [
+                        {
+                            "entity_id": "24062810741",
+                            "timestamp": 1704405218882,
+                            "key": "campaign_activated",
+                            "uuid": "5cf80aa9-814c-4cfa-b0fd-f30c82320855"
+                        }
+                    ]
+                }
+            ],
+            "visitor_id": "3519256F78D0F81D6DBE84407F32C100",
+            "attributes": [
+                {
+                    "entity_id": "10519940845",
+                    "key": "country",
+                    "type": "custom",
+                    "value": "us"
+                },
+                {
+                    "entity_id": "$opt_bot_filtering",
+                    "key": "$opt_bot_filtering",
+                    "type": "custom",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "snapshots": [
+                {
+                    "decisions": [
+                        {
+                            "campaign_id": "24553700035",
+                            "experiment_id": "24547710456",
+                            "variation_id": "24557080326"
+                        }
+                    ],
+                    "events": [
+                        {
+                            "entity_id": "24553700035",
+                            "timestamp": 1704405218883,
+                            "key": "campaign_activated",
+                            "uuid": "d8531f89-ed25-4e2e-80be-f5d5bcdc0190"
+                        }
+                    ]
+                }
+            ],
+            "visitor_id": "3519256F78D0F81D6DBE84407F32C100",
+            "attributes": [
+                {
+                    "entity_id": "10519940845",
+                    "key": "country",
+                    "type": "custom",
+                    "value": "us"
+                },
+                {
+                    "entity_id": "$opt_bot_filtering",
+                    "key": "$opt_bot_filtering",
+                    "type": "custom",
+                    "value": true
+                }
+            ]
+        }
+    ]
+}
+```
+
+Un dels serveis que ofereix es el de crear "experiments" (com es veu a la petició) de tal forma que podem mostrar experiencies d'usuari personalitzades i validar si aquestes ajuden o no a fer més vendes (es a dir proves A/B i proves  multivariants), a part es pot integrar amb google analytics entre altres.
+
+Una de les altres peticions que podem veure que envia events es la seguent:
+
+```
+https://analytics.nike.com/v1/t
+```
+
+Payload:
+
+```json
+{
+    "anonymousId": "3519256F78D0F81D6DBE84407F32C100",
+    "event": "Impression Tracked",
+    "permissions": [
+        {
+            "category": "adtargeting_behavioralevents",
+            "consent": "accept"
+        },
+        {
+            "category": "personalization_targeted_comms",
+            "consent": "accept"
+        },
+        {
+            "category": "adtargeting_hashedmatch",
+            "consent": "default_decline"
+        },
+        {
+            "category": "performance",
+            "consent": "accept"
+        }
+    ],
+    "type": "track",
+    "writeKey": "xxxxxx",
+    "properties": {
+        "abTest": {
+            "adobeTargetId": "xxxxxx"
+        },
+        "classification": "experience event",
+        "consumer": {
+            "adobeMarketingCloudId": "xxxxx",
+            "visitorId": "xxxx",
+            "anonymousId": "xxxx",
+            "isSwoosh": false,
+            "loginStatus": "logged in",
+            "upmId": "xxxx"
+        },
+        "content": {
+            "landmarkX": 50,
+            "landmarkY": 80,
+            "timestamp": "1704405322422",
+            "assetId": "xxxxxx",
+            "cardKey": "xxxxxx",
+            "componentType": "c_c_i",
+            "placementId": 1,
+            "positionId": 7,
+            "threadId": "xxxxx",
+            "threadKey": "xxxxx",
+            "totalPositions": 7
+        },
+
+        "country": "ES",
+        "eventName": "Impression Tracked",
+        "eventType": "track",
+        "language": "en-US",
+        "previousView": {
+            "pageName": "nikecom>homepage",
+            "pageType": "homepage"
+        },
+        "wrapper": {
+            "build": "production",
+            "version": "3.23.0"
+        },
+        "app": {
+            "backendPlatform": "cloud",
+            "version": "a9ac8fa5d",
+            "domain": "www.nike.com"
+        },
+        "view": {
+            "experienceType": "nikecom",
+            "pageName": "nikecom>homepage",
+            "pageType": "homepage"
+        },
+        "locale": {
+            "language": "en",
+            "country": "us"
+        }
+    },
+    "context": {
+        "direct": true,
+        "library": {
+            "name": "@nike/analytics-client",
+            "version": "3.23.0"
+        },
+        "page": {
+            "path": "/",
+            "title": "Nike. Just Do It. Nike.com",
+            "url": "https://www.nike.com/"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    "sentAt": "2024-01-04T21:55:22.440Z",
+    "$schema": "https://www.nike.com/assets/measure/schemas/digital-product/dotcom/platform/web/classification/experience-event/experience/landing-page/event-type/track/event-name/impression-tracked/version/LATEST/schema.json",
+    "messageId": "xxxxx",
+    "timestamp": "2024-01-04T21:55:22.439Z"
+}
+```
+
+En aquest cas podem veure que el domini es el mateix de nike (analytics.nike.com) però com podem veure hi han algunes referencies a adobe target (**adobeTargetId**, **adobeMarketingCloudId**)  
+això és perquè els events i les proves A/B a part del que servei que hem vist a l'anterior petició majoritàriament sembla que utilitzen el servei de adobe target, com també podem veure a la següent petició:
+
+```
+https://abt.nike.com/rest/v1/delivery?client=nike&sessionId=xxxx&version=2.8.1
+```
+
+
+```json
+{
+    "requestId": "fa94556776cb469d85ddd34ca5b5b6c0",
+    "context": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "timeOffsetInMinutes": 60,
+        "channel": "web",
+        "screen": {
+            "width": 3440,
+            "height": 1440,
+            "orientation": "landscape",
+            "colorDepth": 24,
+            "pixelRatio": 1
+        },
+        "window": {
+            "width": 2310,
+            "height": 1277
+        },
+        "browser": {
+            "host": "www.nike.com",
+            "webGLRenderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 (0x00002484) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "address": {
+            "url": "https://www.nike.com/",
+            "referringUrl": ""
+        }
+    },
+    "id": {
+        "tntId": "xxxx.37_0"
+    },
+    "experienceCloud": {
+        "analytics": {
+            "logging": "server_side"
+        }
+    },
+    "prefetch": {
+        "views": [
+            {}
+        ]
+    }
+}
+```
+
+response:
+
+```json
+{
+    "status": 200,
+    "requestId": "fa94556776cb469d85ddd34ca5b5b6c0",
+    "client": "nike",
+    "id": {
+        "tntId": "65e3db1043a54d18b03e1388bdf05f09.37_0"
+    },
+    "edgeHost": "mboxedge37.tt.omtrdc.net",
+    "prefetch": {},
+    "telemetryServerToken": "cJWuCgDiaU1IgPqDGhBbFJeqzwYSwsSIodTTUorUU84="
+}
+```
+
+On el que podem deduir que **abt.nike** es refereix a **Adobe Target**, el cual al igual que el servei d'optimizely permet fer proves A/B i multivariants.
+
+En aquest cas podem veure com ho tenen integrat en el seu propi codi:
+
+```js:nike/analytics-client/src/analytics-event/abtest.ts
+import { CacheSelector } from '../cache';
+const getABTest = (_rawEvent, cache) => {
+    const adobeTargetId = cache.get(CacheSelector.MBOX);
+    return {
+        adobeTargetId: typeof adobeTargetId === 'string' ? adobeTargetId : undefined,
+    };
+};
+export { getABTest };
+```
+
 ### Feature Flags
 
 Petició a: https://www.nike.com/assets/experience/cart/static/feature-flags.json
-
 
 ```json
 {
@@ -692,6 +982,7 @@ Petició a: https://www.nike.com/assets/experience/cart/static/feature-flags.jso
 }
 ```
 
+També podem trobar un extens llistat amb els feature flags que tenim activats i quins no:
 
 ```json
 abTests:true
@@ -703,8 +994,7 @@ debug:false
 enableChat:false
 enableMAP:false
 enableNikeShopModals:true
-filterByNikeDotComChannel:
-true
+filterByNikeDotComChannel:true
 globalNavUseGeoPrivacy:true
 gridRecommendations:true
 hideBuyingTools:false
@@ -753,18 +1043,10 @@ showNBY:true
 showNBYMessageHub:true
 showNikeId:true
 showOmni:false
-showPhysicalGiftCards
-:
-true
-showPickupLocation
-:
-true
-showPromoBanner
-:
-true
-showPromoExclusionMsg
-:
-false
+showPhysicalGiftCards:true
+showPickupLocation:true
+showPromoBanner:true
+showPromoExclusionMsg:false
 showPromoMsg:true
 showReadMore:true
 showRelatedCategories:true
@@ -810,23 +1092,32 @@ wallImpressions:true
 wallNoResultsCarousel:true
 ```
 
-### A/B testing
-
-
-```js:nike/analytics-client/src/analytics-event/abtest.ts
-import { CacheSelector } from '../cache';
-const getABTest = (_rawEvent, cache) => {
-    const adobeTargetId = cache.get(CacheSelector.MBOX);
-    return {
-        adobeTargetId: typeof adobeTargetId === 'string' ? adobeTargetId : undefined,
-    };
-};
-export { getABTest };
-```
-
 ### Observabilitat
 
-Si mirem la consola del navegador podem veure que nike esta utiltizant el servi de [newrelic](https://newrelic.com/)
+Si mirem la consola del navegador podem veure que nike esta utiltizant el servi de [newrelic](https://newrelic.com/) per capturar expecions i errors del client:
+
+```js:_N_E/[[...page]].js
+const isAdobeTargetEnabled = process.env.ADOBE_TARGET_ENABLED === 'true';
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  store =>
+    async ({ req, query, res }) => {
+      const lpContext = {
+        store,
+        query,
+      };
+
+      queryParamsSanitizerMiddleware(req);
+
+      // error handling should be initiated before the middlewares called as they can dispatch error actions
+      store.dispatch(actions.logActions.init({ logger: req.logger, newrelic }));
+      // call our old express middlewares
+      featureFlagsMiddleware(req, lpContext);
+
+      lpContext.fetchFn = getExtendedFetchFn(store.getState());
+      // TODO: CICLP-3564 Required for data fetching in server side sagas. To be removed during cleanup
+      globalThis.extendedFetch = lpContext.fetchFn;
+```
 
 ## Graphql
 
