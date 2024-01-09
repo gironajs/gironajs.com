@@ -1,22 +1,24 @@
 ---
-title: Enginyeria inversa del ecommerce de Nike amb només el navegador
-description: Article sobre les tecnologies que s'utilitzen a l'ecommerce de nike
+title: Reverse engineering of Nike's browser-only e-commerce
+description: Article about the technologies used in nike ecommerce
 image: /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
 published: true
 publishedDate: 2023-12-01
 authors: eudago
 seo:
   metatitle: >
-    Descobrint el ecommerce de nike
+    Reverse engineering of Nike's browser-only e-commerce
   metadescription: >
-    Article sobre les tecnologies que s'utilitzen a l'ecommerce de nike
+    Article about the technologies used in nike ecommerce
   image: >
     /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
 ---
 
-El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza i com les utiltiza un ecommerce "gran" com en aquest cas es el de nike i fer-ho utilitzant les developer tools del navegador.
+The purpose of this article is to delve as deeply as possible into the technologies used and how they are employed within a "major" ecommerce platform, such as the one employed by Nike. We'll do this by utilizing the browser's developer tools.
 
-Primer de tot si inspeccionem la pàgina podem veure que utilitza el framework [Next.js](https://nextjs.org/),
+First and foremost, upon inspecting the page, we can observe that it utilizes the [Next.js](https://nextjs.org/) framework.
+
+El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza i com les utiltiza un ecommerce "gran" com en aquest cas es el de nike i fer-ho utilitzant les developer tools del navegador.
 
 ```html {1,3-4}
 <div id="experience-wrapper">
@@ -38,29 +40,28 @@ Primer de tot si inspeccionem la pàgina podem veure que utilitza el framework [
 </div>
 ```
 
-On podem trobar el div amb l'id `__next`, això o que en uns dels primer showcases que podem veure a la propia web de nextjs.
+The `<div>` element with the ID \_\_next can be found, which is often featured in one of the primary showcases on the Next.js official website itself.
 
 <div className="gjs-blog-content grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
     <img src="/assets/blog/descubrint-el-ecommerce-de-nike/webpack-sources.PNG" />
 
     <div className="gjs-blog-content">
-        <p>Dins del la pestanya sources dels devtools del navegador podem veure que hi ha la "carpeta" <b>webpack://</b>, aquesta carpeta es una carpeta virtual que ens permet veure els fitxers originals, ja que tenen habilitada l'opció de source maps a la configuració de webpack (cosa una mica rara tot sigui dit).</p>
+        <p>Within the "Sources" tab of the browser's dev tools, we can observe the presence of the "folder" <b>webpack://</b>. This folder represents a virtual directory that allows us to view the original files. It's made possible due to the enabled source maps option in the webpack configuration (which, it's worth mentioning, is a somewhat uncommon occurrence).</p>
         <br></br>
         <p>
-        També podem veure la carpeteta de webpack dins d'altres carpetes, com ara són les de <b>_N_E</b>, <b>analytics-client</b>, <b>privacy-consent</b>, <b>privacy-Core</b> i <b>WebShellClient</b> etc.
-        Això ens facilitara la vida a l'hora de veure de que tractent ja que no haurem de tractar amb codi minificat ni uglificat.
+        We can also locate the webpack folder within other directories, such as <b>_N_E</b>, <b>analytics-client</b>, <b>privacy-consent</b>, <b>privacy-Core</b>, and <b>WebShellClient</b>, among others. This greatly simplifies our task when examining the content, as we won't have to deal with minified or obfuscated code.
         </p>
     </div>
 
 </div>
 
-També podem usar les [react devtools](https://react.dev/learn/react-developer-tools) per poder veure les props i els estats dels components que es renderitzen a la pàgina:
+We can also utilize the [react devtools](https://react.dev/learn/react-developer-tools) to inspect the props and states of the components rendered on the page:
 
 ![reat-devtocols](/assets/blog/descubrint-el-ecommerce-de-nike/react-devtools.PNG)
 
-Si analitzem una mica podem veure que estan utilitzan Redux per la gestió de l'estat de l'aplicació, el cual es carrega al primer component de la pagina, aqui tenim un [tutorial](https://blog.logrocket.com/use-redux-next-js/) de com s'utilitza redux amb nextjs.
+Upon analysis, it's evident that they are employing Redux for managing the application state, which gets loaded into the initial component of the page. Here's a helpful tutorial on using Redux with Next.js.
 
-Al primer component de la pàgina també podem veure les rutes dins de nextjs, per exemple la home és:
+Within the initial page component, we can also identify the routes used in Next.js. For instance, the home route is:
 
 ```json
 isSsr:true
@@ -73,7 +74,7 @@ query: {
 route: "/[[...page]]"
 ```
 
-En canvi a la url de les ofertes amb path **/es/ca/w/ofertes-3yaep**:
+Instead to the url of the offers with path **/es/ca/w/ofertes-3yaep**:
 
 ```json
 isSsr:true
@@ -85,7 +86,7 @@ query: {
 route:"/[country]/[language]/w/[[...slug]]"
 ```
 
-O un producte amb path **/es/ca/t/dri-fit-samarreta-de-fitnes-home-v75KxD/AR6029-063**:
+Or a product with path **/es/ca/t/dri-fit-fitness-shirt-men-v75KxD/AR6029-063**:
 
 ```json
 isSsr:true
@@ -96,25 +97,23 @@ query: {
 route:"/t/[slug]/[styleColor]"
 ```
 
-Una de les coses que podem treure de les propietats que rep el primer component es el tipus de renderitzat que utiltizen amb el nextJs.
+One of the things we can extract from the properties received by the first component is the type of rendering they are using with Next.js.
 
 ```json
 __N_SSP: true
 __N_SSG: undefined
 ```
 
-Podem veure que aquestes pagines es renderitzen amb server side rendering (SSR), i dins del
-server side rendering podem veure que no fan servir [server side generation (SSG)](https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation), si no que les pagines són generades a partir del [getServerSideProp (SSP)](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props),
-això segurament es per la cantitat de productes que tenen i per mantenir les pagines mes actualitzades.
+We can observe that these pages are rendered using server-side rendering ([SSR](https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation)), and within server-side rendering, they do not utilize server-side generation (SSG). Instead, the pages are generated using getServerSideProps ([SSP](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props)). This is likely due to the volume of products they have and the need to keep the pages more up-to-date.
 
-En canvi la pagina de perfil (/es/ca/member/profile/) si que utilitza el SSG, tot i que realment el contingut rellevant es carrega amb el client side rendering (CSR).
+However, the profile page (/es/ca/member/profile/) does utilize SSG, although the relevant content is actually loaded using client-side rendering (CSR).
 
 ```json
 __N_SSG: true
 route:"/[country]/[language]/member/profile"
 ```
 
-També podem analitzar la cache de les diferentes pagines mirant el Cache-Control dels headers de resposta a la primera petició:
+Certainly! We can analyze the cache of the different pages by inspecting the `Cache-Control` headers in the response of the initial request:
 
 <table>
   <thead>
@@ -139,9 +138,9 @@ També podem analitzar la cache de les diferentes pagines mirant el Cache-Contro
   </tbody>
 </table>
 
-Del que podem veure que la home es refresca cada 10 minuts, les ofertes cada 5 minuts i els productes cada 15 minuts, pero el tema del caching millor el deixem per un futur article.
+From what we can see, the home page refreshes every 10 minutes, the offers update every 5 minutes, and the products refresh every 15 minutes. However, delving deeper into caching is something we might reserve for a future article.
 
-Si mirem les peticiones un dels headers que portla la resposta es el de **Akamai-Grn**, si busquem akami pel codi o directament a google podem veure que es tractara d'alguns serveis de l'empresa [Akami](https://en.wikipedia.org/wiki/Akamai_Technologies) com ara cyberseguretat, cloud services o CDN entre molts altres.
+Looking into the requests, one of the response headers is **Akamai-Grn**. If we search for Akamai in the code or directly on Google, we can find that it relates to various services offered by [Akami](https://en.wikipedia.org/wiki/Akamai_Technologies), such as cybersecurity, cloud services, or content delivery network (CDN), among many others.
 
 ```js
 import { useRef } from 'react';
@@ -177,17 +176,17 @@ const useOptimizelyDataFile = () => {
 export default useOptimizelyDataFile;
 ```
 
-En aquest cas sembla que es tracta d'un servei de CDN.
+In this case it appears to be a CDN service.
 
 ## Design system
 
-Si indaguem una mica per respondre a la pregunta de com gestionen els estils per els components de react, veiem que en alguns dels components s'utilitza [emotion](https://emotion.sh/docs/introduction), una llibreria css-in-js:
+If we delve a bit deeper to answer the question of how they manage styles for React components, it seems that some of the components utilize [Emotion](https://emotion.sh/docs/introduction), a CSS-in-JS library.
 
 ```js
 import styled from '@emotion/styled';
 ```
 
-A part podem veure diferents paquets que fan referencia a un design system com ara el **@nike/nike-design-system-components** on podem veure que tenen diferents components:
+Aside from that, we can see various packages that reference a design system like **@nike/nike-design-system-components** where there are different components listed:
 
 - Accordion
 - Buttons
@@ -196,9 +195,9 @@ A part podem veure diferents paquets que fan referencia a un design system com a
 - Details
 - **Layout**
 
-Dins de layout hi han diferents components per gestionar el layout de la pàgina, com ara el AspectRation, Box, Grid, Stack, ...
+Within the layout section, there are different components to manage the page layout, such as AspectRatio, Box, Grid, Stack, and more.
 
-També podem trobar quin son els espais que utilitzent:
+We can also find information about the spaces they use:
 
 ```js
 export var getSpacing = function (t) {
@@ -209,7 +208,7 @@ export var getSpacing = function (t) {
 };
 ```
 
-On els valors de les variables són:
+Where the values of the variables are:
 
 ```css
 --podium-cds-size-spacing-xs: 4px;
@@ -229,7 +228,7 @@ On els valors de les variables són:
 - SizeChart
 - **Typography/Text**
 
-Aqui podem trobar un mapping depenent del tipus de text quin element de html es renderitzara, per temes de seo:
+Here, we can find a mapping that determines which HTML element will be rendered depending on the type of text, aiming for SEO considerations:
 
 ```js
 export var componentMapping = {
@@ -260,7 +259,7 @@ export var componentMapping = {
 };
 ```
 
-Podem fixar-nos que en alguns components fan us dels tokens importats de `@nike/design-system-base`, com podem veure al fitxer components/dialog/styles.js:
+We can notice that in some components, they make use of tokens imported from @nike/design-system-base, as we can see in the file components/dialog/styles.js:
 
 ```js
 import styled from '@emotion/styled';
@@ -294,7 +293,7 @@ export const StyledModal = styled(Modal)`
 `;
 ```
 
-d'aqui podem extreure els tokens:
+From here, we can extract the tokens:
 
 ```json
 {
@@ -503,13 +502,13 @@ Colors:
   <div style={{ background: '#128a09', width: '100px', height: '100px' }}></div>
 </div>
 
-### Internacionalització
+### Internationalization
 
-Si mirem el network ja podem veure algunes peticions que porten el i18n al seu path, aquest és el cas de la pàgina de favorits (https://www.nike.com/favorites):
+If we examine the network requests, we can already identify some requests that include "i18n" in their path, such as on the favorites page (https://www.nike.com/favorites):
 
 ***https://www.nike.com/assets/i18n/dotcom-fragments-recommendations/en-US.json***
 
-On la resposta es un json amb una key que porta un objecte amb les keys de "value" i "description":
+Here, the response is a JSON object with a key containing an object with "value" and "description" keys:
 
 ```json
 {
@@ -564,9 +563,7 @@ On la resposta es un json amb una key que porta un objecte amb les keys de "valu
 }
 ```
 
-webpack://Recommendations Carousel/src/constants/translations.ts
-
-També podem veure com dins del script amb el tag `<script id="__NEXT_DATA__" type="application/json">` podem trobar traduccions amb el mateix format:
+We can also find translations within the script using the `<script id="__NEXT_DATA__" type="application/json">` tag, following a similar format:
 
 ```json
 {
@@ -629,7 +626,7 @@ També podem veure com dins del script amb el tag `<script id="__NEXT_DATA__" ty
 }
 ```
 
-Aquesta arquitectura fa que tinguin valors repetits com pot ser el done de les cookies i el done de la wishlist:
+This architecture leads to repeated values, such as the "done" value for cookies and the "done" value for the wishlist.
 
 ```json
 "hf_cookie_label_done": {
@@ -643,13 +640,13 @@ Aquesta arquitectura fa que tinguin valors repetits com pot ser el done de les c
 },
 ```
 
-I sembla ser que la descripció no es fa servir a la web, simplement es per donar context del value.
+And it appears that the description is not used on the website; it's solely meant to provide context for the value.
 
-### Events
+### Analytics
 
-Un dels events que podem veure que s'estan enviant es el de optimizely, que com ells mateixos es descriuen en un sistema "all-in-one" per marketing.
+One of the events we can see being sent is from optimizely, who describe themselves as an "all-in-one" system for marketing.
 
-Aquí podem veure el payload que s'envia a la petició:
+Here we can see the payload sent in the request:
 
 ```
 https://logx.optimizely.com/v1/events
@@ -743,9 +740,9 @@ Payload:
 }
 ```
 
-Un dels serveis que ofereix es el de crear "experiments" (com es veu a la petició) de tal forma que podem mostrar experiencies d'usuari personalitzades i validar si aquestes ajuden o no a fer més vendes (es a dir proves A/B i proves multivariants), a part es pot integrar amb google analytics entre altres.
+One of the services it offers is to create "experiments" (as seen in the request) in such a way that we can show customized user experiences and validate whether or not these help to make more sales (i.e. A/B testing and multivariate tests), besides it can be integrated with google analytics among others.
 
-Una de les altres peticions que podem veure que envia events es la seguent:
+One of the other requests that we can see that sends events is the following:
 
 ```
 https://analytics.nike.com/v1/t
@@ -851,8 +848,8 @@ Payload:
 }
 ```
 
-En aquest cas podem veure que el domini es el mateix de nike (analytics.nike.com) però com podem veure hi han algunes referencies a adobe target (**adobeTargetId**, **adobeMarketingCloudId**)  
-això és perquè els events i les proves A/B a part del que servei que hem vist a l'anterior petició majoritàriament sembla que utilitzen el servei de adobe target, com també podem veure a la següent petició:
+In this case, we can observe that the domain is the same as Nike's (analytics.nike.com), but there are some references to Adobe Target (**adobeTargetId**, **adobeMarketingCloudId**).
+This is because, besides the service we've seen in the previous request, it seems that events and A/B tests primarily use the Adobe Target service, as we can also observe in the following request:
 
 ```
 https://abt.nike.com/rest/v1/delivery?client=nike&sessionId=xxxx&version=2.8.1
@@ -915,9 +912,9 @@ response:
 }
 ```
 
-On el que podem deduir que **abt.nike** es refereix a **Adobe Target**, el cual al igual que el servei d'optimizely permet fer proves A/B i multivariants.
+From this, we can deduce that **abt.nike** refers to **Adobe Target**, which, similar to the Optimizely service, allows for A/B and multivariate testing.
 
-En aquest cas podem veure com ho tenen integrat en el seu propi codi:
+In this instance, we can observe how they have integrated it into their own code:
 
 ```js:nike/analytics-client/src/analytics-event/abtest.ts
 import { CacheSelector } from '../cache';
@@ -932,7 +929,7 @@ export { getABTest };
 
 ### Feature Flags
 
-Petició a: https://www.nike.com/assets/experience/cart/static/feature-flags.json
+Request to: https://www.nike.com/assets/experience/cart/static/feature-flags.json
 
 ```json
 {
@@ -962,7 +959,7 @@ Petició a: https://www.nike.com/assets/experience/cart/static/feature-flags.jso
 }
 ```
 
-També podem trobar un extens llistat amb els feature flags que tenim activats i quins no:
+We can also find an extensive list detailing the feature flags that are activated and deactivated:
 
 ```json
 abTests:true
@@ -1072,9 +1069,9 @@ wallImpressions:true
 wallNoResultsCarousel:true
 ```
 
-### Observabilitat
+### Observability
 
-Si mirem la consola del navegador podem veure que nike esta utiltizant el servi de [newrelic](https://newrelic.com/) per capturar expecions i errors del client:
+If we inspect the browser console, we can observe that Nike is utilizing the [New Relic](https://newrelic.com/) service to capture client exceptions and errors.
 
 ```js:_N_E/[[...page]].js
 const isAdobeTargetEnabled = process.env.ADOBE_TARGET_ENABLED === 'true';
@@ -1101,7 +1098,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 ## Graphql
 
-Una de les preguntes que em feia era si feien servir graphql o tot eran api custom/restful, tot i que clarament dominen més les apis rest, si que utiltizen graphql, en aquest cas especificament pel tema de les wishlists a l'hora de recuperar els items per exemple.
+Una de las preguntas que me planteabas era si utilizaban GraphQL o si todo se trataba de APIs personalizadas/RESTful. Aunque claramente dominan más las APIs REST, sí emplean GraphQL, específicamente en el manejo de las listas de deseos (wishlists) al recuperar los elementos, por ejemplo.
 
 ```js
 import graphqlFetch from '@nike/graphql-fetch';
@@ -1120,6 +1117,19 @@ const graphqlClient = (args) =>
 export default graphqlClient;
 ```
 
-A part d'això no n'he pogut extreure gaire res més ja que fent la tipica petició per recuperar informació sobre el schema no retorna res (429 too many request).
+Apart from that, I haven't been able to extract much more, as the typical request to retrieve information about the schema doesn't return anything (429 too many requests).
 
 ![react-devtools](/assets/blog/descubrint-el-ecommerce-de-nike/graphql-error.PNG)
+
+## Conclusions
+
+Here's a summary of the technology stack and practices inferred:
+
+Framework: They use Next.js, as evidenced by the <div> with the ID \_\_next.
+State Management: Redux
+CDN: They utilize Akamai for content delivery.
+Design System: They use Emotion (CSS-in-JS) and an in-house design system.
+Internationalization: Translations and i18n are managed through specific JSON files for each language.
+Analytics: They employ services like Optimizely and Adobe Target for user analysis and segmentation.
+Feature Flags: They use an extensive list of feature flags to manage specific functionalities on the website.
+Observability: They utilize New Relic for monitoring and error analysis.
