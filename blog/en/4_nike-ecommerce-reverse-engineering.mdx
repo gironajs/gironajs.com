@@ -1,0 +1,1135 @@
+---
+title: Reverse engineering of Nike's browser-only e-commerce
+description: Article about the technologies used in nike ecommerce
+image: /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
+published: true
+publishedDate: 2023-12-01
+authors: eudago
+seo:
+  metatitle: >
+    Reverse engineering of Nike's browser-only e-commerce
+  metadescription: >
+    Article about the technologies used in nike ecommerce
+  image: >
+    /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
+---
+
+The purpose of this article is to delve as deeply as possible into the technologies used and how they are employed within a "major" ecommerce platform, such as the one employed by Nike. We'll do this by utilizing the browser's developer tools.
+
+First and foremost, upon inspecting the page, we can observe that it utilizes the [Next.js](https://nextjs.org/) framework.
+
+El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza i com les utiltiza un ecommerce "gran" com en aquest cas es el de nike i fer-ho utilitzant les developer tools del navegador.
+
+```html {1,3-4}
+<div id="experience-wrapper">
+  <div id="__next">
+    <div id="ciclp-app" class="">
+      <div>
+        <script type="application/ld+json" data-qa="WebPageScript">
+          {
+            "@context": "http://schema.org",
+            "@type": "WebPage",
+            "@id": "https://www.nike.com/#webpage",
+            "url": "https://www.nike.com/",
+            "name": "nike"
+          }
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+The `<div>` element with the ID \_\_next can be found, which is often featured in one of the primary showcases on the Next.js official website itself.
+
+<div className="gjs-blog-content grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
+    <img src="/assets/blog/descubrint-el-ecommerce-de-nike/webpack-sources.PNG" />
+
+    <div className="gjs-blog-content">
+        <p>Within the "Sources" tab of the browser's dev tools, we can observe the presence of the "folder" <b>webpack://</b>. This folder represents a virtual directory that allows us to view the original files. It's made possible due to the enabled source maps option in the webpack configuration (which, it's worth mentioning, is a somewhat uncommon occurrence).</p>
+        <br></br>
+        <p>
+        We can also locate the webpack folder within other directories, such as <b>_N_E</b>, <b>analytics-client</b>, <b>privacy-consent</b>, <b>privacy-Core</b>, and <b>WebShellClient</b>, among others. This greatly simplifies our task when examining the content, as we won't have to deal with minified or obfuscated code.
+        </p>
+    </div>
+
+</div>
+
+We can also utilize the [react devtools](https://react.dev/learn/react-developer-tools) to inspect the props and states of the components rendered on the page:
+
+![reat-devtocols](/assets/blog/descubrint-el-ecommerce-de-nike/react-devtools.PNG)
+
+Upon analysis, it's evident that they are employing Redux for managing the application state, which gets loaded into the initial component of the page. Here's a helpful tutorial on using Redux with Next.js.
+
+Within the initial page component, we can also identify the routes used in Next.js. For instance, the home route is:
+
+```json
+isSsr:true
+query: {
+  "page": [
+    "es",
+    "ca"
+  ]
+}
+route: "/[[...page]]"
+```
+
+Instead to the url of the offers with path **/es/ca/w/ofertes-3yaep**:
+
+```json
+isSsr:true
+query: {
+    country: "es",
+    language: "ca",
+    slug: ["ofertes-3yaep"]
+}
+route:"/[country]/[language]/w/[[...slug]]"
+```
+
+Or a product with path **/es/ca/t/dri-fit-fitness-shirt-men-v75KxD/AR6029-063**:
+
+```json
+isSsr:true
+query: {
+    slug: "dri-fit-samarreta-de-fitnes-home-v75KxD",
+    styleColor: "AR6029-063",
+}
+route:"/t/[slug]/[styleColor]"
+```
+
+One of the things we can extract from the properties received by the first component is the type of rendering they are using with Next.js.
+
+```json
+__N_SSP: true
+__N_SSG: undefined
+```
+
+We can observe that these pages are rendered using server-side rendering ([SSR](https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation)), and within server-side rendering, they do not utilize server-side generation (SSG). Instead, the pages are generated using getServerSideProps ([SSP](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props)). This is likely due to the volume of products they have and the need to keep the pages more up-to-date.
+
+However, the profile page (/es/ca/member/profile/) does utilize SSG, although the relevant content is actually loaded using client-side rendering (CSR).
+
+```json
+__N_SSG: true
+route:"/[country]/[language]/member/profile"
+```
+
+Certainly! We can analyze the cache of the different pages by inspecting the `Cache-Control` headers in the response of the initial request:
+
+<table>
+  <thead>
+    <tr>
+      <th>URL</th>
+      <th>Cache-Control</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>/es/ca/</td>
+      <td>max-age=646</td>
+    </tr>
+    <tr>
+      <td>/es/ca/w/ofertes-3yaep</td>
+      <td>max-age=287</td>
+    </tr>
+    <tr>
+      <td>/es/ca/t/dri-fit-samarreta-de-fitnes-home-v75KxD/AR6029-063</td>
+      <td>max-age=899</td>
+    </tr>
+  </tbody>
+</table>
+
+From what we can see, the home page refreshes every 10 minutes, the offers update every 5 minutes, and the products refresh every 15 minutes. However, delving deeper into caching is something we might reserve for a future article.
+
+Looking into the requests, one of the response headers is **Akamai-Grn**. If we search for Akamai in the code or directly on Google, we can find that it relates to various services offered by [Akami](https://en.wikipedia.org/wiki/Akamai_Technologies), such as cybersecurity, cloud services, or content delivery network (CDN), among many others.
+
+```js
+import { useRef } from 'react';
+import { useQuery } from 'react-query';
+import { fetchClient } from '@nike/fetch-client';
+import { getExperimentDriver } from '@nike/ux-tread-optimizely';
+import useOptimizelyEnabled from './use-optimizely-enabled';
+
+export const PROD_OPTIMIZELY_URL = `https://${process.env.NEXT_PUBLIC_HOST_NAME}/assets/vendor/optimizely/prod/5aUCtZvFuDLjvdqdf2w53M.json`;
+export const DEV_OPTIMIZELY_URL = `https://assets.commerce.nikecloud.com/vendor/optimizely/test/3srgubLSVD2VBXqgkJtCRh.json`; // NOTE - we need to use this for now until akamai is fixed
+export const OPTIMIZELY_ERROR_MESSAGE = 'Error fetching optimizely datafile';
+
+const useOptimizelyDataFile = () => {
+  const optimizelyEnabled = useOptimizelyEnabled();
+  const optimizelyClient = useRef();
+  const isProd = process.env.NODE_ENV === 'production';
+  const optimizelyUrl = isProd ? PROD_OPTIMIZELY_URL : DEV_OPTIMIZELY_URL;
+
+  const { data } = useQuery(
+    optimizelyUrl,
+    () =>
+      fetchClient(optimizelyUrl, { method: 'GET' }, OPTIMIZELY_ERROR_MESSAGE),
+    { enabled: optimizelyEnabled }
+  );
+
+  if (data) {
+    optimizelyClient.current = getExperimentDriver(data);
+  }
+
+  return { datafile: data, optimizelyClient: optimizelyClient };
+};
+
+export default useOptimizelyDataFile;
+```
+
+In this case it appears to be a CDN service.
+
+## Design system
+
+If we delve a bit deeper to answer the question of how they manage styles for React components, it seems that some of the components utilize [Emotion](https://emotion.sh/docs/introduction), a CSS-in-JS library.
+
+```js
+import styled from '@emotion/styled';
+```
+
+Aside from that, we can see various packages that reference a design system like **@nike/nike-design-system-components** where there are different components listed:
+
+- Accordion
+- Buttons
+- Cards/ProductCard
+- Carousel
+- Details
+- **Layout**
+
+Within the layout section, there are different components to manage the page layout, such as AspectRatio, Box, Grid, Stack, and more.
+
+We can also find information about the spaces they use:
+
+```js
+export var getSpacing = function (t) {
+  var n = 'var(--podium-cds-size-spacing-'.concat(t.toLowerCase(), ')');
+  return ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'xxxxl'].includes(t)
+    ? n
+    : t;
+};
+```
+
+Where the values of the variables are:
+
+```css
+--podium-cds-size-spacing-xs: 4px;
+--podium-cds-size-spacing-s: 8px;
+--podium-cds-size-spacing-m: 12px;
+--podium-cds-size-spacing-l: 24px;
+--podium-cds-size-spacing-xl: 36px;
+--podium-cds-size-spacing-xxl: 60px;
+--podium-cds-size-spacing-xxxl: 84px;
+--podium-cds-size-spacing-xxxxl: 120px;
+```
+
+- Loaders/Skeleton
+- NikeDesignSystemProvider
+- PullQuote
+- SelectionControls/Switch
+- SizeChart
+- **Typography/Text**
+
+Here, we can find a mapping that determines which HTML element will be rendered depending on the type of text, aiming for SEO considerations:
+
+```js
+export var componentMapping = {
+  body1: 'p',
+  body2: 'p',
+  body3: 'p',
+  body1Strong: 'p',
+  body2Strong: 'p',
+  body3Strong: 'p',
+  legal: 'p',
+  editorialBody1: 'p',
+  editorialBody1Strong: 'p',
+  oversize1: 'p',
+  oversize2: 'p',
+  oversize3: 'p',
+  display1: 'h1',
+  display2: 'h2',
+  display3: 'h3',
+  display4: 'h4',
+  title1: 'h1',
+  title2: 'h2',
+  title3: 'h3',
+  title4: 'h4',
+  conversation1: 'p',
+  conversation2: 'p',
+  conversation3: 'p',
+  conversation4: 'p',
+};
+```
+
+We can notice that in some components, they make use of tokens imported from @nike/design-system-base, as we can see in the file components/dialog/styles.js:
+
+```js
+import styled from '@emotion/styled';
+import { Modal } from '@nike/nr-sole-modal';
+import tokens from '@nike/design-system-base';
+
+export const StyledModal = styled(Modal)`
+  @media only screen and (max-width: ${tokens.bp('tablet')}px) {
+    transition: visibility 0s ease, bottom 0.5s ease;
+  }
+  & .modal-container {
+    border-radius: 16px;
+    padding: 24px;
+    text-align: left;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease 0.2s, transform 0.4s ease 0.2s,
+      height 0.4s ease;
+    padding: 12px;
+
+    /*  desktop media query minus one for ipad pro */
+    @media only screen and (max-width: ${tokens.bp('desktop') - 1}px) {
+      &.modal-container {
+        max-width: 100%;
+        position: fixed;
+        padding: 16px 0 0;
+        bottom: 0px;
+        border-radius: 0;
+      }
+    }
+  }
+`;
+```
+
+From here, we can extract the tokens:
+
+```json
+{
+  "default": {
+    "opts": {
+      "fontSizeUnit": "px"
+    },
+    "ds": {
+      "type": {
+        "baseFontSize": "16px",
+        "sizes": {
+          "xs": "14px",
+          "sm": "20px",
+          "baseline": "16px",
+          "md": "22px",
+          "lg": "26px",
+          "xl": "30px"
+        },
+        "size": {
+          "brandMarketing": {
+            "xs": "14px",
+            "sm": "20px",
+            "baseline": "16px",
+            "md": "60px",
+            "lg": "80px",
+            "xl": "120px"
+          },
+          "desktop": {
+            "xs": "14px",
+            "sm": "20px",
+            "baseline": "16px",
+            "md": "24px",
+            "lg": "28px",
+            "xl": "36px"
+          }
+        },
+        "fontFamily": {
+          "base": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "brand": "\"Nike TG\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "marketing": "\"Nike Futura\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        "lineHeight": {
+          "mobile": {
+            "14": 1.7142857142857142,
+            "16": 1.75,
+            "20": 1.5,
+            "22": 1.4545454545454546,
+            "24": 1.5,
+            "26": 1.3076923076923077,
+            "28": 1.4285714285714286,
+            "30": 1.3333333333333333,
+            "36": 1.3333333333333333,
+            "40": 0.9,
+            "60": 0.8333333333333334,
+            "80": 0.875,
+            "120": 0.8333333333333334
+          },
+          "tablet": {
+            "20": 1.6,
+            "60": 0.9333333333333333
+          }
+        },
+        "fontWeight": {
+          "regular": 400,
+          "medium": 500
+        }
+      },
+      "colors": {
+        "colorPalette": {
+          "black": {
+            "base": "#111111",
+            "light": "rgba(0, 0, 0, 0.75)",
+            "dark": "#0D0D0D"
+          },
+          "white": {
+            "base": "#ffffff",
+            "light": "rgba(255, 255, 255, 0.75)",
+            "dark": "#BFBFBF"
+          },
+          "grey": {
+            "base": "#757575",
+            "light": "rgba(117, 117, 117, 0.75)",
+            "dark": "#585858"
+          },
+          "orange": {
+            "base": "#FA5400",
+            "light": "rgba(250, 84, 0, 0.75)",
+            "dark": "#BC3F00"
+          },
+          "red": {
+            "base": "#d43f21"
+          },
+          "green": {
+            "base": "#128a09"
+          }
+        },
+        "brand": {
+          "black": "#111111",
+          "white": "#ffffff",
+          "grey": "#757575",
+          "orange": "#FA5400",
+          "red": "#d43f21",
+          "green": "#128a09",
+          "inactiveGrey": "#CCCCCC",
+          "borderGrey": "#E5E5E5",
+          "primaryGrey": "#F5F5F5",
+          "secondaryGrey": "#FAFAFA",
+          "accent": "#FA5400",
+          "error": "#d43f21",
+          "success": "#128a09"
+        }
+      },
+      "breakpoints": {
+        "mobile": 0,
+        "tablet": 600,
+        "desktop": 960,
+        "largeDesktop": 1440,
+        "extraLargeDesktop": 1920
+      },
+      "mediaQueries": {
+        "mobile": "only screen and (min-width: 0px)",
+        "sm": "(max-width: 599px)",
+        "md": "(min-width: 600px) and (max-width: 959px)",
+        "lg": "(min-width: 960px) and (max-width: 1439px)",
+        "xl": "(min-width: 1440px) and (max-width: 1919px)",
+        "xxl": "(min-width: 1920px)",
+        "tablet": "only screen and (min-width: 600px)",
+        "desktop": "only screen and (min-width: 960px)",
+        "largeDesktop": "only screen and (min-width: 1440px)",
+        "extraLargeDesktop": "only screen and (min-width: 1920px)"
+      },
+      "zIndex": {
+        "z0": 0,
+        "z1": 1,
+        "z2": 2,
+        "z3": 3,
+        "z4": 4,
+        "z5": 5,
+        "z6": 6,
+        "z7": 7,
+        "z8": 8,
+        "z9": 9,
+        "z10": 10,
+        "low": 0,
+        "mid": 5,
+        "high": 10
+      },
+      "scaleIncrement": 4,
+      "spacing": {
+        "baseline": 16,
+        "padding": "4px",
+        "scale": [
+          0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68,
+          72, 76, 80, 84, 88, 92, 96, 100, 104, 108, 112, 116
+        ]
+      },
+      "layout": {
+        "gutter": 16,
+        "maxWidth": 1808,
+        "grid": {
+          "columnCount": 12,
+          "columnWidth": {
+            "1": "8.333333333333334%",
+            "2": "16.666666666666668%",
+            "3": "25%",
+            "4": "33.333333333333336%",
+            "5": "41.66666666666667%",
+            "6": "50%",
+            "7": "58.333333333333336%",
+            "8": "66.66666666666667%",
+            "9": "75%",
+            "10": "83.33333333333334%",
+            "11": "91.66666666666667%",
+            "12": "100%"
+          }
+        }
+      },
+      "transition": {
+        "default": {
+          "duration": "250ms",
+          "timing": "cubic-bezier(0.77, 0, 0.175, 1)",
+          "transition": "all 250ms cubic-bezier(0.77, 0, 0.175, 1)"
+        }
+      },
+      "borderRadius": 24
+    }
+  }
+}
+```
+
+Colors:
+
+<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+  <div style={{ background: '#111111', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#ffffff', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#757575', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#FA5400', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#d43f21', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#128a09', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#CCCCCC', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#E5E5E5', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#F5F5F5', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#FAFAFA', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#FA5400', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#d43f21', width: '100px', height: '100px' }}></div>
+  <div style={{ background: '#128a09', width: '100px', height: '100px' }}></div>
+</div>
+
+### Internationalization
+
+If we examine the network requests, we can already identify some requests that include "i18n" in their path, such as on the favorites page (https://www.nike.com/favorites):
+
+***https://www.nike.com/assets/i18n/dotcom-fragments-recommendations/en-US.json***
+
+Here, the response is a JSON object with a key containing an object with "value" and "description" keys:
+
+```json
+{
+  "favorites.productRecommendationsCarousel.title": {
+    "value": "You Might Also Like",
+    "description": "The title for the product recommendations carousel displayed on the favorites page"
+  },
+  "profile.favoritesCarousel.title": {
+    "value": "Favorites",
+    "description": "Title for the favorites section"
+  },
+  "profile.favoritesCarousel.viewAllLink": {
+    "value": "View All",
+    "description": "The link that takes users to the page where they can view all of their Favorites"
+  },
+  "recommendations.badges.member_access_label": {
+    "value": "Member Access",
+    "description": "This text is displayed in carousel card for member exclusive product"
+  },
+  "recommendations.badges.member_exclusive": {
+    "value": "Get this product with your free Nike Membership Profile",
+    "description": "This text is displayed in carousel card for member exclusive product"
+  },
+  "recommendations.badges.nike_by_you": {
+    "value": "Nike by You",
+    "description": "This text is displayed in carousel card for Nike by You product"
+  },
+  "recommendations.badges.nike_by_you_label": {
+    "value": "Customize",
+    "description": "This text is displayed in carousel card for Nike by You product"
+  },
+  "recommendations.favorites.title": {
+    "value": "Find Your Next Favorite",
+    "description": "Default Title of Recommendations"
+  },
+  "recommendations.next.label": {
+    "value": "Next Recommended Product",
+    "description": "Next Button Title"
+  },
+  "recommendations.nullsearch.title": {
+    "value": "These popular items might interest you",
+    "description": "Product wall null search title for recommendations carousel"
+  },
+  "recommendations.previous.label": {
+    "value": "Previous Recommended Product",
+    "description": "Previous Product Label for Button"
+  },
+  "recommendations.top_trending": {
+    "value": "Top Trending",
+    "description": "Title for a component which will display our top trending products for user's market place"
+  }
+}
+```
+
+We can also find translations within the script using the `<script id="__NEXT_DATA__" type="application/json">` tag, following a similar format:
+
+```json
+{
+  "props": {
+    "pageProps": {
+      "locale": {
+        "urlParam": "en",
+        "language": "en",
+        "intl": "en-US",
+        "langRegion": "en-US",
+        "hreflang": "en-US",
+        "default": true,
+        "country": "us",
+        "currency": "USD",
+        "countryName": "United States",
+        "countryNames": {
+          "en": "United States"
+        },
+        "currencySymbol": "$",
+        "merchGroup": "US",
+        "cloudUrlFragment": "",
+        "translationsLanguage": "en-US"
+      },
+      "translations": {
+        "91330387": {
+          "value": "Name of wishlist is not unique.",
+          "description": "/buy/list_items/v1/ NOT_UNIQUE - Name is not unique."
+        },
+        "99668031": {
+          "value": "No locations are defined for an item.",
+          "description": "/buy/cart_reviews/v2/NO_AVAILABLE_LOCATIONS_FOUND - No locations are defined for an item"
+        },
+        "accessibility.skipToContent": {
+          "value": "Skip to content. (Press Enter)",
+          "description": "When a blind user is on this button, it allows them to skip passed the menu and into the main content area."
+        },
+        "cart.emptyMsg": {
+          "value": "There are no items in your bag.",
+          "description": "Empty Message for Cart"
+        },
+        "cart.emptyMsg.cta": {
+          "value": "Continue Shopping",
+          "description": "CTA for empty Cart"
+        },
+        "cartSummary.learnMore": {
+          "value": "The actual tax will be calculated based on the applicable state and local sales taxes when your order is shipped. \u003ca href=\"{learnMoreLinkUrl}\"\u003eLearn More\u003c/a\u003e",
+          "description": "Cart summary learn more"
+        },
+        "cta.add": {
+          "value": "Add",
+          "description": "Add warranty"
+        },
+        "cta.addAGiftBag": {
+          "value": "Add a Gift Bag",
+          "description": "Add Gift Bag"
+        }
+      }
+    }
+  }
+}
+```
+
+This architecture leads to repeated values, such as the "done" value for cookies and the "done" value for the wishlist.
+
+```json
+"hf_cookie_label_done": {
+    "value": "Done",
+    "description": "Done"
+},
+...
+"wishlist.done": {
+    "value": "Done",
+    "description": "Wishlist done editing"
+},
+```
+
+And it appears that the description is not used on the website; it's solely meant to provide context for the value.
+
+### Analytics
+
+One of the events we can see being sent is from optimizely, who describe themselves as an "all-in-one" system for marketing.
+
+Here we can see the payload sent in the request:
+
+```
+https://logx.optimizely.com/v1/events
+```
+
+Payload:
+
+```json
+{
+  "client_name": "javascript-sdk",
+  "client_version": "3.5.0",
+  "account_id": "6194110778",
+  "project_id": "9011010262",
+  "revision": "13131",
+  "anonymize_ip": true,
+  "enrich_decisions": true,
+  "visitors": [
+    {
+      "snapshots": [
+        {
+          "decisions": [
+            {
+              "campaign_id": "24062810741",
+              "experiment_id": "24082260985",
+              "variation_id": "24099740550"
+            }
+          ],
+          "events": [
+            {
+              "entity_id": "24062810741",
+              "timestamp": 1704405218882,
+              "key": "campaign_activated",
+              "uuid": "5cf80aa9-814c-4cfa-b0fd-f30c82320855"
+            }
+          ]
+        }
+      ],
+      "visitor_id": "3519256F78D0F81D6DBE84407F32C100",
+      "attributes": [
+        {
+          "entity_id": "10519940845",
+          "key": "country",
+          "type": "custom",
+          "value": "us"
+        },
+        {
+          "entity_id": "$opt_bot_filtering",
+          "key": "$opt_bot_filtering",
+          "type": "custom",
+          "value": true
+        }
+      ]
+    },
+    {
+      "snapshots": [
+        {
+          "decisions": [
+            {
+              "campaign_id": "24553700035",
+              "experiment_id": "24547710456",
+              "variation_id": "24557080326"
+            }
+          ],
+          "events": [
+            {
+              "entity_id": "24553700035",
+              "timestamp": 1704405218883,
+              "key": "campaign_activated",
+              "uuid": "d8531f89-ed25-4e2e-80be-f5d5bcdc0190"
+            }
+          ]
+        }
+      ],
+      "visitor_id": "3519256F78D0F81D6DBE84407F32C100",
+      "attributes": [
+        {
+          "entity_id": "10519940845",
+          "key": "country",
+          "type": "custom",
+          "value": "us"
+        },
+        {
+          "entity_id": "$opt_bot_filtering",
+          "key": "$opt_bot_filtering",
+          "type": "custom",
+          "value": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+One of the services it offers is to create "experiments" (as seen in the request) in such a way that we can show customized user experiences and validate whether or not these help to make more sales (i.e. A/B testing and multivariate tests), besides it can be integrated with google analytics among others.
+
+One of the other requests that we can see that sends events is the following:
+
+```
+https://analytics.nike.com/v1/t
+```
+
+Payload:
+
+```json
+{
+  "anonymousId": "3519256F78D0F81D6DBE84407F32C100",
+  "event": "Impression Tracked",
+  "permissions": [
+    {
+      "category": "adtargeting_behavioralevents",
+      "consent": "accept"
+    },
+    {
+      "category": "personalization_targeted_comms",
+      "consent": "accept"
+    },
+    {
+      "category": "adtargeting_hashedmatch",
+      "consent": "default_decline"
+    },
+    {
+      "category": "performance",
+      "consent": "accept"
+    }
+  ],
+  "type": "track",
+  "writeKey": "xxxxxx",
+  "properties": {
+    "abTest": {
+      "adobeTargetId": "xxxxxx"
+    },
+    "classification": "experience event",
+    "consumer": {
+      "adobeMarketingCloudId": "xxxxx",
+      "visitorId": "xxxx",
+      "anonymousId": "xxxx",
+      "isSwoosh": false,
+      "loginStatus": "logged in",
+      "upmId": "xxxx"
+    },
+    "content": {
+      "landmarkX": 50,
+      "landmarkY": 80,
+      "timestamp": "1704405322422",
+      "assetId": "xxxxxx",
+      "cardKey": "xxxxxx",
+      "componentType": "c_c_i",
+      "placementId": 1,
+      "positionId": 7,
+      "threadId": "xxxxx",
+      "threadKey": "xxxxx",
+      "totalPositions": 7
+    },
+
+    "country": "ES",
+    "eventName": "Impression Tracked",
+    "eventType": "track",
+    "language": "en-US",
+    "previousView": {
+      "pageName": "nikecom>homepage",
+      "pageType": "homepage"
+    },
+    "wrapper": {
+      "build": "production",
+      "version": "3.23.0"
+    },
+    "app": {
+      "backendPlatform": "cloud",
+      "version": "a9ac8fa5d",
+      "domain": "www.nike.com"
+    },
+    "view": {
+      "experienceType": "nikecom",
+      "pageName": "nikecom>homepage",
+      "pageType": "homepage"
+    },
+    "locale": {
+      "language": "en",
+      "country": "us"
+    }
+  },
+  "context": {
+    "direct": true,
+    "library": {
+      "name": "@nike/analytics-client",
+      "version": "3.23.0"
+    },
+    "page": {
+      "path": "/",
+      "title": "Nike. Just Do It. Nike.com",
+      "url": "https://www.nike.com/"
+    },
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  },
+  "sentAt": "2024-01-04T21:55:22.440Z",
+  "$schema": "https://www.nike.com/assets/measure/schemas/digital-product/dotcom/platform/web/classification/experience-event/experience/landing-page/event-type/track/event-name/impression-tracked/version/LATEST/schema.json",
+  "messageId": "xxxxx",
+  "timestamp": "2024-01-04T21:55:22.439Z"
+}
+```
+
+In this case, we can observe that the domain is the same as Nike's (analytics.nike.com), but there are some references to Adobe Target (**adobeTargetId**, **adobeMarketingCloudId**).
+This is because, besides the service we've seen in the previous request, it seems that events and A/B tests primarily use the Adobe Target service, as we can also observe in the following request:
+
+```
+https://abt.nike.com/rest/v1/delivery?client=nike&sessionId=xxxx&version=2.8.1
+```
+
+```json
+{
+  "requestId": "fa94556776cb469d85ddd34ca5b5b6c0",
+  "context": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "timeOffsetInMinutes": 60,
+    "channel": "web",
+    "screen": {
+      "width": 3440,
+      "height": 1440,
+      "orientation": "landscape",
+      "colorDepth": 24,
+      "pixelRatio": 1
+    },
+    "window": {
+      "width": 2310,
+      "height": 1277
+    },
+    "browser": {
+      "host": "www.nike.com",
+      "webGLRenderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 (0x00002484) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    "address": {
+      "url": "https://www.nike.com/",
+      "referringUrl": ""
+    }
+  },
+  "id": {
+    "tntId": "xxxx.37_0"
+  },
+  "experienceCloud": {
+    "analytics": {
+      "logging": "server_side"
+    }
+  },
+  "prefetch": {
+    "views": [{}]
+  }
+}
+```
+
+response:
+
+```json
+{
+  "status": 200,
+  "requestId": "fa94556776cb469d85ddd34ca5b5b6c0",
+  "client": "nike",
+  "id": {
+    "tntId": "65e3db1043a54d18b03e1388bdf05f09.37_0"
+  },
+  "edgeHost": "mboxedge37.tt.omtrdc.net",
+  "prefetch": {},
+  "telemetryServerToken": "cJWuCgDiaU1IgPqDGhBbFJeqzwYSwsSIodTTUorUU84="
+}
+```
+
+From this, we can deduce that **abt.nike** refers to **Adobe Target**, which, similar to the Optimizely service, allows for A/B and multivariate testing.
+
+In this instance, we can observe how they have integrated it into their own code:
+
+```js:nike/analytics-client/src/analytics-event/abtest.ts
+import { CacheSelector } from '../cache';
+const getABTest = (_rawEvent, cache) => {
+    const adobeTargetId = cache.get(CacheSelector.MBOX);
+    return {
+        adobeTargetId: typeof adobeTargetId === 'string' ? adobeTargetId : undefined,
+    };
+};
+export { getABTest };
+```
+
+### Feature Flags
+
+Request to: https://www.nike.com/assets/experience/cart/static/feature-flags.json
+
+```json
+{
+    "bopisEnabled": [],
+    "bopisExperimentEnabled": [],
+    "digitalGiftCardsEnabled": [],
+    "eddEnabled": [],
+    "estimatedTaxEnabled": [],
+    "estimatedTaxTooltipEnabled": [],
+    "foffEnabled": [],
+    "giftBagEnabled": [],
+    "giftMessageEnabled": [],
+    "marketingMessageEnabled": [],
+    "membershipBannerEnabled": [],
+    "membershipLinksEnabled": [],
+    "multiCurrencyPricingEnabled": [],
+    "physicalGiftCardsEnabled": [],
+    "promotionCodesEnabled": [],
+    "recommendationsEnabled": [],
+    "subtotalTooltipEnabled": [],
+    "wishlistEnabled": [
+        "ae",
+        "at",
+        "au",
+        ...
+    ]
+}
+```
+
+We can also find an extensive list detailing the feature flags that are activated and deactivated:
+
+```json
+abTests:true
+animateAccordionPanels:false
+cookieSettings:true
+cookieSettingsBanner:false
+cutOverPdpToSegment:true
+debug:false
+enableChat:false
+enableMAP:false
+enableNikeShopModals:true
+filterByNikeDotComChannel:true
+globalNavUseGeoPrivacy:true
+gridRecommendations:true
+hideBuyingTools:false
+hideEDDFasterShippingOptionMsg:false
+incentivizedReviewsMessage:true
+incentivizedReviewsMessageNA:false
+includeFacebookAppId:false
+isZoomEnabled:false
+loadForterScript:true
+loadStylitics:true
+loadWebShell:true
+loadWebShellOnWall:false
+logoutShouldClearCart:true
+lowInventoryMessage:true
+notifyMe:true
+recommendations:true
+reserveForYou:true
+sendPIDsOnWall:true
+shareNBY:true
+showAvailabilityDate:false
+showCNNewYearsLink:false
+showCgc:true
+showColorWayPicker:true
+showEDDAndBopisABTesting:false
+showEGift:false
+showElevatedCarousel:true
+showElevatedContent:true
+showEstimatedDeliveryDate:false
+showEstimatedDeliveryDateAndPickup:false
+showFeedsPromoExclusionMessage:true
+showFit:false
+showGeoMismatch:true
+showGiftCardMessage:true
+showGiftCardTypeLink:false
+showGiftCards:true
+showJerseyId:true
+showKlarnaPayLaterMessage:false
+showKlarnaPayMessage:false
+showLargeGiftCardOrder:false
+showLaunchDebug:false
+showLaunchProduct:true
+showLeftHandNavCategories:true
+showMobileWriteReview:true
+showMoreInfo:true
+showNBY:true
+showNBYMessageHub:true
+showNikeId:true
+showOmni:false
+showPhysicalGiftCards:true
+showPickupLocation:true
+showPromoBanner:true
+showPromoExclusionMsg:false
+showPromoMsg:true
+showReadMore:true
+showRelatedCategories:true
+showReviews:true
+showSEOCopy:true
+showSinglesDaySalesLink:false
+showSizeAndFit:true
+showSizeCalculator:false
+showSocialLinksNBY:true
+showUniteTimers:false
+showWidthSelector:true
+showWishlist:true
+skipPercentOff:false
+skipSegmentDupedEvents:true
+skipSustainability:false
+swooshEligibleGeo:false
+useBounceExchange:false
+useDotcomNav:true
+useDotcomNavESI:true
+useExclusiveAccess:true
+useFeedsMoreInfoMessage:true
+useFeedsSizeFitMessage:true
+useFeedsSustainabilityMessage:true
+useMAPCollection:true
+useNBYCloudUrl:true
+useNBYImageService:true
+useNeo:true
+useNewRelic:true
+useNotifyMeV2:false
+useOfferRFY:false
+useOptimizelyX:false
+usePersonalizedNullSearch:false
+useRollupKey:true
+useSentryIO:false
+useServiceCanonicalUrl:true
+useSwitchboardRecommendations:false
+useTTReviews:true
+useTTV5Reviews:true
+useUniteStaging:false
+wallFavorites:false
+wallFiltersBtnFilterLabel:false
+wallImpressions:true
+wallNoResultsCarousel:true
+```
+
+### Observability
+
+If we inspect the browser console, we can observe that Nike is utilizing the [New Relic](https://newrelic.com/) service to capture client exceptions and errors.
+
+```js:_N_E/[[...page]].js
+const isAdobeTargetEnabled = process.env.ADOBE_TARGET_ENABLED === 'true';
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  store =>
+    async ({ req, query, res }) => {
+      const lpContext = {
+        store,
+        query,
+      };
+
+      queryParamsSanitizerMiddleware(req);
+
+      // error handling should be initiated before the middlewares called as they can dispatch error actions
+      store.dispatch(actions.logActions.init({ logger: req.logger, newrelic }));
+      // call our old express middlewares
+      featureFlagsMiddleware(req, lpContext);
+
+      lpContext.fetchFn = getExtendedFetchFn(store.getState());
+      // TODO: CICLP-3564 Required for data fetching in server side sagas. To be removed during cleanup
+      globalThis.extendedFetch = lpContext.fetchFn;
+```
+
+## Graphql
+
+Una de las preguntas que me planteabas era si utilizaban GraphQL o si todo se trataba de APIs personalizadas/RESTful. Aunque claramente dominan más las APIs REST, sí emplean GraphQL, específicamente en el manejo de las listas de deseos (wishlists) al recuperar los elementos, por ejemplo.
+
+```js
+import graphqlFetch from '@nike/graphql-fetch';
+import { fetchClient } from '@nike/fetch-client';
+import { DOTCOM_UX_ID } from '@nike/ux-tread-dotcom-constants';
+
+const graphqlClient = (args) =>
+  graphqlFetch({
+    fetchClient,
+    url: process.env.GRAND_URL || 'https://api.nike.com/cic/grand/v1/graphql',
+    callerId: window.NikeShop?.getVersion(),
+    appId: DOTCOM_UX_ID,
+    ...args,
+  });
+
+export default graphqlClient;
+```
+
+Apart from that, I haven't been able to extract much more, as the typical request to retrieve information about the schema doesn't return anything (429 too many requests).
+
+![react-devtools](/assets/blog/descubrint-el-ecommerce-de-nike/graphql-error.PNG)
+
+## Conclusions
+
+Here's a summary of the technology stack and practices inferred:
+
+- Framework: They use Next.js, as evidenced by the `<div>` with the ID `\_\_next`.
+- State Management: Redux
+- CDN: They utilize Akamai for content delivery.
+- Design System: They use Emotion (CSS-in-JS) and an in-house design system.
+- Internationalization: Translations and i18n are managed through specific JSON files for each language.
+- Analytics: They employ services like Optimizely and Adobe Target for user analysis and segmentation.
+- Feature Flags: They use an extensive list of feature flags to manage specific functionalities on the website.
+- Observability: They utilize New Relic for monitoring and error analysis.
