@@ -1,5 +1,5 @@
 ---
-title: Reverse engineering of Nike's browser-only e-commerce
+title: Reverse engineering of Nike's e-commerce site using only the browser
 description: Article about the technologies used in nike ecommerce
 image: /assets/blog/descubrint-el-ecommerce-de-nike/cover-image.jpg
 published: true
@@ -7,7 +7,7 @@ publishedDate: 2023-12-01
 authors: eudago
 seo:
   metatitle: >
-    Reverse engineering of Nike's browser-only e-commerce
+    Reverse engineering of Nike's e-commerce site using only the browser
   metadescription: >
     Article about the technologies used in nike ecommerce
   image: >
@@ -17,8 +17,6 @@ seo:
 The purpose of this article is to delve as deeply as possible into the technologies used and how they are employed within a "major" ecommerce platform, such as the one employed by Nike. We'll do this by utilizing the browser's developer tools.
 
 First and foremost, upon inspecting the page, we can observe that it utilizes the [Next.js](https://nextjs.org/) framework.
-
-El proposit d'aquest article es veure fins al punt que es pugui quines tecnologies utilitza i com les utiltiza un ecommerce "gran" com en aquest cas es el de nike i fer-ho utilitzant les developer tools del navegador.
 
 ```html {1,3-4}
 <div id="experience-wrapper">
@@ -1098,7 +1096,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 ## Graphql
 
-Una de las preguntas que me planteabas era si utilizaban GraphQL o si todo se trataba de APIs personalizadas/RESTful. Aunque claramente dominan más las APIs REST, sí emplean GraphQL, específicamente en el manejo de las listas de deseos (wishlists) al recuperar los elementos, por ejemplo.
+One of the questions you asked me was whether they used GraphQL or if it was all about custom/RESTful APIs. Although REST APIs are clearly more dominant, they do use GraphQL, specifically in managing wishlists when retrieving items, for example.
 
 ```js
 import graphqlFetch from '@nike/graphql-fetch';
