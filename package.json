@@ -12,7 +12,6 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.4",
     "@formatjs/intl-localematcher": "0.2.32",
     "@giscus/react": "^2.3.0",
     "@ramonak/react-progress-bar": "^5.0.3",
@@ -21,7 +20,6 @@
     "@tweenjs/tween.js": "^19.0.0",
     "@types/three": "^0.148.0",
     "clsx": "^1.2.1",
-    "graphql": "^16.8.1",
     "gray-matter": "~4.0.2",
     "lamina": "1.0.6",
     "leva": "^0.9.34",

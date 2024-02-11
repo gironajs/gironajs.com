@@ -1,19 +1,25 @@
 import { sponsors } from '@/config/sponsor';
 import { getDictionary } from '@/get-dictionary';
-import { client } from '@/github-api/client';
 import { Locale } from '@/i18n-config';
 import { cn } from '@/lib/utils';
 import { Issue, IssueLabel, Paginated } from '@/types/events';
-import { gql } from '@apollo/client';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const issueQuery = gql`
+interface IssuesQueryResponse {
+  data: {
+    repository: {
+      issues: Paginated<Issue>;
+    };
+  };
+}
+
+const issueQuery = `
   query {
     repository(name: "trobades", owner: "gironajs") {
       name
       description
-      issues(first: 10) {
+      issues(first: 10, states: OPEN) {
         edges {
           node {
             id
@@ -52,17 +58,15 @@ const images = [
 ];
 
 async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
-  const {
-    data,
-  }: {
-    data: {
-      repository: {
-        issues: Paginated<Issue>;
-      };
-    };
-  } = await client.query({
-    query: issueQuery,
+  const response = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    },
+    body: JSON.stringify({ query: issueQuery }),
   });
+  const { data }: IssuesQueryResponse = await response.json();
 
   const dictionary = await getDictionary(lang);
 
