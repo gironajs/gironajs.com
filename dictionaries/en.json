@@ -98,7 +98,8 @@
     "propose": "Propose an event",
     "list": {
       "title": "Upcoming events",
-      "subtitle": "There are the next events that the community is organizing."
+      "subtitle": "There are the next events that the community is organizing.",
+      "empty": "No events found"
     },
     "cta": {
       "message": "How events works?",

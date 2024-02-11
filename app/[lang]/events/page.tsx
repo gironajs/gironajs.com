@@ -68,6 +68,8 @@ async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
   });
   const { data }: IssuesQueryResponse = await response.json();
 
+  const hasEvents = (data?.repository.issues.edges.length ?? 0) > 0;
+
   const dictionary = await getDictionary(lang);
 
   return (
@@ -112,37 +114,47 @@ async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
         </p>
       </div>
 
-      <section className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
-        {data.repository.issues.edges.map((issue: { node: Issue }) => (
-          <div
-            className="bg-stone-800 shadow-md rounded-md p-6 flex flex-col"
-            key={issue.node.id}
-          >
-            <div className="flex flex-wrap">
-              {issue.node.labels.edges.map((label: { node: IssueLabel }) => (
-                <span
-                  className="inline-block bg-slate-200 rounded-full text-xs font-semibold text-slate-900 mr-2 mb-2 px-3 py-1"
-                  key={label.node.id}
-                >
-                  {label.node.name}
-                </span>
-              ))}
-            </div>
-            <a
-              href={issue.node.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-200 hover:text-slate-100"
+      {hasEvents && (
+        <section className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+          {data.repository.issues.edges.map((issue: { node: Issue }) => (
+            <div
+              className="bg-stone-800 shadow-md rounded-md p-6 flex flex-col"
+              key={issue.node.id}
             >
-              <h2 className="text-3xl font-bold mb-5">{issue.node.title}</h2>
-            </a>
-            <div className="flex-1" />
-            <span className="text-sm font-bold text-gray-400">
-              {issue.node.publishedAt}
-            </span>
-          </div>
-        ))}
-      </section>
+              <div className="flex flex-wrap">
+                {issue.node.labels.edges.map((label: { node: IssueLabel }) => (
+                  <span
+                    className="inline-block bg-slate-200 rounded-full text-xs font-semibold text-slate-900 mr-2 mb-2 px-3 py-1"
+                    key={label.node.id}
+                  >
+                    {label.node.name}
+                  </span>
+                ))}
+              </div>
+              <a
+                href={issue.node.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-200 hover:text-slate-100"
+              >
+                <h2 className="text-3xl font-bold mb-5">{issue.node.title}</h2>
+              </a>
+              <div className="flex-1" />
+              <span className="text-sm font-bold text-gray-400">
+                {issue.node.publishedAt}
+              </span>
+            </div>
+          ))}
+        </section>
+      )}
+
+      {!hasEvents && (
+        <div className="w-full text-center max-w-2xl mx-auto mt-12">
+          <p className="text-xl text-gray-400 mt-4 text-center">
+            {dictionary.events.list.empty}
+          </p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start max-w-5xl mx-auto gap-10 py-20">
         {images.map((el, i) => (

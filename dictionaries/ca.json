@@ -98,7 +98,8 @@
     "propose": "Proposar un esdeveniment",
     "list": {
       "title": "Pròxims esdeveniments",
-      "subtitle": "Aquests són els propers esdeveniments que la comunitat està organitzant."
+      "subtitle": "Aquests són els propers esdeveniments que la comunitat està organitzant.",
+      "empty": "No s'ha trobat cap esdeveniment"
     },
     "cta": {
       "message": "Com funcionen els esdeveniments?",
