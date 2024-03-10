@@ -73,6 +73,12 @@ const members: Member[] = [
     company: 'Kave Home',
     linkedin: 'mcmontseny',
   },
+  {
+    github: 'PolMuri',
+    name: 'Pol Murillas',
+    role: 'SysAdmin',
+    linkedin: 'pol-murillas-ledesma-29b23b241',
+  },
 ];
 
 const membersDictionary: Dictionary<Member> = members.reduce(
