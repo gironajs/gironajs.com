@@ -10,6 +10,7 @@ import { decodeMdxFilePathData } from '@/lib/utils';
 import { Blog } from '@/components/blog/blog';
 import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
+import { getBlogPostItems } from '@/lib/blog';
 import LocalePrettyUrlsCache from '@/lib/locale-pretty-urls-cache';
 
 type Params = {
@@ -45,13 +46,21 @@ export async function generateStaticParams({ params }: Params) {
 
 export default async function Page({ params }: Params) {
   const blogPostItem = await generateBlogPostItem(params.lang, params.slug);
-
   const dictionary = await getDictionary(params.lang);
+
+  // Related blog posts, for now, just the two most recent ones, excluding the current one.
+  const relatedPosts: BlogPostItem[] = getBlogPostItems(params.lang)
+    .filter(
+      (post) => post.data.published && post.urlPath !== blogPostItem.urlPath
+    )
+    .sort((a, b) => (a.data.publishedDate > b.data.publishedDate ? -1 : 1))
+    .slice(0, 2);
 
   return (
     <div className="relative">
       <Blog
         blogPostItem={blogPostItem}
+        relatedPosts={relatedPosts}
         dictionary={dictionary}
         lang={params.lang}
       ></Blog>
@@ -77,7 +86,7 @@ async function generateBlogPostItem(lang: Locale, slug?: string) {
     content: contentHtml,
     data: data as BlogPostItemData,
     filePath: `${slug}.mdx`,
-    urlPath: `${lang}/blog/${slug}`,
+    urlPath: `/${lang}/blog/${slug}`,
   };
   return blogPostItem;
 }

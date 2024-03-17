@@ -12,14 +12,16 @@ import Comments from '../comments';
 
 import './blog.scss'; // TODO: This styles will be global even only imported here. We should
 import Link from 'next/link';
+import BlogList from '../blog-list/blog-list';
 
 type Props = {
   blogPostItem: BlogPostItem;
+  relatedPosts: BlogPostItem[];
   dictionary: LangDictionary;
   lang: string;
 };
 
-export function Blog({ blogPostItem, dictionary, lang }: Props) {
+export function Blog({ blogPostItem, relatedPosts, dictionary, lang }: Props) {
   const host = `https://gironajs.com`; // TODO: Put host value on environment variables
   const getFullHref = (post: BlogPostItem) => `${host}/${post.urlPath}`;
   return (
@@ -55,6 +57,11 @@ export function Blog({ blogPostItem, dictionary, lang }: Props) {
         </div>
 
         <Comments lang={lang} />
+
+        <div className="my-10">
+          <h2 className="my-2 flex-1">{dictionary.blog.related_posts_title}</h2>
+          <BlogList posts={relatedPosts} className="md:grid-cols-2"></BlogList>
+        </div>
       </div>
     </div>
   );
