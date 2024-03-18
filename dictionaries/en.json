@@ -40,7 +40,8 @@
     "subtitle_1": "Here you can find all the blog posts published by GironaJS",
     "subtitle_2": "Any contribution is welcome, so if you want to write a post, please contact us!",
     "edit_github": "Have you found a mistake? ",
-    "edit_github_link": "Edit it on Github!"
+    "edit_github_link": "Edit it on Github!",
+    "related_posts_title": "Other blogs that might interest you..."
   },
   "map": {
     "title": "GironaJS - 3D City Map",

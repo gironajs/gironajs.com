@@ -55,7 +55,9 @@ export default async function Page({
       </section>
       <div className="relative">
         <div className="gjs-gradient-background absolute w-full h-full" />
-        <BlogList posts={posts}></BlogList>
+        <div className="container mx-auto py-10">
+          <BlogList posts={posts}></BlogList>
+        </div>
       </div>
     </div>
   );
