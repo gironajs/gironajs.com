@@ -91,5 +91,31 @@
   },
   "header": {
     "meetup": "Go to Meetup"
+  },
+  "events": {
+    "title": "GironaJS Events",
+    "subtitle": "Here you can find Meetups, conferences, workshops, etc organized by GironaJS or propose a new event that you would like attend or organize.",
+    "organize": "Organize an event",
+    "propose": "Propose an event",
+    "list": {
+      "title": "Upcoming events",
+      "subtitle": "There are the next events that the community is organizing.",
+      "empty": "No events found"
+    },
+    "cta": {
+      "message": "How events works?",
+      "one": {
+        "title": "1. Propose an event",
+        "subtitle": "If you want to propose an event, please fill the form below and we will contact you as soon as possible."
+      },
+      "two": {
+        "title": "2. Organize the event",
+        "subtitle": "Once the event is approved, you can organize it and we will help you to promote it."
+      }
+    },
+    "sponsors": {
+      "title": "Some sponsors help us to make these events possible with food, drinks, location, and more, thanks to them!",
+      "contact": "If you want to sponsor an event, please contact us"
+    }
   }
 }

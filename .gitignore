@@ -41,3 +41,6 @@ next-env.d.ts
 
 ## Directory-based project format:
 .idea/
+
+# env files
+.env
