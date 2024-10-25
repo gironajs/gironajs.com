@@ -10,6 +10,7 @@ import {
 } from '@/lib/locale-pretty-urls-cache';
 import { usePathname } from 'next/navigation';
 import { LangDictionary } from '@/get-dictionary';
+import { cn } from '@/lib/utils';
 
 type Props = {
   lang: Locale;
@@ -36,19 +37,47 @@ const Header = ({ lang, localePrettyUrlsCacheData, dictionary }: Props) => {
   const pathName = usePathname();
   const localePrettyUrls = getLocalePrettyUrls(pathName);
 
+  const eventsTheme = pathName.match(/\/.*\/events/);
+
   return (
     <header className="top-0 z-50 h-14 absolute right-0 left-0">
-      <div className="container flex h-14 items-center justify-between px-4 py-4 relative">
-        <div className="flex gap-6 md:gap-10 w-full justify-start">
+      <div className="container flex h-14 items-center justify-between px-4 py-4 relative flex-wrap">
+        <div className="flex gap-6 md:gap-10 justify-start">
           <Link href="/" className="items-center space-x-2 flex">
-            <span className="font-bold text-xl hover:text-red-500">
+            <span
+              className={cn(
+                eventsTheme && 'text-slate-50',
+                'font-bold text-xl hover:text-red-500'
+              )}
+            >
               {siteConfig.name}
             </span>
           </Link>
-          <Link href={`/${lang}/blog`} className="items-center space-x-2 flex">
+          <Link
+            href={`/${lang}/blog`}
+            className={cn(
+              eventsTheme && 'text-slate-50',
+              'items-center space-x-2 flex'
+            )}
+          >
             <span className="font-bold text-lg hover:text-red-500">Blog</span>
           </Link>
-          <Link href={`/${lang}/map`} className="items-center space-x-2 flex">
+          <Link
+            href={`/${lang}/events`}
+            className={cn(
+              eventsTheme && 'text-red-500',
+              'items-center space-x-2 flex'
+            )}
+          >
+            <span className="font-bold text-lg hover:text-red-500">Events</span>
+          </Link>
+          <Link
+            href={`/${lang}/map`}
+            className={cn(
+              eventsTheme && 'text-slate-50',
+              'items-center space-x-2 flex'
+            )}
+          >
             <span className="font-bold text-lg hover:text-red-500">Map</span>
           </Link>
         </div>

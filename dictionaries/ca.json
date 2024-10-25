@@ -91,5 +91,31 @@
   },
   "header": {
     "meetup": "Ves al meetup"
+  },
+  "events": {
+    "title": "GironaJS Events",
+    "subtitle": "Aquí podeu trobar trobades, conferències, tallers, etc. organitzats per GironaJS o proposar un nou esdeveniment al qual us agradaria assistir o organitzar.",
+    "organize": "Organitzar un esdeveniment",
+    "propose": "Proposar un esdeveniment",
+    "list": {
+      "title": "Pròxims esdeveniments",
+      "subtitle": "Aquests són els propers esdeveniments que la comunitat està organitzant.",
+      "empty": "No s'ha trobat cap esdeveniment"
+    },
+    "cta": {
+      "message": "Com funcionen els esdeveniments?",
+      "one": {
+        "title": "1. Proposar un esdeveniment",
+        "subtitle": "Si voleu proposar un esdeveniment, si us plau, ompliu el formulari a continuació i ens posarem en contacte amb vosaltres el més aviat possible."
+      },
+      "two": {
+        "title": "2. Organitzar l'esdeveniment",
+        "subtitle": "Un cop l'esdeveniment estigui aprovat, podeu organitzar-lo i us ajudarem a promocionar-lo."
+      }
+    },
+    "sponsors": {
+      "title": "Alguns patrocinadors ens ajuden a fer possible aquests esdeveniments amb menjar, begudes, ubicació i molt més, gràcies a ells!",
+      "contact": "Si vols patrocinar un esdeveniment, posa't en contacte amb nosaltres"
+    }
   }
 }
