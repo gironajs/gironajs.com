@@ -41,7 +41,7 @@ const LocaleSwitcher = ({ locale, localeUrls }: Props) => {
 
   return (
     <div className="locale-switcher absolute right-0 top-0 z-20">
-      <div className="flex gap-4 flex flex-col items-end p-4">
+      <div className="flex gap-4 flex flex-col items-end p-4 pt-6">
         <div
           className={clsx(
             'locale-switcher-anchor relative cursor-pointer rounded-full border border-neutral-800 overflow-hidden transition-transform hover:scale-110',

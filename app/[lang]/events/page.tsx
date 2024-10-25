@@ -84,7 +84,7 @@ async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
               {dictionary.events.subtitle}
             </p>
             <div className="flex flex-wrap justify-center mt-8 md:flex-row flex-col">
-              <div className="shadow border border-neutral-200 rounded-md sm:mr-3 mt-2 sm:mt-0">
+              <div className="shadow border border-neutral-200 rounded-md mt-2 sm:mt-0">
                 <a
                   href="https://github.com/gironajs/trobades/issues/new?assignees=&labels=&projects=&template=peticions.md&title="
                   className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-black bg-white border border-transparent leading-6 rounded-md hover:bg-slate-50 hover:text-black focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10"
@@ -92,7 +92,7 @@ async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
                   <span className="mr-2"> {dictionary.events.propose}</span>
                 </a>
               </div>
-              <div className="shadow border border-neutral-200 rounded-md sm:ml-3 mt-2 sm:mt-0">
+              <div className="shadow border border-neutral-200 rounded-md md:ml-3 mt-2 sm:mt-0">
                 <a
                   href="https://github.com/gironajs/trobades/issues/new?assignees=&labels=&projects=&template=xerrades.md&title="
                   className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-black bg-white border border-transparent leading-6 rounded-md hover:bg-slate-50 hover:text-black focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10"
@@ -159,10 +159,10 @@ async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start max-w-5xl mx-auto gap-10 py-20">
         {images.map((el, i) => (
           <Image
-            key={'grid-1' + i}
+            key={'grid' + i}
             src={el.src}
             className={cn(
-              el.type === 'horizontal' && 'col-span-2',
+              el.type === 'horizontal' && 'col-span-1 md:col-span-2',
               'h-80 w-full object-cover object-center-center rounded-lg gap-10 !m-0 !p-0'
             )}
             height="400"
@@ -219,7 +219,7 @@ async function EventsPage({ params: { lang } }: { params: { lang: Locale } }) {
 
         <a
           href="mailto:contact.gironajs@gmail.com"
-          className="m-8 shadow border border-neutral-200 rounded-md sm:mr-3 mt-2 sm:mt-0"
+          className="m-8 shadow border border-neutral-200 rounded-md mt-2 sm:mt-0"
         >
           <p className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-black bg-white border border-transparent leading-6 rounded-md hover:bg-slate-50 hover:text-black focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10">
             {dictionary.events.sponsors.contact}
